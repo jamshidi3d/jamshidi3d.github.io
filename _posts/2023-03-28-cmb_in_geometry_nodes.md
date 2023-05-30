@@ -3,7 +3,6 @@ title: How-to use Blender's geometry nodes for computation on CMB
 date: 2023-03-28 10:30:00 +0200
 categories: [Blender, How-to]
 tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, cmb, how-to, tutorial]     # TAG names should always be lowercase
-toc: true
 img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 ---
 
@@ -65,7 +64,7 @@ faces = v_indices.reshape((npix, 4))
 One can optionally merge duplicate vertices here, by utilizing merging algorithms, but it is much easier and faster to do this process inside Blender.
 
 
-Now its time to create the *OBJ* file using above sorted arrays of vertex coordinats and faces. Note that we have to change coordinates from (right handed)xyz to (left handed)xzy (`y_lh = z , z_lh = -y`) since its the most usual used case for *OBJ* file importers:
+Now its time to create the *OBJ* file using above sorted arrays of vertex coordinats and faces. Note that we have to change coordinates from (right handed)xyz to (left handed)xzy (`y_lh = z` , `z_lh = -y`) since its the most usual used case for *OBJ* file importers:
 
 ```python
 # mesh creation
@@ -81,7 +80,7 @@ with open(f3dname,'w') as f3d:
 
 For high `nside` value (like 512 and above) it is recommended to create the mesh part by part; that means dividing `npix` array into several sections and making a mesh for each part.
 
-> I have to say thanks to (Andrea Zonca)[https://www.zonca.dev/] who helped me with finding boundaries of pixels.
+> I have to say thanks to [Andrea Zonca](https://www.zonca.dev/) who helped me with finding boundaries of pixels.
 {: .prompt-info }
 
 
