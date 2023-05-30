@@ -84,7 +84,7 @@ For high `nside` values (like 512 and above) it is recommended to create the mes
 {: .prompt-info }
 
 
-## Importing the mesh into Blender (Start Geometry Nodes)
+## Importing the mesh into Blender (Intro to Geometry Nodes)
 
 This section is for complete begginners in Geometry Nodes. If you already know about that, skip this part.
 
