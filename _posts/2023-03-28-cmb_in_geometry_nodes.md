@@ -10,15 +10,15 @@ In this note I'm going to introduce Blender's power to scientists, mainly cosmol
 
 ## Creating HEALPix mesh
 
-First, you need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package.
+First, we need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package. To install healpy, you shoud have [astropy](https://pypi.org/project/astropy/) preinstalled since healpy requires this module(and so for numpy, matplotlib etc.) 
 
-> Since at the moment, healpy is only available on linux, windows users can use [wsl](https://learn.microsoft.com/en-us/windows/wsl/install)(windows subsystem for linux) that allows them to run linux terminals in windows environment. To install healpy, you shoud have [astropy](https://pypi.org/project/astropy/) installed since healpy requires this module(and so for numpy, matplotlib etc.) 
+> Since at the moment, healpy is only available on linux, windows users can use [wsl](https://learn.microsoft.com/en-us/windows/wsl/install)(windows subsystem for linux) that allows them to run linux terminals in windows environment.
 {: .prompt-info }
 
-In the following, we will create a handmade *OBJ* file to use in any 3d DCC.
-Note that Blender uses its *internal python*, not the system's python. Now in this section we will use **system's python** to create our mesh.
+In the following, we will create a handmade *OBJ* file that can be imported to any 3d DCC.
+Now in this section we will use **system's python** to create our mesh, not Blender's since Blender uses its *internal python* and doesn't contain system's installed modules (I will try to write a post on how to install external modules in Blender's python).
 
-(After importing required modules) first, we will create a function to generate texts needed for making *OBJ* file.
+First, we will create a function to generate texts needed for making *OBJ* file.
 
 ```python
 import numpy as np
@@ -52,6 +52,7 @@ Then we store pixels' corners(boundaries) in a well sorted way like bellow:
 nside = 64
 npix = 12 * nside ** 2 
 v_coords = np.zeros((npix * 4, 3)) # 4 corners for each pixel and 3 coords for each corner
+
 for i in range(npix):
     pbounds = hp.boundaries(nside = nside, pix = i, step = 1, nest = False) # we use ring indexing
     v_coords[4 * i : 4 * (i + 1)] = np.transpose(pbounds)
@@ -62,7 +63,6 @@ faces = v_indices.reshape((npix, 4))
 {: .nolineno }
 
 One can optionally merge duplicate vertices here, by utilizing merging algorithms, but it is much easier and faster to do this process inside Blender.
-
 
 Now its time to create the *OBJ* file using above sorted arrays of vertex coordinats and faces. Note that we have to change coordinates from (right handed)xyz to (left handed)xzy (`y_lh = z` , `z_lh = -y`) since its the most usual used case for *OBJ* file importers:
 
@@ -78,7 +78,7 @@ with open(f3dname,'w') as f3d:
 ```
 {: .nolineno }
 
-For high `nside` value (like 512 and above) it is recommended to create the mesh part by part; that means dividing `npix` array into several sections and making a mesh for each part.
+For high `nside` values (like 512 and above) it is recommended to create the mesh part-by-part; that means dividing `npix` array into several sections and making a mesh for each part (you can merge all these parts in Blender).
 
 > I have to say thanks to [Andrea Zonca](https://www.zonca.dev/) who helped me with finding boundaries of pixels.
 {: .prompt-info }
@@ -105,7 +105,12 @@ Now select the HEALPix sphere you imported, and click on the <kbd>+  New</kbd> b
 
 ![new geo nodes](new_geo_nodes.png)
 
-Now we want to add a node to merge duplicate vertices. Press <kbd>Shift</kbd>+<kbd>A</kbd> to open add-pannel. At the top click on search and search *merge* to find *Merge By Distance* and press <kbd>Enter</kbd>. Now move it to the middle of the process and click to place it like this:
+Now we want to add a node to merge duplicate vertices. Press <kbd>Shift</kbd>+<kbd>A</kbd> to open add-pannel.
+
+> <kbd>Shift</kbd>+<kbd>A</kbd> everywhere opens add menu.
+{: .prompt-tip}
+
+At the top click on search and search *merge* to find *Merge By Distance* and press <kbd>Enter</kbd>. Now move it to the middle of the process and click to place it like this:
 
 ![merge by distance](merge_by_distance.png)
 
@@ -127,20 +132,20 @@ import numpy as np
 import healpy as hp
 
 nside = 64
-fpath = "E:/Your/Path/To/" # change it for your own case 
-fpath += 'COM_CMB_IQU-commander_2048_R3.00_full.fits'
+fpath = "E:/Your/Path/" # change it for your own case 
+fpath += "COM_CMB_IQU-commander_2048_R3.00_full.fits"
 
-fields = (5, 6, 7) # inpainted fields
-names = ('temp', 'stokes_q', 'stokes_u')
-for f in fields:
+_fields = (5, 6, 7) # inpainted fields
+_names = ("temp", "stokes_q", "stokes_u")
+for name, field in zip(_names, _fields):
     map = hp.read_map(fpath, field = field, nest=False)
     map = hp.ud_grade(map, nside_out=nside, order_in='RING')
     map *= 10**6
-    np.savetxt('./' + names + '.txt', map) # format doesn't matter that much
+    np.savetxt("./" + name + ".txt", map) # format doesn't matter that much
 ```
 {: .nolineno }
 
-Having data extracted, open mesh file, pan the top bar and select *Scripting*. In the *Text Editor* create a new script and enter the bellow code into it:
+Having data extracted, open *Blender > stored mesh file*, pan the top bar and select *Scripting*. In the *Text Editor* create a new script and enter the bellow code into it:
 
 ```python
 import numpy as np
@@ -150,7 +155,7 @@ path = "E:/Your/Path/To/" # change it for your own case
 
 obj_attr = bpy.context.object.data.attributes # active object's attributes
 
-_names = ('temp', 'stokes_q', 'stokes_u')
+_names = ("temp", "stokes_q", "stokes_u")
 _attributes = [np.loadtxt(path + name +".txt") for name in _names]
 
 for name, attr in zip(_names, _attributes):
@@ -162,3 +167,5 @@ for name, attr in zip(_names, _attributes):
 The above code assigns your each pixel's data into its analogous face in the created mesh. Assigning attributes to the mesh lets you use the power of geo-nodes in parallel computations and also visualization(in realtime!).
 
 ## Visualizing assigned attributes
+
+Get back to *Geometry Nodes* tab and create a new one. In add menu (<kbd>Shift</kbd>+<kbd>A</kbd>) search for *Named Attributes* node.
