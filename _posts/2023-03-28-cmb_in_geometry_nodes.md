@@ -2,8 +2,8 @@
 title: How-to use Blender's geometry nodes for computation on CMB
 date: 2023-03-28 10:30:00 +0200
 categories: [Blender, How-to]
-tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, cmb, tutorial]     # TAG names should always be lowercase
-math: true
+tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, cmb, how-to, tutorial]     # TAG names should always be lowercase
+toc: true
 img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 ---
 
@@ -11,15 +11,13 @@ In this note I'm going to introduce Blender's power to scientists, mainly cosmol
 
 # Creating HEALPix mesh
 
-> Note that Blender uses its internal python library, not the system's python. I will write a post on how to use that later, but now in this section we will use system's python to create our mesh.
-{: .prompt-warning }
-
 First, you need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package.
 
 > Since at the moment, healpy is only available on linux, windows users can use [wsl](https://learn.microsoft.com/en-us/windows/wsl/install)(windows subsystem for linux) that allows them to run linux terminals in windows environment. To install healpy, you shoud have [astropy](https://pypi.org/project/astropy/) installed since healpy requires this module(and so for numpy, matplotlib etc.) 
-{: .prompt-tip }
+{: .prompt-info }
 
-In the following, we will create a handmade *OBJ* file to use in any 3d DCC:
+In the following, we will create a handmade *OBJ* file to use in any 3d DCC.
+Note that Blender uses its *internal python*, not the system's python. Now in this section we will use **system's python** to create our mesh.
 
 (After importing required modules) first, we will create a function to generate texts needed for making *OBJ* file.
 
@@ -36,7 +34,7 @@ def generate_obj_txt(element_arr, str_key):
 ```
 {: .nolineno }
 
-The above function simply creates texts like:
+The above function creates simple texts like this:
 
 ```
 v 0.0 1.0 -0.0
@@ -47,7 +45,7 @@ etc.
 ```
 {: .nolineno }
 
-That defines vertex coordinates and certain indices that make a face.
+That defines vertex coordinates and certain indices that make a face(forget about any additional data; edges, skinning data etc. since we don't need those in this tutorial).
 
 Then we store pixels' corners(boundaries) in a well sorted way like bellow:
 
@@ -64,10 +62,10 @@ faces = v_indices.reshape((npix, 4))
 ```
 {: .nolineno }
 
-> One can optionally merge duplicate vertices here, by utilizing merging algorithms, but it is much easier and faster to do this process inside Blender.
-{: .prompt-tip }
+One can optionally merge duplicate vertices here, by utilizing merging algorithms, but it is much easier and faster to do this process inside Blender.
 
-Now its time to create the *OBJ* file using above sorted arrays of vertex coordinats and faces. Note that we have to change coordinates from (right handed)xyz to (left handed)xzy ($y_{LH} = z , z_{LH} = -y$) since its the most usual used case for *OBJ* file importers:
+
+Now its time to create the *OBJ* file using above sorted arrays of vertex coordinats and faces. Note that we have to change coordinates from (right handed)xyz to (left handed)xzy (`y_lh = z , z_lh = -y`) since its the most usual used case for *OBJ* file importers:
 
 ```python
 # mesh creation
@@ -88,8 +86,8 @@ For high `nside` value (like 512 and above) it is recommended to create the mesh
 
 
 # Importing the mesh into Blender (Start Geometry Nodes)
-> This section is for complete begginners in Geometry Nodes. If you already know about that you can skip this part.
-{: .prompt-warning}
+
+This section is for complete begginners in Geometry Nodes. If you already know about that, skip this part.
 
 Open Blender, and now you see default objects. Click on the *3dView* and press <kbd>A</kbd> to select them all and press <kbd>X</kbd> and <kbd>Enter</kbd> to confirm deletion.
 
@@ -101,7 +99,7 @@ At the top bar in the far right find *Geometry Nodes* tab and click it.
 
 ![top bar](top_bar.png)
 
-> If you don't find *Geometry Nodes* tab, hover your cursor on the top bar and press <kbd>MMB</kbd> to pan the bar to the left to find *Geometry Nodes*. Have it in mind that anywhere in Blender, <kbd>MMB</kbd> is used for panning; in 3dView, panels etc.
+> If you don't find *Geometry Nodes* tab, hover your cursor on the top bar and hold <kbd>MMB</kbd> to pan the bar to the left to find *Geometry Nodes*. It is worth noting that anywhere in Blender, <kbd>MMB</kbd> is used for panning; in 3dView, panels etc.
 {: .prompt-tip}
 
 Now select the HEALPix sphere you imported, and click on the <kbd>+  New</kbd> button on top of the geo-nodes panel. Now you will see an input mesh and an output that are the same at the moment:
