@@ -3,6 +3,7 @@ title: How-to use Blender's geometry nodes for computation on CMB
 date: 2023-03-28 10:30:00 +0200
 categories: [Blender, How-to]
 tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, cmb, how-to, tutorial]     # TAG names should always be lowercase
+toc: true
 img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 ---
 
