@@ -8,7 +8,7 @@ img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 
 In this note I'm going to introduce Blender's power to scientists, mainly cosmologists. I will show you how to bring your data into Blender and how to work with it step by step. The methods explained here are for local computers but could also be applied elsewhere (e.g. google colab). Each step could be a separate post but the order could be problematic in case of separation. I hope you find it useful (Insha'allah).
 
-# Creating HEALPix mesh
+## Creating HEALPix mesh
 
 First, you need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package.
 
@@ -84,7 +84,7 @@ For high `nside` value (like 512 and above) it is recommended to create the mesh
 {: .prompt-info }
 
 
-# Importing the mesh into Blender (Start Geometry Nodes)
+## Importing the mesh into Blender (Start Geometry Nodes)
 
 This section is for complete begginners in Geometry Nodes. If you already know about that, skip this part.
 
@@ -116,7 +116,7 @@ On the far right you will find *Properties* panel. Click on the *modifier*'s dro
 Now you have merged all redundant vertices. Save the file somewhere for later use.
 
 
-# Importing map data and setting mesh attributes
+## Importing map data and setting mesh attributes
 
 In this section we are going to extract data from *CMB* maps and import them as face data of the mesh.
 First you have to extract data from e.g. Planck maps. To do this, first download one of the provided maps e.g. [Commander](https://irsa.ipac.caltech.edu/data/Planck/release_3/all-sky-maps/maps/component-maps/cmb/COM_CMB_IQU-commander_2048_R3.00_full.fits).
@@ -161,4 +161,4 @@ for name, attr in zip(_names, _attributes):
 
 The above code assigns your each pixel's data into its analogous face in the created mesh. Assigning attributes to the mesh lets you use the power of geo-nodes in parallel computations and also visualization(in realtime!).
 
-# Visualizing assigned attributes
+## Visualizing assigned attributes
