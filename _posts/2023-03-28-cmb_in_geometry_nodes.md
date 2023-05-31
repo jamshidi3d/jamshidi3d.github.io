@@ -105,7 +105,7 @@ At the top bar in the far right find *Geometry Nodes* tab and click it.
 > If you don't find *Geometry Nodes* tab, hover your cursor on the top bar and hold <kbd>MMB</kbd> to pan the bar to the left to find *Geometry Nodes*. It is worth noting that anywhere in Blender(in 3dView, panels etc.), <kbd>MMB</kbd> is used for panning, <kbd>Ctrl</kbd>+<kbd>MMB</kbd> for zooming and <kbd>Ctrl</kbd>+<kbd>Space</kbd> for maximizing view.
 {: .prompt-tip}
 
-Now select the HEALPix sphere you imported, and click on the <kbd>+  New</kbd> button on top of the geo-nodes panel. Now you will see an input mesh and an output that are the same at the moment:
+Now select the HEALPix sphere you imported, and click on the *+New* button on top of the geo-nodes panel. Now you will see an input mesh and an output that are the same at the moment:
 
 ![new geo nodes](new_geo_nodes.png)
 
@@ -186,7 +186,7 @@ Get back to *Geometry Nodes* tab and create a new one. Create a geo-nodes graph 
 
 We proceed from left to right. First, the *Named Attributes* nodes takes the data values we assigned to mesh(in previous section) and makes it visible for geo-nodes. The *Attributes Statistics* node reads these values and gives the useful outputs you see (Note that it needs the *Geometry* wire to know which mesh we are looking for). Then we map minimum & maximum values of the *temp* attribute into the range (0, 1) by *Map Range* node. The *ColorRamp* node maps these values to a set of color data(attributes) that can be read in materials as we will see.
 
-For creating this color ramp, click on the `+` button to create a new tick and enter 0.5 for its position. Then change the color of the first tick to *RGB > (0,0,1)*, the middle one to *RGB > (0,1,0)* and the last tick to *RGB > (1,0,0)*. This gives a look like the *jet* coloring.
+For creating this color ramp, click on the '+' button to create a new tick and enter 0.5 for its position. Then change the color of the first tick to *RGB > (0,0,1)*, the middle one to *RGB > (0,1,0)* and the last tick to *RGB > (1,0,0)*. This gives a look like the *jet* coloring.
 
 connect the output of the color ramp to the free output socket. Press the <kbd>N</kbd> key to open the right panel, go to *Group* tab and rename the output to what you want e.g. temp_out_ch. Note that the type of this output is color.
 
@@ -197,3 +197,14 @@ Now in the *Properties > Modifier* (the far right panel) put a name for the attr
 ![modifier attribute](modifier_attribute.png)
 
 ### Material
+
+Having the object selected, go to *Properties > Material*, Click *+ New* button to create a new material. Change the surface material type to *Emission*.
+
+Then, by clicking on the circle button near the color property, change the color type to *Attribute*. In the *Name* field, type *temp_col*(or whatever you named the attribute).
+
+![material panel](material_panel.png)
+
+Now in the *3dView* hold the <kbd>Z</kbd> key and in the pop-up menu select *Material Preview* and you have to see the CMB sphere.
+
+## Working with data and manipulations
+
