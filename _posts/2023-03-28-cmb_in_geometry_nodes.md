@@ -6,7 +6,7 @@ tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, c
 img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 ---
 
-In this note I'm going to introduce Blender's power to scientists, mainly cosmologists. I will show you how to bring your data into Blender and how to work with it step by step. The methods explained here are for local computers but could also be applied elsewhere (e.g. google colab). Each step could be a separate post but the order could be problematic in case of separation.
+In this note I'm going to introduce [Blender](https://www.blender.org/)'s power to scientists, mainly cosmologists. I will show you how to bring your data into Blender and how to work with it step by step. The methods explained here are for local computers but could also be applied elsewhere (e.g. google colab). Each step could be a separate post but the order could be problematic in case of separation.
 
 ## Creating HEALPix mesh
 
