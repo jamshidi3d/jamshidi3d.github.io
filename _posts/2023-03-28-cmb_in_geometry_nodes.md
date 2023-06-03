@@ -10,13 +10,13 @@ In this note I'm going to introduce [Blender](https://www.blender.org/)'s power 
 
 ## Creating HEALPix mesh
 
-First, we need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package. To install healpy, you shoud have [astropy](https://pypi.org/project/astropy/) preinstalled since healpy requires this module(and so for numpy, matplotlib etc.) 
+First, we need to create a 3d mesh out of healpix data. There are several ways to do it but the easiest way is to use [healpy](https://pypi.org/project/healpy/) package.
 
-> Since at the moment, healpy is only available on linux, windows users can use [wsl](https://learn.microsoft.com/en-us/windows/wsl/install)(windows subsystem for linux) that allows them to run linux terminals in windows environment.
+> Since at the moment, healpy is only available on linux & mac, windows users can use [wsl](https://learn.microsoft.com/en-us/windows/wsl/install)(windows subsystem for linux) that allows them to run linux terminals in windows environment.
 {: .prompt-info }
 
 In the following, we will create a handmade *OBJ* file that can be imported to any 3d DCC.
-Now in this section we will use **system's python** to create our mesh, not Blender's, since Blender uses its own *internal python* which is a totally separate one (*Insha'allah* I will write a post on how to install external modules in Blender's python; but even if we install healpy in Blender's python it is not still useable in Win/Mac).
+Now in this section we will use **system's python** to create our mesh, not Blender's, since Blender uses its own *internal python* which is a totally separate one (*Insha'allah* I will write a post on how to install external modules on Blender's python; but even if we install healpy on Blender's python it is not still useable in windows).
 
 First, we create a function to generate texts needed for making *OBJ* file.
 
