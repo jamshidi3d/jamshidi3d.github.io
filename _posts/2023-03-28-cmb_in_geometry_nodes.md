@@ -6,7 +6,9 @@ tags: [physics, cosmology, healpix, healpy, 3d, mesh, blender, geometry-nodes, c
 img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 ---
 
-In this note I'm going to introduce [Blender](https://www.blender.org/)'s power to scientists, mainly cosmologists. I will show you how to bring your data into Blender and how to work with it step by step. The methods explained here are for local computers but could also be applied elsewhere (e.g. google colab). Each step could be a separate post but the order could be problematic in case of separation.
+In this note I'm going to introduce [Blender](https://www.blender.org/)'s power to scientists, mainly cosmologists. Blender is an open-source cross-platform 3D content creation software and supports the entire 3D pipeline (see [Blender's about](https://www.blender.org/about/) for more information).
+
+We will see how to visialize cmb maps (see [visualization nodes](#visualization-nodes)) and how do we can deal with cmb maps like a geometry and benefit from (implicit) gpu parallel computing. I will show you how to import your data into Blender and how to work with it step by step. The methods explained here are for local computers but could also be applied elsewhere (e.g. google colab). Each step could be a separate post but the order could be problematic in case of separation.
 
 ## Creating HEALPix mesh
 
@@ -92,7 +94,7 @@ This section is for complete begginners in [Geometry Nodes](https://docs.blender
 
 Open Blender, and now you see default objects. Click on the *3dView* and press <kbd>A</kbd> to select them all and press <kbd>X</kbd> and <kbd>Enter</kbd> to confirm deletion.
 
-Now click on **File > import > Wavefront(.obj)** and head to the directory of your *OBJ* file you created and import it. The imege below shows a HEALPix mesh with `nside = 16`:
+Now click on **File > import > Wavefront(.obj)** and head to the directory of your *OBJ* file you created and import it. The imege below shows a HEALPix mesh with `nside = 8`:
 
 ![healpix shpere](healpix_sphere.png)
 
@@ -105,7 +107,7 @@ At the top bar in the far right find *Geometry Nodes* tab and click it.
 > If you don't find *Geometry Nodes* tab, hover your cursor on the top bar and hold <kbd>MMB</kbd> to pan the bar to the left to find *Geometry Nodes*. It is worth noting that anywhere in Blender(in 3dView, panels etc.), <kbd>MMB</kbd> is used for panning, <kbd>Ctrl</kbd>+<kbd>MMB</kbd> for zooming and <kbd>Ctrl</kbd>+<kbd>Space</kbd> for maximizing view.
 {: .prompt-tip}
 
-Now select the HEALPix sphere you imported, and click on the *+New* button on top of the geo-nodes panel. Now you will see an input mesh and an output that are the same at the moment:
+Now select the HEALPix sphere you imported, and click on the "*+ New*" button on top of the geo-nodes panel. Now you will see an input mesh and an output that are the same at the moment:
 
 ![new geo nodes](new_geo_nodes.png)
 
@@ -186,7 +188,7 @@ Get back to *Geometry Nodes* tab and create a new one. Create a geo-nodes graph 
 
 We proceed from left to right. First, the *Named Attributes* nodes takes the data values we assigned to mesh(in previous section) and makes it visible for geo-nodes. The *Attributes Statistics* node reads these values and gives the useful outputs you see (Note that it needs the *Geometry* wire to know which mesh we are looking for). Then we map minimum & maximum values of the *temp* attribute into the range (0, 1) by *Map Range* node. The *ColorRamp* node maps these values to a set of color data(attributes) that can be read in materials as we will see.
 
-For creating this color ramp, click on the '+' button to create a new tick and enter 0.5 for its position. Then change the color of the first tick to *RGB > (0,0,1)*, the middle one to *RGB > (0,1,0)* and the last tick to *RGB > (1,0,0)*. This gives a look like the *jet* coloring.
+For creating this color ramp, click on the '+' button to create a new tick and enter 0.5 for its position. Then change the color of the first tick to *RGB = (0,0,1)*, the middle one to *RGB = (0,1,0)* and the last tick to *RGB = (1,0,0)*. This gives a similar gradient to the *jet* coloring.
 
 connect the output of the color ramp to the free output socket. Press the <kbd>N</kbd> key to open the right panel, go to *Group* tab and rename the output to what you want e.g. temp_out_ch. Note that the type of this output is color.
 
