@@ -84,7 +84,7 @@ For high resolution maps(`nside`>1024), mesh creation is not a good approach for
 
 For high `nside` values (>256) it is recommended to create the mesh part-by-part; that means dividing `npix` array into several sections and making a mesh for each part (you can merge all these parts in Blender). It may take up to an hour for generating a `nside=2048` mesh but it can also become very heavy(about 12 GB while with vertices merged it would be ~2.5GB at most). So divide it and merge part-by-part. we can write a script to do all that.
 
-> I have to say thanks to [Andrea Zonca](https://www.zonca.dev/) who helped me with finding boundaries of pixels.
+> I would like to say thanks to [Andrea Zonca](https://www.zonca.dev/) who helped me with finding boundaries of pixels.
 {: .prompt-info }
 
 
