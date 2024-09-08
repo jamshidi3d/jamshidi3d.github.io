@@ -8,7 +8,7 @@ img_path: /assets/img/2023-03-28-cmb_in_geometry_nodes/
 
 In this note I'm going to introduce [Blender](https://www.blender.org/)'s power to scientists, mainly cosmologists. Blender is an open-source cross-platform 3D content creation software and supports the entire 3D pipeline (see [Blender's about](https://www.blender.org/about/) for more information).
 
-We will see how to visualize CMB maps (see [visualization nodes](#visualization-nodes)) and how we can deal with CMB maps like meshes and benefit from (implicit) GPU parallel computing. I will show you how to import your data into Blender and work with it step by step. The methods explained here are for local computers but could be applied elsewhere (e.g. Google Colab). Each step could be a separate post but the order could be problematic in case of separation.
+We will see how to visualize CMB maps (see [visualization nodes](#visualization-nodes)) and how we can deal with CMB maps like meshes and benefit from the parallel computation for SIMD tasks. I will show you how to import your data into Blender and work with it step by step. The methods explained here are for local computers but could be applied elsewhere (e.g. Google Colab). Each step could be a separate post but the order could be problematic in case of separation.
 
 ## Creating HEALPix mesh
 
