@@ -4,7 +4,9 @@ import Listing from '../components/Listing.astro';
 import { allItems } from '../lib/items';
 import { LINKS } from '../data/site';
 
-const press = (await allItems()).filter((i) => i.byline && i.external);
+const press = (await allItems())
+  .filter((i) => i.byline && i.external)
+  .sort((x, y) => y.date.getTime() - x.date.getTime());
 
 const links = [
   { label: 'Email', href: `mailto:${LINKS.email}`, text: LINKS.email },
@@ -51,7 +53,6 @@ const credits = [
 
       <h2>Press</h2>
       <Listing items={press} variant="row" />
-      <!-- TODO(owner): 80.lv and BlenderNation URLs. -->
 
       <h2>Links</h2>
       <table class="tbl">

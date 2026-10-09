@@ -4,7 +4,6 @@ Nothing below is invented on the site; missing items are simply hidden or listed
 
 - Contact links: LinkedIn, Scholar, ORCID, INSPIRE (`src/data/site.ts`); both CV PDFs.
 - Research: publications/talks/code data, thesis title (`src/data/research.ts`).
-- Press: 80.lv and BlenderNation URLs (About).
 - Confirm which old portfolio assets may be shown (client/employer rights); client names were left off on purpose.
 - Decide the "Earlier work" cut (`earlier: true` in project frontmatter).
 - Models section (turntables), Lab pieces, Khosrobot hero, OG image (currently the Khosrobot project image).
