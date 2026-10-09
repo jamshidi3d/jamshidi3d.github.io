@@ -1,0 +1,162 @@
+---
+// Click-to-load Sketchfab viewer. Nothing is requested from Sketchfab until the visitor clicks;
+// the optional soundtrack starts at the same click and can be muted.
+interface Props {
+  title: string;
+  id: string;
+  slug: string;
+  author: string;
+  authorUrl: string;
+  audio?: { src: string; credit: string; creditUrl?: string };
+}
+
+const { title, id, slug, author, authorUrl, audio } = Astro.props;
+const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
+---
+
+<figure class="model">
+  <div class="model-box" data-model={id} data-title={title} data-audio={audio?.src}>
+    <button class="model-play" type="button" aria-label={`Load 3D model: ${title}`}>
+      <span class="model-icon" aria-hidden="true">▶</span>
+      <span class="model-title">{title}</span>
+      <span class="label">Click to load 3D from Sketchfab{audio ? ' · plays sound' : ''}</span>
+    </button>
+    {
+      audio && (
+        <button class="model-sound" type="button" aria-pressed="true" hidden>
+          Sound on
+        </button>
+      )
+    }
+  </div>
+  <figcaption class="model-meta">
+    <a href={page} rel="noopener" target="_blank">View on Sketchfab ↗</a>
+    <span> · by <a href={authorUrl} rel="noopener" target="_blank">{author}</a></span>
+    {audio && (
+      <span> · Sound: {audio.creditUrl ? <a href={audio.creditUrl} rel="noopener" target="_blank">{audio.credit}</a> : audio.credit}</span>
+    )}
+  </figcaption>
+</figure>
+
+<style is:global>
+  .model {
+    margin: 0;
+  }
+  .model-box {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--image-bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .model-box iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .model-play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: none;
+    border: 0;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+  }
+  .model-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    transition: background 150ms ease;
+  }
+  .model-play:hover .model-icon {
+    background: rgba(255, 180, 84, 0.12);
+  }
+  .model-title {
+    font-family: var(--font-head);
+    font-size: 22px;
+  }
+  .model-sound {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    background: rgba(13, 17, 23, 0.8);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 7px 12px;
+    cursor: pointer;
+  }
+  .model-sound:hover {
+    color: var(--amber);
+    border-color: var(--amber);
+  }
+  .model-meta {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  let current: HTMLAudioElement | null = null;
+
+  document.querySelectorAll<HTMLElement>('.model-box[data-model]').forEach((box) => {
+    const play = box.querySelector<HTMLButtonElement>('.model-play');
+    const soundBtn = box.querySelector<HTMLButtonElement>('.model-sound');
+
+    play?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://sketchfab.com/models/${box.dataset.model}/embed?autostart=1&ui_infos=0&ui_watermark=0&dnt=1`;
+      f.title = box.dataset.title ?? '3D model';
+      f.allow = 'autoplay; fullscreen; xr-spatial-tracking';
+      f.allowFullscreen = true;
+      play.replaceWith(f);
+
+      if (box.dataset.audio && soundBtn) {
+        current?.pause();
+        const audio = new Audio(box.dataset.audio);
+        audio.loop = true;
+        current = audio;
+        soundBtn.hidden = false;
+        audio.play().catch(() => {
+          soundBtn.setAttribute('aria-pressed', 'false');
+          soundBtn.textContent = 'Sound off';
+        });
+        soundBtn.addEventListener('click', () => {
+          const on = audio.paused;
+          if (on) audio.play().catch(() => {});
+          else audio.pause();
+          soundBtn.setAttribute('aria-pressed', String(on));
+          soundBtn.textContent = on ? 'Sound on' : 'Sound off';
+        });
+        // keep the music from playing in a hidden tab
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) audio.pause();
+          else if (soundBtn.getAttribute('aria-pressed') === 'true') audio.play().catch(() => {});
+        });
+      }
+    });
+  });
+</script>

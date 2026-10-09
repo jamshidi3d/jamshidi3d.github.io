@@ -70,4 +70,19 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { projects, writing };
+// 3D models shown on Work. Third-party viewers load only after a click.
+const models = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/models' }),
+  schema: z.object({
+    title: z.string(),
+    blurb: z.string(),
+    tags: z.array(z.enum(ROLE_TAGS)).default(['modeling']),
+    tools: z.array(z.string()).default([]),
+    triangles: z.string().optional(),
+    sketchfab: z.object({ id: z.string(), slug: z.string(), author: z.string(), authorUrl: z.string() }),
+    audio: z.object({ src: z.string(), credit: z.string(), creditUrl: z.string().optional() }).optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, writing, models };

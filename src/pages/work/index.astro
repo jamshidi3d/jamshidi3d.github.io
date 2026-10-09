@@ -3,8 +3,13 @@ import Base from '../../layouts/Base.astro';
 import Listing from '../../components/Listing.astro';
 import TagFilter from '../../components/TagFilter.astro';
 import { getProjects, projectItem } from '../../lib/items';
+import ModelEmbed from '../../components/ModelEmbed.astro';
+import { getCollection } from 'astro:content';
 import { THEMES } from '../../data/site';
 
+const models = (await getCollection('models', (m) => !m.data.draft)).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
 const items = (await getProjects()).map(projectItem);
 const main = items.filter((i) => !i.earlier);
 const earlier = items.filter((i) => i.earlier);
@@ -45,6 +50,58 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
         </section>
       )
     }
-    <!-- Models section (turntables) goes here once the owner supplies the model list. -->
+    {
+      models.length > 0 && (
+        <section class="group" data-group id="models">
+          <span class="label amber">
+            Models
+            <span class="count">{models.length}</span>
+          </span>
+          <div class="models">
+            {models.map((m) => (
+              <div class="item model-item" data-tags={m.data.tags.join(' ')}>
+                <ModelEmbed title={m.data.title} {...m.data.sketchfab} audio={m.data.audio} />
+                <h3>{m.data.title}</h3>
+                <p class="blurb">{m.data.blurb}</p>
+                {m.data.tools.length > 0 && (
+                  <p class="mono tools">
+                    {m.data.tools.join(' · ')}
+                    {m.data.triangles && ` · ${m.data.triangles} tris`}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
   </div>
 </Base>
+
+<style>
+  .models {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 32px;
+    margin-top: 24px;
+  }
+  .model-item h3 {
+    font-size: 20px;
+    margin: 16px 0 6px;
+  }
+  .model-item .blurb {
+    margin: 0;
+    color: var(--text-3);
+    font-size: 15px;
+  }
+  .model-item .tools {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 8px 0 0;
+  }
+  @media (max-width: 900px) {
+    .models {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
