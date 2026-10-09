@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'MH Jamshidi',
   fullName: 'MohammadHossein Jamshidi',
-  tagline: 'I make physics move.',
+  tagline: 'I make Physics Move',
   intro:
     "Simulation, rigging and tools, from game animation to cosmology research. I'm a PhD candidate in physics and have worked as a technical artist since 2012. This is where the two meet.",
   description:
