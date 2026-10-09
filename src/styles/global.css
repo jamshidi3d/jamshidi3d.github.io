@@ -15,9 +15,9 @@
 
   --font-hero: 'Oxanium', 'Oxanium Fallback', system-ui, sans-serif;
   --font-title: 'Sofia Sans Semi Condensed', 'Sofia Sans Fallback', system-ui, sans-serif;
-  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Fallback', system-ui, sans-serif;
+  --font-body: 'Ubuntu', 'Ubuntu Fallback', system-ui, sans-serif;
   --font-mono: 'Commit Mono', 'Commit Mono Fallback', ui-monospace, monospace;
-  --font-read: 'Literata', 'Literata Fallback', Georgia, serif;
+  --font-read: 'Red Hat Text', 'Red Hat Text Fallback', system-ui, sans-serif;
 
   --pad: 56px;
   --header-h: 72px;

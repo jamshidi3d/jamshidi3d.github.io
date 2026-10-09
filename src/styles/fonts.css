@@ -1,8 +1,9 @@
 /*
  * Self-hosted, Latin-subset fonts (all SIL OFL 1.1). Built by scripts/build-fonts.py.
  * Roles: Oxanium = hero headline; Sofia Sans Semi Condensed 600 = titles;
- * Atkinson Hyperlegible Next 400/600 = body and UI; Commit Mono 400 = labels and code;
- * Literata 400 / 400 italic / 600 = long reading in posts.
+ * Ubuntu 400/700 = body and UI; Commit Mono 400 = labels and code;
+ * Red Hat Text 400 / 400 italic / 600 = long reading in posts.
+ * All are SIL OFL 1.1 except Ubuntu (Ubuntu Font Licence 1.0, see /fonts/UFL-LICENSE.txt).
  * Each family has a size-adjusted local fallback so the swap does not shift the layout.
  */
 @font-face {
@@ -20,16 +21,16 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Atkinson Hyperlegible Next';
-  src: url('/fonts/atkinson-400.woff2') format('woff2');
+  font-family: 'Ubuntu';
+  src: url('/fonts/ubuntu-400.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Atkinson Hyperlegible Next';
-  src: url('/fonts/atkinson-600.woff2') format('woff2');
-  font-weight: 600;
+  font-family: 'Ubuntu';
+  src: url('/fonts/ubuntu-700.woff2') format('woff2');
+  font-weight: 600 700;
   font-style: normal;
   font-display: swap;
 }
@@ -40,23 +41,24 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
-  font-family: 'Literata';
-  src: url('/fonts/literata-400.woff2') format('woff2');
+  font-family: 'Red Hat Text';
+  src: url('/fonts/redhattext-400.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Literata';
-  src: url('/fonts/literata-400i.woff2') format('woff2');
+  font-family: 'Red Hat Text';
+  src: url('/fonts/redhattext-400i.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Literata';
-  src: url('/fonts/literata-600.woff2') format('woff2');
+  font-family: 'Red Hat Text';
+  src: url('/fonts/redhattext-600.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -82,24 +84,6 @@
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: 'Atkinson Fallback';
-  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica');
-  font-weight: 400;
-  size-adjust: 100.1%;
-  ascent-override: 98.3%;
-  descent-override: 31.57%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: 'Atkinson Fallback';
-  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
-  font-weight: 600;
-  size-adjust: 96.93%;
-  ascent-override: 101.52%;
-  descent-override: 32.6%;
-  line-gap-override: 0%;
-}
-@font-face {
   font-family: 'Commit Mono Fallback';
   src: local('Courier New'), local('CourierNewPSMT'), local('Liberation Mono'), local('Menlo');
   font-weight: 400;
@@ -109,32 +93,50 @@
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: 'Literata Fallback';
-  src: local('Georgia'), local('Georgia-Regular');
+  font-family: 'Ubuntu Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica');
+  font-weight: 400;
+  size-adjust: 102.8%;
+  ascent-override: 90.66%;
+  descent-override: 18.39%;
+  line-gap-override: 2.72%;
+}
+@font-face {
+  font-family: 'Ubuntu Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  font-weight: 600 700;
+  size-adjust: 99.32%;
+  ascent-override: 93.84%;
+  descent-override: 19.03%;
+  line-gap-override: 2.82%;
+}
+@font-face {
+  font-family: 'Red Hat Text Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica');
   font-weight: 400;
   font-style: normal;
-  size-adjust: 108.34%;
-  ascent-override: 108.64%;
-  descent-override: 28.43%;
+  size-adjust: 100.39%;
+  ascent-override: 101.4%;
+  descent-override: 30.38%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: 'Literata Fallback';
-  src: local('Georgia Italic'), local('Georgia-Italic');
+  font-family: 'Red Hat Text Fallback';
+  src: local('Arial Italic'), local('Arial-ItalicMT'), local('Liberation Sans Italic'), local('Helvetica Oblique');
   font-weight: 400;
   font-style: italic;
-  size-adjust: 99.47%;
-  ascent-override: 118.32%;
-  descent-override: 30.96%;
+  size-adjust: 98.57%;
+  ascent-override: 103.28%;
+  descent-override: 30.94%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: 'Literata Fallback';
-  src: local('Georgia Bold'), local('Georgia-Bold');
+  font-family: 'Red Hat Text Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
   font-weight: 600;
   font-style: normal;
-  size-adjust: 96.8%;
-  ascent-override: 121.59%;
-  descent-override: 31.82%;
+  size-adjust: 98.19%;
+  ascent-override: 103.67%;
+  descent-override: 31.06%;
   line-gap-override: 0%;
 }

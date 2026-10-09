@@ -3,11 +3,11 @@
 
 Usage:
   python -m venv venv && venv/Scripts/pip install fonttools brotli   (once)
-  npm i --prefix <dir> @fontsource/oxanium @fontsource/sofia-sans-semi-condensed @fontsource/atkinson-hyperlegible-next \
-        @fontsource/commit-mono @fontsource/literata
+  npm i --prefix <dir> @fontsource/oxanium @fontsource/sofia-sans-semi-condensed @fontsource/ubuntu \
+        @fontsource/commit-mono @fontsource/red-hat-text
   python scripts/build-fonts.py <dir>/node_modules
 
-All five families are SIL OFL 1.1. The script also prints size-adjusted fallback metrics for the
+Oxanium, Sofia Sans, Commit Mono and Red Hat Text are SIL OFL 1.1; Ubuntu is under the Ubuntu Font Licence 1.0 (see public/fonts/UFL-LICENSE.txt). The script also prints size-adjusted fallback metrics for the
 @font-face fallback rules in src/styles/fonts.css.
 """
 import io
@@ -35,12 +35,12 @@ FONTS = [
     # out name, source file, instancer axes (or None), fallback font file, label
     ("oxanium-700", "@fontsource/oxanium/files/oxanium-latin-700-normal.woff2", None, "arialbd.ttf"),
     ("sofia-600", "@fontsource/sofia-sans-semi-condensed/files/sofia-sans-semi-condensed-latin-600-normal.woff2", None, "arialbd.ttf"),
-    ("atkinson-400", "@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2", None, "arial.ttf"),
-    ("atkinson-600", "@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-600-normal.woff2", None, "arialbd.ttf"),
+    ("ubuntu-400", "@fontsource/ubuntu/files/ubuntu-latin-400-normal.woff2", None, "arial.ttf"),
+    ("ubuntu-700", "@fontsource/ubuntu/files/ubuntu-latin-700-normal.woff2", None, "arialbd.ttf"),
     ("commitmono-400", "@fontsource/commit-mono/files/commit-mono-latin-400-normal.woff2", None, "cour.ttf"),
-    ("literata-400", "@fontsource/literata/files/literata-latin-400-normal.woff2", None, "georgia.ttf"),
-    ("literata-400i", "@fontsource/literata/files/literata-latin-400-italic.woff2", None, "georgiai.ttf"),
-    ("literata-600", "@fontsource/literata/files/literata-latin-600-normal.woff2", None, "georgiab.ttf"),
+    ("redhattext-400", "@fontsource/red-hat-text/files/red-hat-text-latin-400-normal.woff2", None, "arial.ttf"),
+    ("redhattext-400i", "@fontsource/red-hat-text/files/red-hat-text-latin-400-italic.woff2", None, "ariali.ttf"),
+    ("redhattext-600", "@fontsource/red-hat-text/files/red-hat-text-latin-600-normal.woff2", None, "arialbd.ttf"),
 ]
 
 SAMPLE = "the quick brown fox jumps over the lazy dog simulation rigging and tools from game animation to cosmology research"

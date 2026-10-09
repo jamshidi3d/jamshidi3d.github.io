@@ -18,4 +18,4 @@ See `BUILD_BRIEF.md` for the design brief and `TODO.md` for what the owner still
 
 ## Fonts
 
-Self-hosted Latin subsets in `public/fonts` (all SIL OFL 1.1): Oxanium (hero headline), Sofia Sans Semi Condensed 600 (titles), Atkinson Hyperlegible Next 400/600 (body and UI), Commit Mono 400 (labels, code), Literata 400/400 italic/600 (post bodies). Rebuild with `scripts/build-fonts.py` (see its header). `@font-face` rules and size-adjusted fallbacks live in `src/styles/fonts.css`.
+Self-hosted Latin subsets in `public/fonts` (SIL OFL 1.1, except Ubuntu under the Ubuntu Font Licence 1.0, see `public/fonts/UFL-LICENSE.txt`): Oxanium (hero headline), Sofia Sans Semi Condensed 600 (titles), Ubuntu 400/700 (body and UI), Commit Mono 400 (labels, code), Red Hat Text 400/400 italic/600 (post bodies). Rebuild with `scripts/build-fonts.py` (see its header). `@font-face` rules and size-adjusted fallbacks live in `src/styles/fonts.css`.
