@@ -7,6 +7,11 @@ tags: [animation, physics]
 tools: [Unreal, Blender]
 visibility: video
 home: 3
+summary: "A series of procedural animations for the biped and quadruped characters of an online third-person shooter."
+idea: "The animations are mostly built with Unreal's Control Rig, together with a set of physics and math techniques."
+role: "Developed the procedural animations."
+links:
+  - label: "Clip music: Inspector Norse by Todd Terje"
+    href: https://www.youtube.com/watch?v=VfvKT8bVJGM
 related: [tps-animation-system, physirig, geometry-rigging]
-summary: "Control-rig and physics-based motion for biped and quadruped characters in an Unreal Engine project, made with Blender in the pipeline."
 ---
