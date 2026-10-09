@@ -15,7 +15,7 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
 <figure class="model">
   <div class="model-box" data-model={id} data-title={title} data-audio={audio?.src}>
     <div class="model-controls" hidden>
-      {audio && <button class="model-btn model-sound" type="button" aria-pressed="false" hidden>Sound off</button>}
+      {audio && <button class="model-btn model-sound" type="button" aria-label="Turn sound on" hidden>Sound on</button>}
       <button class="model-btn model-full" type="button">Full screen</button>
     </div>
   </div>
@@ -138,10 +138,11 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
       audio = new Audio(box.dataset.audio);
       audio.loop = true;
       audio.preload = 'auto';
+      // The label names the action, like "Full screen": "Sound off" while playing, "Sound on" while muted.
       const label = () => {
-        const on = !audio!.paused;
-        soundBtn.setAttribute('aria-pressed', String(on));
-        soundBtn.textContent = on ? 'Sound on' : 'Sound off';
+        const playing = !audio!.paused;
+        soundBtn.textContent = playing ? 'Sound off' : 'Sound on';
+        soundBtn.setAttribute('aria-label', playing ? 'Turn sound off' : 'Turn sound on');
       };
       audio.addEventListener('play', label);
       audio.addEventListener('pause', label);
@@ -158,10 +159,20 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     // (browsers may block this without a recent click; the button then starts it).
     const ready = () => {
       controls.hidden = false;
-      if (soundBtn) {
-        soundBtn.hidden = false;
-        audio?.play().catch(() => {});
-      }
+      if (!soundBtn || !audio) return;
+      soundBtn.hidden = false;
+      // The default state is playing. If the browser blocks autoplay, start on the visitor's first
+      // click, tap or key press (but not on the sound button itself, which does its own toggle).
+      audio.play().catch(() => {
+        const kick = (e: Event) => {
+          if (e.target instanceof Node && soundBtn.contains(e.target)) return;
+          cleanup();
+          audio!.play().catch(() => {});
+        };
+        const cleanup = () => ["pointerdown", "keydown"].forEach((t) => window.removeEventListener(t, kick, true));
+        ["pointerdown", "keydown"].forEach((t) => window.addEventListener(t, kick, true));
+        soundBtn.addEventListener("click", cleanup, { once: true });
+      });
     };
 
     const iframe = document.createElement('iframe');
