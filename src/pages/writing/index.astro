@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Listing from '../../components/Listing.astro';
 import { getPosts, postItem, groupByYear } from '../../lib/items';
 
-const items = (await getPosts()).map(postItem);
+const items = (await getPosts()).filter((p) => !p.data.hideInWriting).map(postItem);
 const years = groupByYear(items);
 ---
 

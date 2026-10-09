@@ -6,6 +6,7 @@ blurb: "Control-rig and physics-based motion for biped and quadruped characters.
 tags: [animation, physics]
 tools: [Unreal, Blender]
 visibility: video
+public: false
 image: /media/img/procedural_animation.webp
 video: /media/video/proc_anim.mp4
 home: 3

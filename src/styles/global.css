@@ -525,7 +525,7 @@ a.item:hover h3 {
 }
 
 .card .thumb {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 2.2 / 1;
   margin-bottom: 16px;
   transition: border-color 150ms ease;
 }
@@ -669,19 +669,22 @@ a.row:hover::before {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 48px;
   align-items: center;
-  padding: 24px 0 0;
+  padding: 16px 0 0;
+  /* the hero ends about half-way down the first screen, so the featured card titles stay visible on a laptop */
+  height: max(280px, calc(50vh - var(--header-h)));
 }
 
 .hero h1 {
   font-weight: 700;
-  font-size: clamp(42px, 6.2vw, 84px);
+  font-size: clamp(40px, min(6.2vw, 9vh), 84px);
   line-height: 1.02;
   letter-spacing: -0.02em;
-  margin-bottom: 28px;
+  margin-bottom: clamp(12px, 2.5vh, 28px);
+  text-wrap: balance;
 }
 
 .hero .intro {
-  font-size: 20px;
+  font-size: clamp(16px, min(1.5vw, 2.6vh), 20px);
   line-height: 1.55;
   color: var(--text-3);
   max-width: 600px;
@@ -699,7 +702,7 @@ a.row:hover::before {
 
 .stage {
   position: relative;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   max-height: 440px;
   width: 100%;
   margin-left: auto;
@@ -730,27 +733,31 @@ a.row:hover::before {
 
 .stage-btn {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  background: none;
-  border: 0;
-  color: var(--muted);
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  background: rgba(13, 17, 23, 0.7);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--text);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 8px;
+  padding: 9px 16px;
 }
 
 .stage-btn:hover {
   color: var(--amber);
+  border-color: var(--amber);
 }
 
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
-    padding-top: 40px;
+    height: auto;
+    padding-top: 32px;
     gap: 24px;
   }
   .hero .intro {
@@ -758,6 +765,7 @@ a.row:hover::before {
   }
   .stage {
     max-width: 480px;
+    height: 340px;
     margin: 0 auto;
   }
 }
@@ -838,3 +846,20 @@ a.row:hover::before {
   }
 }
 [hidden]{display:none!important}
+
+.yt-list {
+  margin: 0 0 56px;
+  display: grid;
+  gap: 8px;
+}
+
+.section-head .filters {
+  margin: 0;
+}
+
+.prose .item p.blurb {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-3);
+}

@@ -3,14 +3,12 @@ import {
   CanvasTexture,
   Color,
   DirectionalLight,
-  DoubleSide,
   Mesh,
   MeshBasicMaterial,
   MeshStandardMaterial,
   PerspectiveCamera,
   PlaneGeometry,
   PMREMGenerator,
-  RingGeometry,
   Scene,
   SRGBColorSpace,
   WebGLRenderer,
@@ -28,7 +26,7 @@ function shadowTexture() {
   c.width = c.height = 128;
   const g = c.getContext('2d')!;
   const grad = g.createRadialGradient(64, 64, 4, 64, 64, 64);
-  grad.addColorStop(0, 'rgba(0,0,0,0.65)');
+  grad.addColorStop(0, 'rgba(0,0,0,0.8)');
   grad.addColorStop(1, 'rgba(0,0,0,0)');
   g.fillStyle = grad;
   g.fillRect(0, 0, 128, 128);
@@ -62,18 +60,13 @@ export function createHeroCube(canvas: HTMLCanvasElement, stage: HTMLElement) {
   cube.rotation.y = Math.PI / 5;
   scene.add(cube);
 
-  // Soft contact shadow and a faint floor ring.
+  // Soft contact shadow on the floor.
   const shadowMat = new MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false });
-  const shadow = new Mesh(new PlaneGeometry(SIZE * 2.6, SIZE * 2.6), shadowMat);
+  const shadow = new Mesh(new PlaneGeometry(SIZE * 3.2, SIZE * 3.2), shadowMat);
   shadow.rotation.x = -Math.PI / 2;
   shadow.position.y = 0.002;
   scene.add(shadow);
 
-  const ringMat = new MeshBasicMaterial({ color: 0x3a465a, transparent: true, opacity: 0.8, side: DoubleSide });
-  const ring = new Mesh(new RingGeometry(1.95, 1.97, 128), ringMat);
-  ring.rotation.x = -Math.PI / 2;
-  ring.position.y = 0.001;
-  scene.add(ring);
 
   let angle = 0.6;
   let raf = 0;

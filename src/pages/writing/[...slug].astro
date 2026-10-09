@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import 'katex/dist/katex.min.css';
 import Base from '../../layouts/Base.astro';
+import YouTube from '../../components/YouTube.astro';
 import { getPosts, fmtDate } from '../../lib/items';
 
 export async function getStaticPaths() {
@@ -63,6 +64,8 @@ const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 2
           </details>
         )
       }
+
+      {d.videos.length > 0 && d.videos.map((v) => <YouTube {...v} />)}
 
       <div class="body">
         <Content />

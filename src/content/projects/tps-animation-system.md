@@ -6,6 +6,7 @@ blurb: "Smooth inputs, leaning and hip rotation, with some physics in the loop."
 tags: [animation, tech-art]
 tools: [Unreal 5.3, Blender]
 visibility: video
+public: false
 image: /media/img/cc_animsys.png
 video: /media/video/cc_new_animation_system.mp4
 home: 4

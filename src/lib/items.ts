@@ -13,7 +13,8 @@ export interface ListItem {
   tools?: string[];
   href?: string;
   external?: boolean;
-  badge?: string;
+  byline?: string;
+  hideInWriting?: boolean;
   image?: string;
   video?: string;
   home?: number;
@@ -47,6 +48,7 @@ export function projectItem(p: CollectionEntry<'projects'>): ListItem {
     blurb: d.blurb,
     tags: d.tags,
     tools: d.tools,
+    byline: d.byline,
     href: `/work/${p.id}/`,
     image: d.image,
     video: d.video,
@@ -60,14 +62,15 @@ export function projectItem(p: CollectionEntry<'projects'>): ListItem {
 export function postItem(p: CollectionEntry<'writing'>): ListItem {
   const d = p.data;
   return {
-    kind: 'WRITING',
+    kind: d.kind,
     date: d.date,
     title: d.title,
     blurb: d.blurb,
     tags: d.roles,
     href: d.external ?? `/writing/${p.id}/`,
     external: !!d.external,
-    badge: d.badge,
+    byline: d.byline,
+    hideInWriting: d.hideInWriting,
     image: d.image,
     home: d.home,
     slug: p.id,

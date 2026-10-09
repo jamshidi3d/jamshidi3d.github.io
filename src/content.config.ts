@@ -6,6 +6,15 @@ import { ROLE_TAGS, THEMES } from './data/site';
 
 const step = z.object({ title: z.string(), text: z.string() });
 
+// YouTube videos shown as click-to-load facades. "mine" = made by me; "by others" gets a credit link.
+const video = z.object({
+  id: z.string(),
+  title: z.string(),
+  role: z.enum(['mine', 'by others']),
+  author: z.string().optional(),
+  start: z.number().optional(),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
@@ -16,6 +25,10 @@ const projects = defineCollection({
     blurb: z.string(),
     tags: z.array(z.enum(ROLE_TAGS)),
     tools: z.array(z.string()),
+    byline: z.string().optional(), // e.g. "Blender.org": shown in the card label, adds the external-link arrow; not a category
+    client: z.string().optional(),
+    public: z.boolean().default(true), // false: show only the generic description, hide client/studio
+    videos: z.array(video).default([]),
     visibility: z.enum(['video', 'turntable', 'live', 'open-source']).default('video'),
     image: z.string().optional(),
     video: z.string().optional(),
@@ -47,7 +60,10 @@ const writing = defineCollection({
     tags: z.array(z.string()).default([]),
     roles: z.array(z.enum(ROLE_TAGS)).default([]),
     image: z.string().optional(),
-    badge: z.string().optional(), // e.g. BLENDER.ORG
+    byline: z.string().optional(), // e.g. "Blender.org": shown in the card label, adds the external-link arrow; not a category
+    kind: z.enum(['WRITING', 'RESEARCH']).default('WRITING'),
+    hideInWriting: z.boolean().default(false), // not written by me: keep out of the Writing index
+    videos: z.array(video).default([]),
     external: z.string().url().optional(), // listed only, links elsewhere
     home: z.number().optional(),
     draft: z.boolean().default(false),

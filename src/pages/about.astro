@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+import Listing from '../components/Listing.astro';
+import { allItems } from '../lib/items';
 import { LINKS } from '../data/site';
+
+const press = (await allItems()).filter((i) => i.byline && i.external);
 
 const links = [
   { label: 'Email', href: `mailto:${LINKS.email}`, text: LINKS.email },
@@ -32,7 +36,7 @@ const credits = [
     <div class="prose">
       <p>
         I'm a PhD candidate in physics, working on gravitation and cosmology, and I have worked as a
-        technical artist since 2012. I started in the game industry that year, modelling for the game
+        technical artist since 2012. I started in the game industry that year, modelling for the game{' '}
         <a href="https://store.steampowered.com/app/353990/Parvaneh_Legacy_of_the_Lights_Guardians/" rel="noopener">Parvaneh</a>.
         Because of my background in mathematics and physics, and my interest in technical art, I soon moved
         to tool development and physics-based assets. Since then I have done rigging and tool and shader
@@ -45,13 +49,8 @@ const credits = [
       </p>
 
       <h2>Press</h2>
-      <ul>
-        <li>
-          <a href="https://www.blender.org/user-stories/cosmology-with-geometry-nodes/" rel="noopener">Cosmology with Geometry Nodes</a>,
-          Blender.org user story, 17 Feb 2026.
-        </li>
-        <!-- TODO(owner): 80.lv and BlenderNation URLs. -->
-      </ul>
+      <Listing items={press} variant="row" />
+      <!-- TODO(owner): 80.lv and BlenderNation URLs. -->
 
       <h2>Links</h2>
       <table class="tbl">
@@ -68,7 +67,7 @@ const credits = [
       <h2>Credits</h2>
       <p style="font-size:17px">
         Built with open-source software. Writing, images and video are CC BY-NC 4.0 and code is MIT, unless
-        a file says otherwise. The Khosrobot character, its model and textures are all rights reserved.
+        a file says otherwise. Embedded YouTube videos load from YouTube (youtube-nocookie.com) only when played. The Khosrobot character, its model and textures are all rights reserved.
       </p>
       <table class="tbl">
         <thead>

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Listing from '../../components/Listing.astro';
+import YouTube from '../../components/YouTube.astro';
 import { getProjects, projectItem } from '../../lib/items';
 
 export async function getStaticPaths() {
@@ -39,7 +40,7 @@ const more = d.related
     <a class="back label" href="/work/">← Work</a>
 
     <header class="p-title">
-      <div class="label amber">{d.theme} <span class="muted">· {d.dateLabel ?? year}</span></div>
+      <div class="label amber">{d.theme} <span class="muted">· {d.dateLabel ?? year}{d.byline && ` · ${d.byline}`}</span></div>
       <h1>{d.title}</h1>
       <p class="p-blurb">{d.blurb}</p>
     </header>
@@ -70,6 +71,14 @@ const more = d.related
           </div>
           {d.video && <figcaption class="label">Clip 1 of 1 · muted loop</figcaption>}
         </figure>
+      )
+    }
+
+    {
+      d.videos.length > 0 && (
+        <section class="yt-list" aria-label="Videos">
+          {d.videos.map((v) => <YouTube {...v} />)}
+        </section>
       )
     }
 
@@ -113,6 +122,14 @@ const more = d.related
             <div class="fact">
               <div class="label">Role</div>
               <p>{d.role}</p>
+            </div>
+          )
+        }
+        {
+          d.public && d.client && (
+            <div class="fact">
+              <div class="label">Client</div>
+              <p>{d.client}</p>
             </div>
           )
         }

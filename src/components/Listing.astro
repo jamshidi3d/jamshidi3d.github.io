@@ -30,9 +30,9 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             </div>
             <div class="meta">
               <span class="kind">{it.kind}</span>
-              {it.badge && <> · <span>{it.badge}</span></>} · {dateText(it)}
+              {it.byline && <> · <span>{it.byline}</span></>} · {dateText(it)}
             </div>
-            <h3>{it.title}{it.external && ' ↗'}</h3>
+            <h3>{it.title}{(it.external || it.byline) && ' ↗'}</h3>
             <p class="blurb">{it.blurb}</p>
           </Tag>
         );
@@ -60,11 +60,11 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
               </div>
             )}
             <div class="body">
-              <h3>{it.title}{it.external && ' ↗'}</h3>
+              <h3>{it.title}{(it.external || it.byline) && ' ↗'}</h3>
               {it.blurb && <p class="blurb">{it.blurb}</p>}
             </div>
             <div class="meta">
-              <span class="kind">{it.kind}</span>
+              <span><span class="kind">{it.kind}</span>{it.byline && <> · {it.byline}</>}</span>
               <span>{dateText(it)}</span>
             </div>
           </Tag>
@@ -87,9 +87,9 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
           >
             <span class="meta">{dateText(it)}</span>
-            <span class="meta"><span class="kind">{it.kind}</span></span>
+            <span class="meta"><span class="kind">{it.kind}</span>{it.byline && <><br />{it.byline}</>}</span>
             <div>
-              <h3>{it.title}{it.external && ' ↗'}</h3>
+              <h3>{it.title}{(it.external || it.byline) && ' ↗'}</h3>
               {it.blurb && <p class="blurb">{it.blurb}</p>}
             </div>
           </Tag>
