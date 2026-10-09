@@ -15,7 +15,7 @@ const toItem = (r: (typeof publications)[number]): ListItem => ({
 });
 
 const sections = [
-  { name: 'Publications', list: publications.map(toItem) },
+  { name: 'Publications', list: publications.map(toItem), pub: true },
   { name: 'Talks', list: talks.map(toItem) },
   { name: 'Code and datasets', list: code.map(toItem) },
 ];
@@ -41,6 +41,16 @@ const cvs = [
               <div class="year-group">
                 <div class="year">{year}</div>
                 <Listing items={list} variant="index" />
+                {s.pub && list.map((l) => {
+                  const pub = publications.find((x) => x.title === l.title);
+                  return pub?.abstract && (
+                    <details class="abstract">
+                      <summary class="label">Abstract</summary>
+                      <p>{pub.abstract}</p>
+                      {pub.doi && <p class="mono">DOI <a href={pub.href} rel="noopener">{pub.doi}</a></p>}
+                    </details>
+                  );
+                })}
               </div>
             ))
           ) : (
@@ -62,3 +72,26 @@ const cvs = [
     </section>
   </div>
 </Base>
+
+<style>
+  .abstract {
+    margin: 4px 0 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .abstract summary {
+    cursor: pointer;
+  }
+  .abstract p {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+    max-width: 760px;
+    margin: 12px 0 0;
+  }
+  .abstract p.mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+</style>

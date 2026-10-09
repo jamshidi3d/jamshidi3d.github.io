@@ -3,11 +3,14 @@ title: Game-ready stylized character rig
 date: 2019-01-15
 theme: Rigging and animation
 blurb: "Exports to any engine, with no blendshapes needed."
-tags: [animation, tech-art]
+tags: [animation, tech-art, modeling]
 tools: [Python, Blender, Unity]
 visibility: video
 image: /media/img/character_rig.png
 video: /media/video/character_rig.mp4
 summary: "A stylized character rig that exports to any game engine without rigging defects or missing humanoid features. It uses no blendshapes."
 related: [geometry-rigging, physirig, tps-animation-system]
+problem: "Stylized characters often hit rigging defects or missing humanoid features when exported to a game engine."
+idea: "The rig is built so that it needs no blendshapes and still carries every humanoid feature an engine expects."
+result: "Exports to any game engine without rigging defects or missing humanoid features."
 ---

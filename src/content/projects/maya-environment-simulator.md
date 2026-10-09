@@ -8,4 +8,8 @@ tools: [MaxScript, 3ds Max]
 visibility: video
 image: /media/img/maya_sim.png
 earlier: true
+summary: "A plugin that lets Maya animators work inside 3ds Max just as they would in their native software. It is written in MaxScript."
+problem: "Animators used to Maya's transform behaviour had to work in 3ds Max."
+result: "Maya-style transformation behaviours and tools inside 3ds Max."
+role: "Developed all of the plugin's transformation behaviours and tools."
 ---

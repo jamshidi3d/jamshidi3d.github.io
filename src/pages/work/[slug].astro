@@ -4,7 +4,7 @@ import Listing from '../../components/Listing.astro';
 import { getProjects, projectItem } from '../../lib/items';
 
 export async function getStaticPaths() {
-  const projects = (await getProjects()).filter((p) => !p.data.earlier);
+  const projects = await getProjects();
   return projects.map((p) => ({ params: { slug: p.id }, props: { project: p, all: projects } }));
 }
 

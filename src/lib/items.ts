@@ -47,7 +47,7 @@ export function projectItem(p: CollectionEntry<'projects'>): ListItem {
     blurb: d.blurb,
     tags: d.tags,
     tools: d.tools,
-    href: d.earlier ? undefined : `/work/${p.id}/`,
+    href: `/work/${p.id}/`,
     image: d.image,
     video: d.video,
     home: d.home,
