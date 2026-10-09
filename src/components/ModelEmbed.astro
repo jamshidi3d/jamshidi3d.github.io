@@ -67,7 +67,7 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     gap: 8px;
   }
   .model-btn {
-    background: rgba(13, 17, 23, 0.8);
+    background: rgba(var(--bg-rgb), 0.8);
     border: 1px solid var(--rule);
     border-radius: 4px;
     color: var(--text);
@@ -77,8 +77,8 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     cursor: pointer;
   }
   .model-btn:hover {
-    color: var(--amber);
-    border-color: var(--amber);
+    color: var(--accent);
+    border-color: var(--accent);
   }
   .model-meta {
     margin-top: 10px;

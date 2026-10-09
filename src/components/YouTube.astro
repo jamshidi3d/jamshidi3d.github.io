@@ -66,15 +66,15 @@ const watch = `https://www.youtube.com/watch?v=${id}${start ? `&t=${start}s` : '
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    border: 1px solid var(--amber);
-    color: var(--amber);
+    border: 1px solid var(--accent);
+    color: var(--accent);
     display: grid;
     place-items: center;
     font-size: 20px;
     transition: background 150ms ease;
   }
   .yt-play:hover .yt-icon {
-    background: rgba(255, 180, 84, 0.12);
+    background: rgba(var(--accent-rgb), 0.12);
   }
   .yt-title {
     font-family: var(--font-title);
