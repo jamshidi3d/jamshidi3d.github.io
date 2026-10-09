@@ -525,8 +525,9 @@ a.item:hover h3 {
 }
 
 .card .thumb {
-  aspect-ratio: 2.2 / 1;
-  margin-bottom: 16px;
+  aspect-ratio: 16 / 10;
+  width: 76%;
+  margin-bottom: 12px;
   transition: border-color 150ms ease;
 }
 
@@ -535,12 +536,12 @@ a.card:hover .thumb {
 }
 
 .card .meta {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .card h3 {
-  font-size: 22px;
-  margin-bottom: 8px;
+  font-size: 18px;
+  margin-bottom: 6px;
 }
 
 /* row */
@@ -624,6 +625,9 @@ a.row:hover::before {
   .cards {
     grid-template-columns: 1fr;
     gap: 36px;
+  }
+  .card .thumb {
+    width: 100%;
   }
 }
 
@@ -862,4 +866,8 @@ a.row:hover::before {
   font-size: 15px;
   line-height: 1.55;
   color: var(--text-3);
+}
+
+.card .blurb {
+  font-size: 14px;
 }
