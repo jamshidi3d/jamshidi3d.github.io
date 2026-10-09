@@ -3,7 +3,7 @@
 
 Usage:
   python -m venv venv && venv/Scripts/pip install fonttools brotli   (once)
-  npm i --prefix <dir> @fontsource/oxanium @fontsource-variable/archivo @fontsource/atkinson-hyperlegible-next \
+  npm i --prefix <dir> @fontsource/oxanium @fontsource/sofia-sans-semi-condensed @fontsource/atkinson-hyperlegible-next \
         @fontsource/commit-mono @fontsource/literata
   python scripts/build-fonts.py <dir>/node_modules
 
@@ -34,7 +34,7 @@ FEATURES = ["kern", "liga", "tnum", "ccmp", "locl", "mark", "mkmk"]
 FONTS = [
     # out name, source file, instancer axes (or None), fallback font file, label
     ("oxanium-700", "@fontsource/oxanium/files/oxanium-latin-700-normal.woff2", None, "arialbd.ttf"),
-    ("archivo-600-wdth90", "@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2", {"wght": 600, "wdth": 90}, "arialbd.ttf"),
+    ("sofia-600", "@fontsource/sofia-sans-semi-condensed/files/sofia-sans-semi-condensed-latin-600-normal.woff2", None, "arialbd.ttf"),
     ("atkinson-400", "@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2", None, "arial.ttf"),
     ("atkinson-600", "@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-600-normal.woff2", None, "arialbd.ttf"),
     ("commitmono-400", "@fontsource/commit-mono/files/commit-mono-latin-400-normal.woff2", None, "cour.ttf"),

@@ -14,7 +14,7 @@
   --grey: #5f6b7c;
 
   --font-hero: 'Oxanium', 'Oxanium Fallback', system-ui, sans-serif;
-  --font-title: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  --font-title: 'Sofia Sans Semi Condensed', 'Sofia Sans Fallback', system-ui, sans-serif;
   --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Fallback', system-ui, sans-serif;
   --font-mono: 'Commit Mono', 'Commit Mono Fallback', ui-monospace, monospace;
   --font-read: 'Literata', 'Literata Fallback', Georgia, serif;
@@ -89,7 +89,9 @@ h2,
 h3 {
   font-family: var(--font-title);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.15;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
   margin: 0;
   color: var(--text);
 }
@@ -127,6 +129,7 @@ p {
 
 .label {
   font-family: var(--font-mono);
+  font-weight: 400;
   font-size: 13px;
   color: var(--muted);
 }
@@ -498,7 +501,7 @@ a.item:hover {
 }
 
 .item h3 {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 600;
   transition: color 150ms ease;
 }
@@ -553,7 +556,7 @@ a.card:hover .thumb {
 }
 
 .card h3 {
-  font-size: 19px;
+  font-size: 20px;
   margin-bottom: 6px;
 }
 

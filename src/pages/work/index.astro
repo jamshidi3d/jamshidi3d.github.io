@@ -26,10 +26,10 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
     {
       groups.map((g) => (
         <section class="group" data-group>
-          <span class="label amber">
+          <h2 class="label amber">
             {g.theme}
             <span class="count">{g.items.length}</span>
-          </span>
+          </h2>
           <Listing items={g.items} variant="row" />
         </section>
       ))
@@ -38,10 +38,10 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
     {
       earlier.length > 0 && (
         <section class="group" data-group>
-          <span class="label amber">
+          <h2 class="label amber">
             Earlier work
             <span class="count">{earlier.length}</span>
-          </span>
+          </h2>
           <Listing items={earlier} variant="row" />
         </section>
       )
@@ -49,10 +49,10 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
     {
       models.length > 0 && (
         <section class="group" data-group id="modeling">
-          <span class="label amber">
+          <h2 class="label amber">
             Modeling
             <span class="count">{models.length}</span>
-          </span>
+          </h2>
           <div class="models">
             <Listing items={models} variant="card" />
           </div>

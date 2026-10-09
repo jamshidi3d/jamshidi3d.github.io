@@ -1,6 +1,6 @@
 /*
  * Self-hosted, Latin-subset fonts (all SIL OFL 1.1). Built by scripts/build-fonts.py.
- * Roles: Oxanium = hero headline; Archivo (semi-condensed, 600) = titles;
+ * Roles: Oxanium = hero headline; Sofia Sans Semi Condensed 600 = titles;
  * Atkinson Hyperlegible Next 400/600 = body and UI; Commit Mono 400 = labels and code;
  * Literata 400 / 400 italic / 600 = long reading in posts.
  * Each family has a size-adjusted local fallback so the swap does not shift the layout.
@@ -13,11 +13,10 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Archivo';
-  src: url('/fonts/archivo-600-wdth90.woff2') format('woff2');
+  font-family: 'Sofia Sans Semi Condensed';
+  src: url('/fonts/sofia-600.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-stretch: 90%;
   font-display: swap;
 }
 @font-face {
@@ -74,12 +73,12 @@
   line-gap-override: 25.23%;
 }
 @font-face {
-  font-family: 'Archivo Fallback';
+  font-family: 'Sofia Sans Fallback';
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
   font-weight: 600;
-  size-adjust: 86.66%;
-  ascent-override: 101.31%;
-  descent-override: 24.23%;
+  size-adjust: 85.6%;
+  ascent-override: 105.14%;
+  descent-override: 35.05%;
   line-gap-override: 0%;
 }
 @font-face {
