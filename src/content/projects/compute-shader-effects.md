@@ -6,7 +6,7 @@ blurb: "Shrink-wrapping, heat flow and burning on the GPU, for a VR cable termin
 tags: [physics, tech-art]
 tools: [C#, Unity, Blender]
 visibility: video
-image: /media/img/compute_shader_effects.png
+image: /media/img/compute_shader_effects.webp
 video: /media/video/compute_shader_effects.mp4
 home: 7
 summary: "A collection of shrink-wrapping, heat-flow and burning features on the GPU. They were needed to simulate the real effect of a flame on a cable in a VR cable-termination training project."

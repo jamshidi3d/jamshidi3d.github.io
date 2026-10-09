@@ -15,3 +15,7 @@ npm run build     # type-check + static build into dist/
 - Old Jekyll URLs redirect via `redirects` in `astro.config.mjs`.
 
 See `BUILD_BRIEF.md` for the design brief and `TODO.md` for what the owner still has to supply.
+
+## Fonts
+
+Self-hosted Latin subsets in `public/fonts` (all SIL OFL 1.1): Oxanium (hero headline), Archivo semi-condensed 600 (titles), Atkinson Hyperlegible Next 400/600 (body and UI), Commit Mono 400 (labels, code), Literata 400/400 italic/600 (post bodies). Rebuild with `scripts/build-fonts.py` (see its header). `@font-face` rules and size-adjusted fallbacks live in `src/styles/fonts.css`.

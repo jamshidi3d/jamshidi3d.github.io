@@ -6,7 +6,7 @@ blurb: "Exportable squash and stretch bone chains for game engines."
 tags: [tools, animation]
 tools: [3ds Max, Maya, Unity]
 visibility: video
-image: /media/img/squash_stretch.png
+image: /media/img/squash_stretch.webp
 video: /media/video/squash_stretch.mp4
 earlier: true
 links:

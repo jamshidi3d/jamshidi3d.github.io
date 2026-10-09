@@ -8,6 +8,8 @@ interface Props {
 
 const { items, variant = 'row' } = Astro.props;
 
+// Sentence-case labels in the mono font: "Work · Nov 2024".
+const kindLabel = (k: string) => k.charAt(0) + k.slice(1).toLowerCase();
 const dateText = (it: ListItem) => (it.dateLabel !== undefined ? it.dateLabel : fmtDate(it.date));
 const tagAttr = (it: ListItem) => it.tags.join(' ');
 ---
@@ -25,11 +27,11 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
           >
             <div class="thumb" data-hover-preview={it.preview ? '' : undefined}>
-              {it.image ? <img src={it.image} alt="" loading="lazy" width="900" height="650" /> : <span class="ph">NO IMAGE YET</span>}
+              {it.image ? <img src={it.image} alt="" loading="lazy" width="900" height="650" /> : <span class="ph">No image yet</span>}
               {it.preview && <img class="prev" data-src={it.preview} alt="" aria-hidden="true" width="320" height="200" />}
             </div>
             <div class="meta">
-              <span class="kind">{it.kind}</span>
+              <span class="kind">{kindLabel(it.kind)}</span>
               {it.byline && <> · <span>{it.byline}</span></>}{dateText(it) && <> · {dateText(it)}</>}
             </div>
             <h3>{it.title}{(it.external || it.byline) && ' ↗'}</h3>
@@ -64,7 +66,7 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
               {it.blurb && <p class="blurb">{it.blurb}</p>}
             </div>
             <div class="meta">
-              <span><span class="kind">{it.kind}</span>{it.byline && <> · {it.byline}</>}</span>
+              <span><span class="kind">{kindLabel(it.kind)}</span>{it.byline && <> · {it.byline}</>}</span>
               <span>{dateText(it)}</span>
             </div>
           </Tag>
@@ -87,7 +89,7 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
           >
             <span class="meta">{dateText(it)}</span>
-            <span class="meta"><span class="kind">{it.kind}</span>{it.byline && <><br />{it.byline}</>}</span>
+            <span class="meta"><span class="kind">{kindLabel(it.kind)}</span>{it.byline && <><br />{it.byline}</>}</span>
             <div>
               <h3>{it.title}{(it.external || it.byline) && ' ↗'}</h3>
               {it.blurb && <p class="blurb">{it.blurb}</p>}

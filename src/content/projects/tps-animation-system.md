@@ -7,7 +7,7 @@ tags: [animation, tech-art]
 tools: [Unreal 5.3, Blender]
 visibility: video
 public: false
-image: /media/img/cc_animsys.png
+image: /media/img/cc_animsys.webp
 video: /media/video/cc_new_animation_system.mp4
 home: 4
 summary: "A new animation system for the characters of an online third-person shooter built in Unreal Engine 5.3. It keeps movement smooth under short or rapid inputs, and many of the movements are procedural."

@@ -1,0 +1,141 @@
+/*
+ * Self-hosted, Latin-subset fonts (all SIL OFL 1.1). Built by scripts/build-fonts.py.
+ * Roles: Oxanium = hero headline; Archivo (semi-condensed, 600) = titles;
+ * Atkinson Hyperlegible Next 400/600 = body and UI; Commit Mono 400 = labels and code;
+ * Literata 400 / 400 italic / 600 = long reading in posts.
+ * Each family has a size-adjusted local fallback so the swap does not shift the layout.
+ */
+@font-face {
+  font-family: 'Oxanium';
+  src: url('/fonts/oxanium-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-600-wdth90.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: 90%;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url('/fonts/atkinson-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url('/fonts/atkinson-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/commitmono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Literata';
+  src: url('/fonts/literata-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Literata';
+  src: url('/fonts/literata-400i.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Literata';
+  src: url('/fonts/literata-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Size-adjusted fallbacks (metrics computed in scripts/build-fonts.py against Arial / Courier New / Georgia). */
+@font-face {
+  font-family: 'Oxanium Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  font-weight: 700;
+  size-adjust: 99.09%;
+  ascent-override: 79.73%;
+  descent-override: 21.19%;
+  line-gap-override: 25.23%;
+}
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  font-weight: 600;
+  size-adjust: 86.66%;
+  ascent-override: 101.31%;
+  descent-override: 24.23%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Atkinson Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica');
+  font-weight: 400;
+  size-adjust: 100.1%;
+  ascent-override: 98.3%;
+  descent-override: 31.57%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Atkinson Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Bold');
+  font-weight: 600;
+  size-adjust: 96.93%;
+  ascent-override: 101.52%;
+  descent-override: 32.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Commit Mono Fallback';
+  src: local('Courier New'), local('CourierNewPSMT'), local('Liberation Mono'), local('Menlo');
+  font-weight: 400;
+  size-adjust: 99.98%;
+  ascent-override: 90.01%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Literata Fallback';
+  src: local('Georgia'), local('Georgia-Regular');
+  font-weight: 400;
+  font-style: normal;
+  size-adjust: 108.34%;
+  ascent-override: 108.64%;
+  descent-override: 28.43%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Literata Fallback';
+  src: local('Georgia Italic'), local('Georgia-Italic');
+  font-weight: 400;
+  font-style: italic;
+  size-adjust: 99.47%;
+  ascent-override: 118.32%;
+  descent-override: 30.96%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Literata Fallback';
+  src: local('Georgia Bold'), local('Georgia-Bold');
+  font-weight: 600;
+  font-style: normal;
+  size-adjust: 96.8%;
+  ascent-override: 121.59%;
+  descent-override: 31.82%;
+  line-gap-override: 0%;
+}

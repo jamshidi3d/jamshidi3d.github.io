@@ -13,10 +13,11 @@
   --blue: #3c6fe0;
   --grey: #5f6b7c;
 
-  --font-head: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
-  --font-serif: 'Source Serif 4 Variable', 'Source Serif 4', Georgia, serif;
+  --font-hero: 'Oxanium', 'Oxanium Fallback', system-ui, sans-serif;
+  --font-title: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Fallback', system-ui, sans-serif;
+  --font-mono: 'Commit Mono', 'Commit Mono Fallback', ui-monospace, monospace;
+  --font-read: 'Literata', 'Literata Fallback', Georgia, serif;
 
   --pad: 56px;
   --header-h: 72px;
@@ -38,6 +39,7 @@
 
 html {
   background: var(--bg);
+  font-synthesis: none; /* never fake bold or italic: only real faces render */
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 24px);
 }
@@ -85,8 +87,8 @@ a:hover {
 h1,
 h2,
 h3 {
-  font-family: var(--font-head);
-  font-weight: 500;
+  font-family: var(--font-title);
+  font-weight: 600;
   line-height: 1.12;
   margin: 0;
   color: var(--text);
@@ -125,15 +127,27 @@ p {
 
 .label {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 13px;
   color: var(--muted);
 }
 
 .label.amber,
 .amber {
-  color: var(--amber);
+  color: var(--text-3); /* amber is kept for links, focus rings and the card kind accent */
+}
+
+/* tabular figures for dates, results, tables, cards and fact sidebars */
+.item,
+.p-side,
+.tbl,
+.year,
+.count,
+.what,
+.block,
+.abstract,
+.model-meta,
+time {
+  font-variant-numeric: tabular-nums;
 }
 
 .sr-only {
@@ -188,8 +202,8 @@ p {
 }
 
 .brand-name {
-  font-family: var(--font-head);
-  font-weight: 500;
+  font-family: var(--font-title);
+  font-weight: 600;
   font-size: 17px;
 }
 
@@ -197,7 +211,6 @@ p {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
-  letter-spacing: 0.3px;
 }
 
 .nav {
@@ -296,14 +309,14 @@ p {
 
 .menu-item .num {
   font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--amber);
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .menu-item .title {
-  font-family: var(--font-head);
+  font-family: var(--font-title);
   font-size: 28px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .menu-item .desc {
@@ -324,8 +337,6 @@ p {
   gap: 12px 26px;
   font-family: var(--font-mono);
   font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 @media (max-width: 900px) {
@@ -374,7 +385,7 @@ body.menu-open {
 }
 
 .page-head h1 {
-  font-weight: 700;
+  font-weight: 600;
   font-size: clamp(40px, 6vw, 64px);
   letter-spacing: -0.01em;
 }
@@ -475,7 +486,6 @@ body.menu-open {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--grey);
-  letter-spacing: 1px;
 }
 
 .item {
@@ -489,7 +499,7 @@ a.item:hover {
 
 .item h3 {
   font-size: 19px;
-  font-weight: 500;
+  font-weight: 600;
   transition: color 150ms ease;
 }
 
@@ -501,9 +511,7 @@ a.item:hover {
 
 .item .meta {
   font-family: var(--font-mono);
-  font-size: 11.5px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 12.5px;
   color: var(--muted);
   white-space: nowrap;
 }
@@ -545,7 +553,7 @@ a.card:hover .thumb {
 }
 
 .card h3 {
-  font-size: 18px;
+  font-size: 19px;
   margin-bottom: 6px;
 }
 
@@ -621,7 +629,6 @@ a.row:hover::before {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--muted);
-  letter-spacing: 1px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--rule);
 }
@@ -687,10 +694,11 @@ a.row:hover::before {
 }
 
 .hero h1 {
+  font-family: var(--font-hero);
   font-weight: 700;
-  font-size: clamp(40px, min(6.2vw, 9vh), 84px);
+  font-size: clamp(38px, min(6vw, 9vh), 80px);
   line-height: 1.02;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   margin-bottom: clamp(12px, 2.5vh, 28px);
   text-wrap: balance;
 }
@@ -705,8 +713,6 @@ a.row:hover::before {
 .hero .quiet {
   font-family: var(--font-mono);
   font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
   display: flex;
   gap: 24px;
   margin-top: 28px;
@@ -754,8 +760,6 @@ a.row:hover::before {
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
   cursor: pointer;
   padding: 9px 16px;
 }
@@ -796,7 +800,7 @@ a.row:hover::before {
 }
 
 .prose p {
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: 19px;
   line-height: 1.72;
   color: var(--text-2);
@@ -816,7 +820,7 @@ a.row:hover::before {
 }
 
 .prose li::marker {
-  color: var(--amber);
+  color: var(--muted);
 }
 
 .tbl {
@@ -837,8 +841,6 @@ a.row:hover::before {
   font-family: var(--font-mono);
   font-weight: 400;
   font-size: 12px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
   color: var(--muted);
 }
 
@@ -878,4 +880,13 @@ a.row:hover::before {
 
 .card .blurb {
   font-size: 14px;
+}
+
+/* links inside running text are underlined (not distinguished by colour alone) */
+.prose p a,
+.licence a,
+.empty a,
+.page-head .lede a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

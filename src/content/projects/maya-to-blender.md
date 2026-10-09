@@ -6,7 +6,7 @@ blurb: "Moves animation and hair between the two packages."
 tags: [tools]
 tools: [Python, Maya, Blender]
 visibility: video
-image: /media/img/maya2blender.png
+image: /media/img/maya2blender.webp
 video: /media/video/maya2blender.mp4
 earlier: true
 summary: "A set of scripts that exports a custom animation, both model and hair, from Maya and imports it into Blender."

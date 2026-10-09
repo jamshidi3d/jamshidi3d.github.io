@@ -6,7 +6,7 @@ blurb: "From-scratch simulations for an educational game of interactive experime
 tags: [physics]
 tools: [C#, Unity, 3ds Max, Blender]
 visibility: video
-image: /media/img/physics_simulations.png
+image: /media/img/physics_simulations.webp
 video: /media/video/physics_simulations.mp4
 home: 9
 summary: "A wide range of simulations written from scratch, from planetary motion and relativistic phenomena to small mechanical systems. They led to FeelPhysics, an educational game made of fully interactive experiments."

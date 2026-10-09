@@ -7,7 +7,7 @@ blurb: "Collisions, constraints and physical posing for any custom rig, on PhysX
 tags: [physics, animation, tools]
 tools: [Python, C++, Blender]
 visibility: video
-image: /media/img/physirig.png
+image: /media/img/physirig.webp
 video: /media/video/physirig.mp4
 home: 2
 summary: "Physirig is a physics-based rigging system built on Nvidia PhysX. It works with any custom rig and adds collision detection, physical constraints and physics-based posing to it."

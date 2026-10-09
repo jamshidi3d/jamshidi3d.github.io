@@ -1,8 +1,5 @@
 ---
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource-variable/instrument-sans';
-import '@fontsource-variable/jetbrains-mono';
-import '@fontsource-variable/source-serif-4';
+import '../styles/fonts.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { SITE, LINKS } from '../data/site';
@@ -13,9 +10,10 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   canonical?: string;
+  heroFont?: boolean; // preload the hero headline font (Home only)
 }
 
-const { title, description = SITE.description, image = '/media/img/khosrobot.png', type = 'website', canonical: canonicalPath } = Astro.props;
+const { title, description = SITE.description, image = '/media/img/og-default.jpg', type = 'website', canonical: canonicalPath, heroFont = false } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · physics, graphics, tools`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
 const ogImage = new URL(image, SITE.url).href;
@@ -37,6 +35,8 @@ const person = {
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0d1117" />
     <meta name="robots" content="noai, noimageai" />
+    {heroFont && <link rel="preload" href="/fonts/oxanium-700.woff2" as="font" type="font/woff2" crossorigin />}
+    <link rel="preload" href="/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
