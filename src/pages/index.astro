@@ -3,12 +3,17 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Listing from '../components/Listing.astro';
 import TagFilter from '../components/TagFilter.astro';
-import { allItems } from '../lib/items';
+import { allItems, getModels, modelItem } from '../lib/items';
 import { SITE, LINKS } from '../data/site';
 
 const featured = (await allItems())
   .filter((i) => i.home !== undefined)
   .sort((a, b) => a.home! - b.home!);
+const everything = [...(await allItems()), ...(await getModels()).map(modelItem)];
+// With a tag filter on, every matching item is shown (not only the featured ones): featured first, then newest.
+const filterPool = everything.sort(
+  (a, b) => (a.home ?? 999) - (b.home ?? 999) || b.date.getTime() - a.date.getTime(),
+);
 const cards = featured.slice(0, 3);
 const rows = featured.slice(3);
 ---
@@ -41,7 +46,7 @@ const rows = featured.slice(3);
       </div>
       <!-- With a tag filter active, every matching item is shown as a card. -->
       <div data-view="filtered" hidden>
-        <Listing items={featured} variant="card" />
+        <Listing items={filterPool} variant="card" />
       </div>
     </section>
   </div>
