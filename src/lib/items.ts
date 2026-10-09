@@ -1,7 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { publications } from '../data/research';
 
-export type Kind = 'WORK' | 'WRITING' | 'RESEARCH';
+export type Kind = 'WORK' | 'WRITING' | 'RESEARCH' | 'MODELING';
 
 export interface ListItem {
   kind: Kind;
@@ -58,6 +58,28 @@ export function projectItem(p: CollectionEntry<'projects'>): ListItem {
     theme: d.theme,
     earlier: d.earlier,
     slug: p.id,
+  };
+}
+
+export async function getModels(): Promise<CollectionEntry<'models'>[]> {
+  const all = await getCollection('models', (m) => !m.data.draft);
+  return all.sort((a, b) => a.data.title.localeCompare(b.data.title));
+}
+
+// Models have no date; they sort by title and show only "MODELING" in the card label.
+export function modelItem(m: CollectionEntry<'models'>): ListItem {
+  const d = m.data;
+  return {
+    kind: 'MODELING',
+    date: new Date(0),
+    dateLabel: '',
+    title: d.title,
+    blurb: d.blurb,
+    tags: d.tags,
+    tools: d.tools,
+    href: `/models/${m.id}/`,
+    image: d.image,
+    slug: m.id,
   };
 }
 

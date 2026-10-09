@@ -80,7 +80,7 @@ const models = defineCollection({
     tools: z.array(z.string()).default([]),
     triangles: z.string().optional(),
     image: z.string().optional(), // local copy of the Sketchfab thumbnail
-    sketchfab: z.object({ id: z.string(), slug: z.string(), author: z.string(), authorUrl: z.string() }),
+    sketchfab: z.object({ id: z.string(), slug: z.string() }),
     audio: z.object({ src: z.string(), credit: z.string(), creditUrl: z.string().optional() }).optional(),
     draft: z.boolean().default(false),
   }),
