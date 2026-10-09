@@ -21,6 +21,7 @@ export const publications: ResearchEntry[] = [
     doi: '10.3847/1538-4357/ad68ff',
     href: 'https://doi.org/10.3847/1538-4357/ad68ff',
     tags: ['physics'],
+    home: 5,
     blurb:
       'MohammadHossein Jamshidi, Abdolali Banihashemi, Nima Khosravi. The Astrophysical Journal 972(1), 77.',
     abstract:

@@ -523,9 +523,15 @@ a.item:hover h3 {
   gap: 32px;
 }
 
+.card .thumb,
+.card .meta,
+.card h3,
+.card .blurb {
+  width: 76%; /* text stays inside the thumbnail width */
+}
+
 .card .thumb {
   aspect-ratio: 16 / 10;
-  width: 76%;
   margin-bottom: 12px;
   transition: border-color 150ms ease;
 }
@@ -625,7 +631,10 @@ a.row:hover::before {
     grid-template-columns: 1fr;
     gap: 36px;
   }
-  .card .thumb {
+  .card .thumb,
+  .card .meta,
+  .card h3,
+  .card .blurb {
     width: 100%;
   }
 }

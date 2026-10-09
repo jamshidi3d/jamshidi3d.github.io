@@ -88,6 +88,7 @@ export async function allItems(): Promise<ListItem[]> {
     blurb: r.blurb ?? '',
     tags: r.tags,
     href: r.href,
+    external: !!r.href && /^https?:/.test(r.href),
     home: r.home,
   }));
   return [...projects.map(projectItem), ...posts.map(postItem), ...research];
