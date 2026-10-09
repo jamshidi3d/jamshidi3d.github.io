@@ -7,6 +7,5 @@ blurb: "Blender's user story on how Geometry Nodes is used to compute, visualize
 roles: [physics, tech-art]
 external: https://www.blender.org/user-stories/cosmology-with-geometry-nodes/
 image: /media/writing/cmb-in-geometry-nodes/temp_sphere.png
-hideInWriting: true
 home: 1
 ---
