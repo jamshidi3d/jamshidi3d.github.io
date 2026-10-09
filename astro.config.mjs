@@ -17,9 +17,8 @@ export default defineConfig({
   // Old Jekyll URLs keep working.
   redirects: {
     '/posts/cmb_in_geometry_nodes/': '/writing/cmb-in-geometry-nodes/',
-    '/portfolio/': '/work/',
     '/tabs/about/': '/about/',
-    '/tabs/portfolio/': '/work/',
+    '/tabs/portfolio/': '/portfolio/',
     '/tabs/categories/': '/writing/',
     '/tabs/tags/': '/writing/',
     '/categories/': '/writing/',

@@ -12,12 +12,12 @@ interface Props {
   description?: string;
   image?: string;
   type?: 'website' | 'article';
-  path?: string;
+  canonical?: string;
 }
 
-const { title, description = SITE.description, image = '/media/img/khosrobot.png', type = 'website' } = Astro.props;
+const { title, description = SITE.description, image = '/media/img/khosrobot.png', type = 'website', canonical: canonicalPath } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · physics, graphics, tools`;
-const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
 const ogImage = new URL(image, SITE.url).href;
 const person = {
   '@context': 'https://schema.org',
