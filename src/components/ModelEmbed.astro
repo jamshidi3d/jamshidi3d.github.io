@@ -1,33 +1,32 @@
 ---
-// Click-to-load Sketchfab viewer. Nothing is requested from Sketchfab until the visitor clicks;
-// the optional soundtrack starts at the same click and can be muted.
+// Click-to-load Sketchfab viewer. The thumbnail is a local copy, so nothing is requested from
+// Sketchfab until the visitor clicks. The soundtrack (played once) starts when the model is ready.
 interface Props {
   title: string;
   id: string;
   slug: string;
   author: string;
   authorUrl: string;
+  image?: string;
   audio?: { src: string; credit: string; creditUrl?: string };
 }
 
-const { title, id, slug, author, authorUrl, audio } = Astro.props;
+const { title, id, slug, author, authorUrl, image, audio } = Astro.props;
 const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
 ---
 
 <figure class="model">
   <div class="model-box" data-model={id} data-title={title} data-audio={audio?.src}>
+    {image && <img class="model-thumb" src={image} alt="" loading="lazy" width="720" height="405" />}
     <button class="model-play" type="button" aria-label={`Load 3D model: ${title}`}>
       <span class="model-icon" aria-hidden="true">▶</span>
       <span class="model-title">{title}</span>
-      <span class="label">Click to load 3D from Sketchfab{audio ? ' · plays sound' : ''}</span>
+      <span class="model-hint label">Click to load 3D from Sketchfab{audio ? ' · plays sound' : ''}</span>
     </button>
-    {
-      audio && (
-        <button class="model-sound" type="button" aria-pressed="true" hidden>
-          Sound on
-        </button>
-      )
-    }
+    <div class="model-controls" hidden>
+      {audio && <button class="model-btn model-sound" type="button" aria-pressed="true">Sound on</button>}
+      <button class="model-btn model-full" type="button">Full screen</button>
+    </div>
   </div>
   <figcaption class="model-meta">
     <a href={page} rel="noopener" target="_blank">View on Sketchfab ↗</a>
@@ -50,6 +49,18 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     border-radius: 10px;
     overflow: hidden;
   }
+  .model-box:fullscreen {
+    border: 0;
+    border-radius: 0;
+    aspect-ratio: auto;
+  }
+  .model-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .model-box iframe {
     position: absolute;
     inset: 0;
@@ -67,35 +78,47 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     justify-content: center;
     gap: 10px;
     padding: 20px;
-    background: none;
+    background: rgba(13, 17, 23, 0.35);
     border: 0;
     color: var(--text);
     cursor: pointer;
     text-align: center;
+    transition: background 150ms ease;
+  }
+  .model-play:hover {
+    background: rgba(13, 17, 23, 0.15);
   }
   .model-icon {
     width: 64px;
     height: 64px;
     border-radius: 50%;
     border: 1px solid var(--amber);
+    background: rgba(13, 17, 23, 0.75);
     color: var(--amber);
     display: grid;
     place-items: center;
     font-size: 20px;
-    transition: background 150ms ease;
-  }
-  .model-play:hover .model-icon {
-    background: rgba(255, 180, 84, 0.12);
   }
   .model-title {
     font-family: var(--font-head);
     font-size: 22px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   }
-  .model-sound {
+  .model-hint {
+    color: var(--text);
+    background: rgba(13, 17, 23, 0.7);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .model-controls {
     position: absolute;
     right: 12px;
     bottom: 12px;
     z-index: 2;
+    display: flex;
+    gap: 8px;
+  }
+  .model-btn {
     background: rgba(13, 17, 23, 0.8);
     border: 1px solid var(--rule);
     border-radius: 4px;
@@ -107,7 +130,7 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
     padding: 7px 12px;
     cursor: pointer;
   }
-  .model-sound:hover {
+  .model-btn:hover {
     color: var(--amber);
     border-color: var(--amber);
   }
@@ -120,42 +143,130 @@ const page = `https://sketchfab.com/3d-models/${slug}-${id}`;
 </style>
 
 <script>
+  const API = 'https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js';
   let current: HTMLAudioElement | null = null;
 
+  function loadApi(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).Sketchfab) return resolve();
+      const s = document.createElement('script');
+      s.src = API;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Sketchfab API failed to load'));
+      document.head.append(s);
+    });
+  }
+
   document.querySelectorAll<HTMLElement>('.model-box[data-model]').forEach((box) => {
-    const play = box.querySelector<HTMLButtonElement>('.model-play');
+    const play = box.querySelector<HTMLButtonElement>('.model-play')!;
+    const controls = box.querySelector<HTMLElement>('.model-controls')!;
     const soundBtn = box.querySelector<HTMLButtonElement>('.model-sound');
+    const fullBtn = box.querySelector<HTMLButtonElement>('.model-full')!;
+    const id = box.dataset.model!;
+    let started = false;
 
-    play?.addEventListener('click', () => {
-      const f = document.createElement('iframe');
-      f.src = `https://sketchfab.com/models/${box.dataset.model}/embed?autostart=1&ui_infos=0&ui_watermark=0&dnt=1`;
-      f.title = box.dataset.title ?? '3D model';
-      f.allow = 'autoplay; fullscreen; xr-spatial-tracking';
-      f.allowFullscreen = true;
-      play.replaceWith(f);
+    // Fullscreen button (works with the vendor-prefixed API on older Safari).
+    const fsEl = () => document.fullscreenElement ?? (document as any).webkitFullscreenElement;
+    fullBtn.addEventListener('click', () => {
+      if (fsEl() === box) (document.exitFullscreen ?? (document as any).webkitExitFullscreen).call(document);
+      else (box.requestFullscreen ?? (box as any).webkitRequestFullscreen)?.call(box);
+    });
+    document.addEventListener('fullscreenchange', () => {
+      fullBtn.textContent = fsEl() === box ? 'Exit full screen' : 'Full screen';
+    });
 
-      if (box.dataset.audio && soundBtn) {
-        current?.pause();
-        const audio = new Audio(box.dataset.audio);
-        audio.loop = true;
-        current = audio;
-        soundBtn.hidden = false;
-        audio.play().catch(() => {
-          soundBtn.setAttribute('aria-pressed', 'false');
-          soundBtn.textContent = 'Sound off';
+    // Audio is created inside the click so the browser allows it, unlocked there,
+    // and actually played once the model is ready.
+    let audio: HTMLAudioElement | null = null;
+    if (box.dataset.audio && soundBtn) {
+      audio = new Audio(box.dataset.audio);
+      audio.loop = false; // plays once
+      audio.preload = 'auto';
+      soundBtn.addEventListener('click', () => {
+        if (!audio) return;
+        if (audio.paused) {
+          if (audio.ended) audio.currentTime = 0;
+          audio.play().catch(() => {});
+        } else audio.pause();
+      });
+      audio.addEventListener('play', () => {
+        soundBtn.setAttribute('aria-pressed', 'true');
+        soundBtn.textContent = 'Sound on';
+      });
+      const off = () => {
+        soundBtn.setAttribute('aria-pressed', 'false');
+        soundBtn.textContent = 'Sound off';
+      };
+      audio.addEventListener('pause', off);
+      audio.addEventListener('ended', off);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) audio?.pause();
+      });
+    }
+
+    const startSound = () => {
+      if (!audio) return;
+      current?.pause();
+      current = audio;
+      audio.currentTime = 0;
+      audio.play().catch(() => {
+        soundBtn!.setAttribute('aria-pressed', 'false');
+        soundBtn!.textContent = 'Sound off';
+      });
+    };
+
+    // The model is ready: only now does the sound start.
+    const ready = () => {
+      if (soundBtn) soundBtn.hidden = false;
+      startSound();
+    };
+
+    play.addEventListener('click', async () => {
+      if (started) return;
+      started = true;
+      // Show the viewer right away so its loading screen is visible; the sound button waits for the model.
+      box.querySelector('.model-thumb')?.remove();
+      play.remove();
+      controls.hidden = false;
+      if (soundBtn) soundBtn.hidden = true;
+
+      // Unlock audio inside the user gesture (needed on Safari), then pause until the model is ready.
+      if (audio) {
+        audio.muted = true;
+        audio.play().then(() => { audio!.pause(); audio!.muted = false; audio!.currentTime = 0; }).catch(() => { audio!.muted = false; });
+      }
+
+      const iframe = document.createElement('iframe');
+      iframe.title = box.dataset.title ?? '3D model';
+      iframe.allow = 'autoplay; fullscreen; xr-spatial-tracking';
+      iframe.allowFullscreen = true;
+      box.prepend(iframe);
+
+      try {
+        await loadApi();
+        const client = new (window as any).Sketchfab(iframe);
+        client.init(id, {
+          ui_infos: 0,
+          ui_watermark: 0,
+          dnt: 1,
+          success: (api: any) => {
+            api.start();
+            api.addEventListener('viewerready', () => {
+              ready();
+            });
+          },
+          error: () => fallback(),
         });
-        soundBtn.addEventListener('click', () => {
-          const on = audio.paused;
-          if (on) audio.play().catch(() => {});
-          else audio.pause();
-          soundBtn.setAttribute('aria-pressed', String(on));
-          soundBtn.textContent = on ? 'Sound on' : 'Sound off';
-        });
-        // keep the music from playing in a hidden tab
-        document.addEventListener('visibilitychange', () => {
-          if (document.hidden) audio.pause();
-          else if (soundBtn.getAttribute('aria-pressed') === 'true') audio.play().catch(() => {});
-        });
+      } catch {
+        fallback();
+      }
+
+      // Without the viewer API, show the plain embed and start the sound when it has loaded.
+      function fallback() {
+        iframe.src = `https://sketchfab.com/models/${id}/embed?autostart=1&ui_infos=0&ui_watermark=0&dnt=1`;
+        iframe.addEventListener('load', () => {
+          ready();
+        }, { once: true });
       }
     });
   });

@@ -52,17 +52,18 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
     }
     {
       models.length > 0 && (
-        <section class="group" data-group id="models">
+        <section class="group" data-group id="modeling">
           <span class="label amber">
-            Models
+            Modeling
             <span class="count">{models.length}</span>
           </span>
           <div class="models">
             {models.map((m) => (
               <div class="item model-item" data-tags={m.data.tags.join(' ')}>
-                <ModelEmbed title={m.data.title} {...m.data.sketchfab} audio={m.data.audio} />
+                <ModelEmbed title={m.data.title} {...m.data.sketchfab} image={m.data.image} audio={m.data.audio} />
                 <h3>{m.data.title}</h3>
                 <p class="blurb">{m.data.blurb}</p>
+                <p class="mono tools">{m.data.tags.map((t) => `#${t}`).join(' ')}</p>
                 {m.data.tools.length > 0 && (
                   <p class="mono tools">
                     {m.data.tools.join(' · ')}
