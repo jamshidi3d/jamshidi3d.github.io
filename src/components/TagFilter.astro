@@ -27,6 +27,13 @@ const { scope = 'main' } = Astro.props;
           const has = !tag || (el.dataset.tags ?? '').split(' ').includes(tag);
           el.hidden = !has;
         });
+        // Pages with [data-view]: all items as cards while a filter is active, the normal layout otherwise.
+        const allView = scope.querySelector<HTMLElement>('[data-view="all"]');
+        const filteredView = scope.querySelector<HTMLElement>('[data-view="filtered"]');
+        if (allView && filteredView) {
+          allView.hidden = !!tag;
+          filteredView.hidden = !tag;
+        }
         // hide groups that end up empty
         scope.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => {
           g.hidden = ![...g.querySelectorAll<HTMLElement>('[data-tags]')].some((el) => !el.hidden);

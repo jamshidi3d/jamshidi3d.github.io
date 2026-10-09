@@ -35,8 +35,14 @@ const rows = featured.slice(3);
         <h2 class="label amber" id="featured-h" style="font-weight:400">Featured and latest</h2>
         <TagFilter scope="#featured" />
       </div>
-      <Listing items={cards} variant="card" />
-      <Listing items={rows} variant="row" />
+      <div data-view="all">
+        <Listing items={cards} variant="card" />
+        <Listing items={rows} variant="row" />
+      </div>
+      <!-- With a tag filter active, every matching item is shown as a card. -->
+      <div data-view="filtered" hidden>
+        <Listing items={featured} variant="card" />
+      </div>
     </section>
   </div>
 </Base>
