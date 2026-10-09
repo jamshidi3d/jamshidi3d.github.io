@@ -450,8 +450,7 @@ body.menu-open {
   overflow: hidden;
 }
 
-.thumb img,
-.thumb video {
+.thumb img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -459,12 +458,12 @@ body.menu-open {
   object-fit: cover;
 }
 
-.thumb video {
+.thumb img.prev {
   opacity: 0;
   transition: opacity 150ms ease;
 }
 
-.thumb video.on {
+.thumb img.prev.on {
   opacity: 1;
 }
 

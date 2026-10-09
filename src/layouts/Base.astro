@@ -74,22 +74,19 @@ const person = {
     </footer>
 
     <script>
-      // Short muted loops play on hover only (never with reduced motion).
+      // Hover previews: a small premade GIF is fetched on first hover and shown over the still.
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduce) {
-        document.querySelectorAll<HTMLElement>('[data-hover-video]').forEach((el) => {
-          const v = el.querySelector('video');
-          if (!v) return;
+        document.querySelectorAll<HTMLElement>('[data-hover-preview]').forEach((el) => {
+          const img = el.querySelector<HTMLImageElement>('img.prev');
+          if (!img) return;
           const host = el.closest('a, .item') ?? el;
           host.addEventListener('pointerenter', (e) => {
             if ((e as PointerEvent).pointerType !== 'mouse') return;
-            if (!v.src) v.src = v.dataset.src ?? '';
-            v.play().then(() => v.classList.add('on')).catch(() => {});
+            if (!img.src) img.src = img.dataset.src ?? '';
+            img.classList.add('on');
           });
-          host.addEventListener('pointerleave', () => {
-            v.pause();
-            v.classList.remove('on');
-          });
+          host.addEventListener('pointerleave', () => img.classList.remove('on'));
         });
       }
     </script>

@@ -17,6 +17,7 @@ export interface ListItem {
   hideInWriting?: boolean;
   image?: string;
   video?: string;
+  preview?: string;
   home?: number;
   theme?: string;
   earlier?: boolean;
@@ -52,6 +53,7 @@ export function projectItem(p: CollectionEntry<'projects'>): ListItem {
     href: `/work/${p.id}/`,
     image: d.image,
     video: d.video,
+    preview: d.video ? `/media/preview/${d.video.split('/').pop()!.replace(/.mp4$/, '')}.gif` : undefined,
     home: d.home,
     theme: d.theme,
     earlier: d.earlier,

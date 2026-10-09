@@ -24,9 +24,9 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             href={it.href}
             {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
           >
-            <div class="thumb" data-hover-video={it.video ? '' : undefined}>
+            <div class="thumb" data-hover-preview={it.preview ? '' : undefined}>
               {it.image ? <img src={it.image} alt="" loading="lazy" width="900" height="650" /> : <span class="ph">NO IMAGE YET</span>}
-              {it.video && <video muted loop playsinline preload="none" data-src={it.video} aria-hidden="true" />}
+              {it.preview && <img class="prev" data-src={it.preview} alt="" aria-hidden="true" width="320" height="200" />}
             </div>
             <div class="meta">
               <span class="kind">{it.kind}</span>
@@ -54,9 +54,9 @@ const tagAttr = (it: ListItem) => it.tags.join(' ');
             {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
           >
             {it.image && (
-              <div class="thumb" data-hover-video={it.video ? '' : undefined}>
+              <div class="thumb" data-hover-preview={it.preview ? '' : undefined}>
                 <img src={it.image} alt="" loading="lazy" width="132" height="76" />
-                {it.video && <video muted loop playsinline preload="none" data-src={it.video} aria-hidden="true" />}
+                {it.preview && <img class="prev" data-src={it.preview} alt="" aria-hidden="true" width="320" height="200" />}
               </div>
             )}
             <div class="body">
