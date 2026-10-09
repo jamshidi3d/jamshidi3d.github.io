@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import { LINKS } from '../data/site';
+
+const links = [
+  { label: 'Email', href: `mailto:${LINKS.email}`, text: LINKS.email },
+  { label: 'GitHub', href: LINKS.github, text: 'github.com/Jamshidi3d' },
+  LINKS.linkedin && { label: 'LinkedIn', href: LINKS.linkedin, text: 'LinkedIn' },
+  LINKS.scholar && { label: 'Scholar', href: LINKS.scholar, text: 'Google Scholar' },
+  LINKS.orcid && { label: 'ORCID', href: LINKS.orcid, text: 'ORCID' },
+  LINKS.inspire && { label: 'INSPIRE', href: LINKS.inspire, text: 'INSPIRE' },
+].filter(Boolean) as { label: string; href: string; text: string }[];
+
+const credits = [
+  ['three.js', 'MIT', 'https://threejs.org'],
+  ['Astro', 'MIT', 'https://astro.build'],
+  ['KaTeX', 'MIT', 'https://katex.org'],
+  ['Shiki', 'MIT', 'https://shiki.style'],
+  ['Bricolage Grotesque', 'SIL OFL 1.1', 'https://github.com/ateliertriay/bricolage'],
+  ['Instrument Sans', 'SIL OFL 1.1', 'https://github.com/Instrument/instrument-sans'],
+  ['JetBrains Mono', 'SIL OFL 1.1', 'https://www.jetbrains.com/lp/mono/'],
+  ['Source Serif 4', 'SIL OFL 1.1', 'https://github.com/adobe-fonts/source-serif'],
+];
+---
+
+<Base title="About" description="MH Jamshidi: physics PhD candidate in cosmology and technical artist since 2012.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>About</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        I'm a PhD candidate in physics, working on gravitation and cosmology, and I have worked as a
+        technical artist since 2012. I started in the game industry that year, modelling for the game
+        <a href="https://store.steampowered.com/app/353990/Parvaneh_Legacy_of_the_Lights_Guardians/" rel="noopener">Parvaneh</a>.
+        Because of my background in mathematics and physics, and my interest in technical art, I soon moved
+        to tool development and physics-based assets. Since then I have done rigging and tool and shader
+        development in Blender, Maya, 3ds Max and Unity.
+      </p>
+      <p>
+        On the academic side I gradually moved toward computational physics, which was a good context for
+        improving both my scientific and my game-production skills. Alongside research in cosmology, my
+        old dream, I work on physics-based tools that help technical artists and animators.
+      </p>
+
+      <h2>Press</h2>
+      <ul>
+        <li>
+          <a href="https://www.blender.org/user-stories/cosmology-with-geometry-nodes/" rel="noopener">Cosmology with Geometry Nodes</a>,
+          Blender.org user story, 17 Feb 2026.
+        </li>
+        <!-- TODO(owner): 80.lv and BlenderNation URLs. -->
+      </ul>
+
+      <h2>Links</h2>
+      <table class="tbl">
+        <tbody>
+          {links.map((l) => (
+            <tr>
+              <th scope="row">{l.label}</th>
+              <td><a href={l.href} rel="noopener">{l.text}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Credits</h2>
+      <p style="font-size:17px">
+        Built with open-source software. Writing, images and video are CC BY-NC 4.0 and code is MIT, unless
+        a file says otherwise. The Khosrobot character, its model and textures are all rights reserved.
+      </p>
+      <table class="tbl">
+        <thead>
+          <tr><th>Name</th><th>Licence</th></tr>
+        </thead>
+        <tbody>
+          {credits.map(([name, licence, href]) => (
+            <tr>
+              <td><a href={href} rel="noopener">{name}</a></td>
+              <td class="mono" style="font-size:13px">{licence}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Base>

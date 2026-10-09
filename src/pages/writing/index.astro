@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Listing from '../../components/Listing.astro';
+import { getPosts, postItem, groupByYear } from '../../lib/items';
+
+const items = (await getPosts()).map(postItem);
+const years = groupByYear(items);
+---
+
+<Base title="Writing" description="Notes, tutorials and essays on physics, cosmology, graphics and tools.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Writing</h1>
+      <p class="lede">Notes, tutorials and essays on physics, cosmology, graphics and tools.</p>
+    </header>
+
+    {
+      years.map(([year, list]) => (
+        <section class="year-group">
+          <div class="year">{year}</div>
+          <Listing items={list} variant="index" />
+        </section>
+      ))
+    }
+  </div>
+</Base>

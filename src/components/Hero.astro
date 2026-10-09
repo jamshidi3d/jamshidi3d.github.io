@@ -1,0 +1,82 @@
+---
+// Placeholder hero: a gold cube with an orbiting camera. The Khosrobot character replaces it later.
+// The SVG poster is in the HTML (paints first, is the no-WebGL / reduced-motion fallback);
+// three.js is imported lazily after the page is idle.
+---
+
+<div class="stage" id="stage" data-state="poster">
+  <svg class="poster" viewBox="0 0 400 400" role="img" aria-label="A gold cube standing on a floor ring" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gTop" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#ffe0a3" />
+        <stop offset="1" stop-color="#e8a640" />
+      </linearGradient>
+      <linearGradient id="gLeft" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d9993a" />
+        <stop offset="1" stop-color="#8f5d1b" />
+      </linearGradient>
+      <linearGradient id="gRight" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f2b758" />
+        <stop offset="1" stop-color="#b57824" />
+      </linearGradient>
+      <radialGradient id="gShadow">
+        <stop offset="0" stop-color="#000" stop-opacity=".55" />
+        <stop offset="1" stop-color="#000" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <ellipse cx="200" cy="300" rx="150" ry="34" fill="none" stroke="#3a465a" stroke-opacity=".7" />
+    <ellipse cx="200" cy="302" rx="105" ry="24" fill="url(#gShadow)" />
+    <g stroke-linejoin="round" stroke="#7a4f14" stroke-width="2">
+      <path d="M200 112 L282 154 L200 196 L118 154 Z" fill="url(#gTop)" />
+      <path d="M118 154 L200 196 L200 296 L118 254 Z" fill="url(#gLeft)" />
+      <path d="M282 154 L200 196 L200 296 L282 254 Z" fill="url(#gRight)" />
+    </g>
+  </svg>
+  <canvas id="hero-canvas" aria-label="A gold cube rotating on a floor ring. A placeholder for an interactive character." role="img"></canvas>
+  <button class="stage-btn" id="stage-btn" type="button" aria-pressed="false" hidden>Pause</button>
+</div>
+
+<script>
+  const stage = document.getElementById('stage') as HTMLElement;
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
+  const btn = document.getElementById('stage-btn') as HTMLButtonElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  type Hero = { start(): void; stop(): void; running: boolean; dispose(): void };
+  let hero: Hero | null = null;
+
+  async function boot() {
+    try {
+      const { createHeroCube } = await import('../scripts/hero-cube');
+      hero = createHeroCube(canvas, stage);
+      stage.classList.add('live');
+      btn.hidden = false;
+      if (reduce) {
+        btn.textContent = 'Play';
+        hero.stop();
+        stage.classList.remove('live');
+      } else {
+        hero.start();
+      }
+    } catch (err) {
+      // No WebGL or load failure: the poster stays.
+      console.info('Hero stays on the poster:', err);
+    }
+  }
+
+  btn.addEventListener('click', () => {
+    if (!hero) return;
+    if (hero.running) {
+      hero.stop();
+      btn.textContent = 'Play';
+    } else {
+      stage.classList.add('live');
+      hero.start();
+      btn.textContent = 'Pause';
+    }
+  });
+
+  const idle = (window as any).requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+  if (document.readyState === 'complete') idle(boot);
+  else window.addEventListener('load', () => idle(boot), { once: true });
+</script>

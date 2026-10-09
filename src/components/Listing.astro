@@ -1,0 +1,100 @@
+---
+import { fmtDate, type ListItem } from '../lib/items';
+
+interface Props {
+  items: ListItem[];
+  variant?: 'card' | 'row' | 'index';
+}
+
+const { items, variant = 'row' } = Astro.props;
+
+const dateText = (it: ListItem) => it.dateLabel ?? fmtDate(it.date);
+const tagAttr = (it: ListItem) => it.tags.join(' ');
+---
+
+{
+  variant === 'card' && (
+    <div class="cards">
+      {items.map((it) => {
+        const Tag = it.href ? 'a' : 'div';
+        return (
+          <Tag
+            class="item card"
+            data-tags={tagAttr(it)}
+            href={it.href}
+            {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
+          >
+            <div class="thumb" data-hover-video={it.video ? '' : undefined}>
+              {it.image ? <img src={it.image} alt="" loading="lazy" width="900" height="650" /> : <span class="ph">NO IMAGE YET</span>}
+              {it.video && <video muted loop playsinline preload="none" data-src={it.video} aria-hidden="true" />}
+            </div>
+            <div class="meta">
+              <span class="kind">{it.kind}</span>
+              {it.badge && <> · <span>{it.badge}</span></>} · {dateText(it)}
+            </div>
+            <h3>{it.title}{it.external && ' ↗'}</h3>
+            <p class="blurb">{it.blurb}</p>
+          </Tag>
+        );
+      })}
+    </div>
+  )
+}
+
+{
+  variant === 'row' && (
+    <div class="rows">
+      {items.map((it) => {
+        const Tag = it.href ? 'a' : 'div';
+        return (
+          <Tag
+            class:list={['item', 'row', { nothumb: !it.image }]}
+            data-tags={tagAttr(it)}
+            href={it.href}
+            {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
+          >
+            {it.image && (
+              <div class="thumb" data-hover-video={it.video ? '' : undefined}>
+                <img src={it.image} alt="" loading="lazy" width="132" height="76" />
+                {it.video && <video muted loop playsinline preload="none" data-src={it.video} aria-hidden="true" />}
+              </div>
+            )}
+            <div class="body">
+              <h3>{it.title}{it.external && ' ↗'}</h3>
+              {it.blurb && <p class="blurb">{it.blurb}</p>}
+            </div>
+            <div class="meta">
+              <span class="kind">{it.kind}</span>
+              <span>{dateText(it)}</span>
+            </div>
+          </Tag>
+        );
+      })}
+    </div>
+  )
+}
+
+{
+  variant === 'index' && (
+    <div class="rows">
+      {items.map((it) => {
+        const Tag = it.href ? 'a' : 'div';
+        return (
+          <Tag
+            class="item index"
+            data-tags={tagAttr(it)}
+            href={it.href}
+            {...(it.external ? { rel: 'noopener', target: '_blank' } : {})}
+          >
+            <span class="meta">{dateText(it)}</span>
+            <span class="meta"><span class="kind">{it.kind}</span></span>
+            <div>
+              <h3>{it.title}{it.external && ' ↗'}</h3>
+              {it.blurb && <p class="blurb">{it.blurb}</p>}
+            </div>
+          </Tag>
+        );
+      })}
+    </div>
+  )
+}

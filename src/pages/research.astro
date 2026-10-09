@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import Listing from '../components/Listing.astro';
+import { groupByYear, type ListItem } from '../lib/items';
+import { publications, talks, code } from '../data/research';
+import { LINKS } from '../data/site';
+
+const toItem = (r: (typeof publications)[number]): ListItem => ({
+  kind: 'RESEARCH',
+  date: r.date,
+  title: r.title,
+  blurb: r.blurb ?? '',
+  tags: r.tags,
+  href: r.href,
+});
+
+const sections = [
+  { name: 'Publications', list: publications.map(toItem) },
+  { name: 'Talks', list: talks.map(toItem) },
+  { name: 'Code and datasets', list: code.map(toItem) },
+];
+const cvs = [
+  { label: 'CV, industry', href: LINKS.cvIndustry },
+  { label: 'CV, academic', href: LINKS.cvAcademic },
+].filter((c) => c.href);
+---
+
+<Base title="Research" description="Publications, talks, code and data from a physics PhD in cosmology.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Research</h1>
+      <p class="lede">PhD candidate in physics, working on gravitation and cosmology.</p>
+    </header>
+
+    {
+      sections.map((s) => (
+        <section class="group">
+          <span class="label amber">{s.name}</span>
+          {s.list.length ? (
+            groupByYear(s.list).map(([year, list]) => (
+              <div class="year-group">
+                <div class="year">{year}</div>
+                <Listing items={list} variant="index" />
+              </div>
+            ))
+          ) : (
+            <p class="empty">Nothing listed yet.</p>
+          )}
+        </section>
+      ))
+    }
+
+    <section class="group">
+      <span class="label amber">CV</span>
+      {
+        cvs.length ? (
+          <p>{cvs.map((c) => <a href={c.href} style="margin-right:24px">{c.label} ↓</a>)}</p>
+        ) : (
+          <p class="empty">CV downloads are not available yet.</p>
+        )
+      }
+    </section>
+  </div>
+</Base>

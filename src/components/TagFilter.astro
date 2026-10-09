@@ -1,0 +1,37 @@
+---
+import { ROLE_TAGS } from '../data/site';
+
+interface Props {
+  scope?: string; // CSS selector of the container whose [data-tags] items are filtered
+}
+const { scope = 'main' } = Astro.props;
+---
+
+<div class="filters" role="group" aria-label="Filter by tag" data-filter-scope={scope} hidden>
+  <button type="button" data-tag="" aria-pressed="true">all</button>
+  {ROLE_TAGS.map((t) => <button type="button" data-tag={t} aria-pressed="false">#{t}</button>)}
+</div>
+
+<script>
+  // Progressive enhancement: the filter bar is hidden until JS is available.
+  document.querySelectorAll<HTMLElement>('[data-filter-scope]').forEach((bar) => {
+    bar.hidden = false;
+    const scope = document.querySelector(bar.dataset.filterScope ?? 'main');
+    if (!scope) return;
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('button')];
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const tag = b.dataset.tag ?? '';
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        scope.querySelectorAll<HTMLElement>('[data-tags]').forEach((el) => {
+          const has = !tag || (el.dataset.tags ?? '').split(' ').includes(tag);
+          el.hidden = !has;
+        });
+        // hide groups that end up empty
+        scope.querySelectorAll<HTMLElement>('[data-group]').forEach((g) => {
+          g.hidden = ![...g.querySelectorAll<HTMLElement>('[data-tags]')].some((el) => !el.hidden);
+        });
+      }),
+    );
+  });
+</script>

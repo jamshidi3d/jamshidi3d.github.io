@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Listing from '../components/Listing.astro';
+import TagFilter from '../components/TagFilter.astro';
+import { allItems } from '../lib/items';
+import { SITE, LINKS } from '../data/site';
+
+const featured = (await allItems())
+  .filter((i) => i.home !== undefined)
+  .sort((a, b) => a.home! - b.home!);
+const cards = featured.slice(0, 3);
+const rows = featured.slice(3);
+---
+
+<Base>
+  <div class="wrap">
+    <section class="hero" aria-labelledby="slogan">
+      <div>
+        <h1 id="slogan">{SITE.tagline}</h1>
+        <p class="intro">{SITE.intro}</p>
+        {
+          (LINKS.cvIndustry || LINKS.cvAcademic) && (
+            <p class="quiet">
+              <a href={LINKS.cvIndustry ?? LINKS.cvAcademic}>CV</a>
+            </p>
+          )
+        }
+      </div>
+      <Hero />
+    </section>
+
+    <section class="home-list" id="featured" aria-labelledby="featured-h">
+      <div class="section-head">
+        <h2 class="label amber" id="featured-h" style="font-weight:400">Featured and latest</h2>
+      </div>
+      <TagFilter scope="#featured" />
+      <Listing items={cards} variant="card" />
+      <Listing items={rows} variant="row" />
+    </section>
+  </div>
+</Base>

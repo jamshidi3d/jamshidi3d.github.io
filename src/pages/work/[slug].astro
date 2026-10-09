@@ -1,0 +1,341 @@
+---
+import Base from '../../layouts/Base.astro';
+import Listing from '../../components/Listing.astro';
+import { getProjects, projectItem } from '../../lib/items';
+
+export async function getStaticPaths() {
+  const projects = (await getProjects()).filter((p) => !p.data.earlier);
+  return projects.map((p) => ({ params: { slug: p.id }, props: { project: p, all: projects } }));
+}
+
+const { project, all } = Astro.props;
+const d = project.data;
+const year = d.date.getUTCFullYear();
+const shownAs = {
+  video: 'video + case study',
+  turntable: 'turntable',
+  live: 'live demo',
+  'open-source': 'open source',
+}[d.visibility];
+
+const blocks = [
+  { n: '01', name: 'Problem', text: d.problem },
+  { n: '02', name: 'Constraint', text: d.constraint },
+  { n: '03', name: 'Idea', text: d.idea },
+  { n: '04', name: 'Result', text: d.result },
+]
+  .filter((b) => b.text)
+  .map((b, i) => ({ ...b, n: String(i + 1).padStart(2, '0') }));
+
+const more = d.related
+  .map((id) => all.find((p) => p.id === id))
+  .filter((p): p is NonNullable<typeof p> => !!p)
+  .slice(0, 3)
+  .map(projectItem);
+---
+
+<Base title={d.title} description={d.summary ?? d.blurb} image={d.image}>
+  <div class="wrap project">
+    <a class="back label" href="/work/">← Work</a>
+
+    <header class="p-title">
+      <div class="label amber">{d.theme} <span class="muted">· {d.dateLabel ?? year}</span></div>
+      <h1>{d.title}</h1>
+      <p class="p-blurb">{d.blurb}</p>
+    </header>
+
+    {
+      (d.video || d.image) && (
+        <figure class="clip">
+          <div class="clip-frame">
+            {d.video ? (
+              <video
+                id="clip"
+                muted
+                loop
+                playsinline
+                preload="none"
+                poster={d.image}
+                data-src={d.video}
+                aria-label={`${d.title}: demo clip`}
+              />
+            ) : (
+              <img src={d.image} alt={d.title} />
+            )}
+            {d.video && (
+              <button class="clip-play" id="clip-play" type="button" aria-label="Play clip">
+                ▶
+              </button>
+            )}
+          </div>
+          {d.video && <figcaption class="label">Clip 1 of 1 · muted loop</figcaption>}
+        </figure>
+      )
+    }
+
+    <div class="p-cols">
+      <div class="p-main">
+        {
+          d.summary && (
+            <section class="what">
+              <div class="label amber">What it is</div>
+              <p>{d.summary}</p>
+            </section>
+          )
+        }
+
+        {
+          blocks.map((b) => (
+            <section class="block">
+              <h2 class="label">
+                <span class="amber">{b.n}</span> {b.name}
+              </h2>
+              <p>{b.text}</p>
+              {b.name === 'Idea' && d.steps && d.steps.length > 0 && (
+                <div class="steps">
+                  {d.steps.map((s, i) => (
+                    <div class="step">
+                      <div class="label amber">Step {i + 1}</div>
+                      <h3>{s.title}</h3>
+                      <p>{s.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))
+        }
+      </div>
+
+      <aside class="p-side" aria-label="Project facts">
+        {
+          d.role && (
+            <div class="fact">
+              <div class="label">Role</div>
+              <p>{d.role}</p>
+            </div>
+          )
+        }
+        <div class="fact">
+          <div class="label">Tools</div>
+          <p class="mono">{d.tools.join(' · ')}</p>
+        </div>
+        <div class="fact">
+          <div class="label">Year</div>
+          <p class="mono">{d.dateLabel ? `${year} · ${d.dateLabel.toLowerCase()}` : year}</p>
+        </div>
+        <div class="fact">
+          <div class="label">Tags</div>
+          <p class="mono">{d.tags.map((t) => `#${t}`).join(' ')}</p>
+        </div>
+        <div class="fact">
+          <div class="label">Shown as</div>
+          <p class="mono">{shownAs}</p>
+          {d.visibility === 'video' && <p class="note">Source is not published.</p>}
+        </div>
+        {
+          d.links.length > 0 && (
+            <div class="fact">
+              <div class="label">Links</div>
+              <p>
+                {d.links.map((l) => (
+                  <>
+                    <a href={l.href} rel="noopener">{l.label} ↗</a><br />
+                  </>
+                ))}
+              </p>
+            </div>
+          )
+        }
+      </aside>
+    </div>
+
+    {
+      more.length > 0 && (
+        <section class="group">
+          <span class="label amber">More work</span>
+          <Listing items={more} variant="row" />
+        </section>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .project {
+    padding-top: 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .back:hover {
+    color: var(--amber);
+    text-decoration: none;
+  }
+  .p-title {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .p-title .muted {
+    color: var(--muted);
+  }
+  .p-title h1 {
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 54px);
+    margin: 14px 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .p-blurb {
+    font-size: 20px;
+    color: var(--text-3);
+    margin: 0;
+  }
+  .clip {
+    margin: 0 0 56px;
+  }
+  .clip-frame {
+    position: relative;
+    height: 520px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--image-bg);
+    overflow: hidden;
+  }
+  .clip-frame video,
+  .clip-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .clip-play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid var(--amber);
+    background: rgba(13, 17, 23, 0.7);
+    color: var(--amber);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .clip-play.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+  figcaption {
+    margin-top: 10px;
+  }
+  .p-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 72px;
+  }
+  .what {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 44px;
+  }
+  .what p {
+    font-size: 19px;
+    margin: 10px 0 0;
+    color: var(--text);
+  }
+  .block {
+    margin-bottom: 40px;
+  }
+  .block h2 {
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .block p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .p-side .fact {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .p-side .fact p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .p-side .mono {
+    font-size: 13px;
+  }
+  .p-side .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .p-cols {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .p-side {
+      order: -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    .clip-frame {
+      height: auto;
+      aspect-ratio: 16 / 10;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const v = document.getElementById('clip') as HTMLVideoElement | null;
+  const play = document.getElementById('clip-play') as HTMLButtonElement | null;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (v && play) {
+    const start = () => {
+      if (!v.src) v.src = v.dataset.src ?? '';
+      v.play().then(() => play.classList.add('hide')).catch(() => {});
+    };
+    const stop = () => {
+      v.pause();
+      play.classList.remove('hide');
+    };
+    play.addEventListener('click', start);
+    v.addEventListener('click', () => (v.paused ? start() : stop()));
+    if (!reduce) {
+      // autoplay once the clip is on screen, pause when it leaves
+      new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: 0.4 }).observe(v);
+    }
+  }
+</script>

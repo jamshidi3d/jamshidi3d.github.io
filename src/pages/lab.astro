@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+
+const planned = [
+  ['Khosrobot sandbox', 'The hero character with a larger stage and controls.'],
+  ['Spring chain', 'Drag a mass and watch the wave travel.'],
+  ['CMB sky, cap and mask', 'Slide a hemispherical cap over the Galactic mask.'],
+  ['Double pendulum', 'Tiny changes, wildly different paths.'],
+];
+---
+
+<Base title="Lab" description="Small interactive web apps and simulations. In progress.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Lab</h1>
+      <p class="lede">Small interactive web apps and simulations. The first pieces are in progress.</p>
+    </header>
+
+    <section class="group">
+      <span class="label amber">In progress</span>
+      <div class="rows">
+        {
+          planned.map(([title, blurb]) => (
+            <div class="item row nothumb">
+              <div class="body">
+                <h3>{title}</h3>
+                <p class="blurb">{blurb}</p>
+              </div>
+              <div class="meta"><span class="kind">LAB</span><span>soon</span></div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>

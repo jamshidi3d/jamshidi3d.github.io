@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import Listing from '../../components/Listing.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getProjects, projectItem } from '../../lib/items';
+import { THEMES } from '../../data/site';
+
+const items = (await getProjects()).map(projectItem);
+const main = items.filter((i) => !i.earlier);
+const earlier = items.filter((i) => i.earlier);
+const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme === t) })).filter(
+  (g) => g.items.length,
+);
+---
+
+<Base title="Work" description="Rigging, simulation and tools: projects by theme, from game animation to physics-based rigging.">
+  <div class="wrap" id="work">
+    <header class="page-head">
+      <h1>Work</h1>
+      <p class="lede">Rigging, simulation and tools, from game animation to physics-based rigging.</p>
+    </header>
+
+    <TagFilter scope="#work" />
+
+    {
+      groups.map((g) => (
+        <section class="group" data-group>
+          <span class="label amber">
+            {g.theme}
+            <span class="count">{g.items.length}</span>
+          </span>
+          <Listing items={g.items} variant="row" />
+        </section>
+      ))
+    }
+
+    {
+      earlier.length > 0 && (
+        <section class="group" data-group>
+          <span class="label amber">
+            Earlier work
+            <span class="count">{earlier.length}</span>
+          </span>
+          <Listing items={earlier} variant="row" />
+        </section>
+      )
+    }
+    <!-- Models section (turntables) goes here once the owner supplies the model list. -->
+  </div>
+</Base>
