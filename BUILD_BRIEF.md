@@ -13,7 +13,7 @@ Boards: Desktop Home, Desktop Work, Mobile Home, Listing styles, Blog post page,
 - ONE site that shows both careers together: physics/cosmology research and game/tech-art/tools work, with writing, small interactive web apps (Lab), portfolio, 3D models and publications in one place.
 - Audiences: recruiters (tools programmer, physics/animation programmer, tech animator), academics, the Blender and graphics community. All get the same site; do not split it by audience. Roles are expressed with tags, not separate sections.
 - Tagline: **"I make physics move."**
-- Intro: "Simulation, rigging and tools, from game animation to cosmology research. I'm a PhD candidate in physics and have worked as a technical artist since 2012. This is where the two meet."
+- Intro: "My work runs from physics research to game animation and rigging, with AI solutions built into both. I’m a PhD candidate in cosmology and have worked as a technical artist since 2012. Simulation problems are where the two meet."
 - Tone: quiet, confident, content-first. Not commercial.
 - **Authenticity rule (FINAL):** nothing on the site may be presented as the owner's work unless it is. Anything AI-assisted or adapted from a known technique is labelled and credited. No third-party models or demos in Work. (A black-hole shader built earlier was dropped for this reason.)
 

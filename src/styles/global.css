@@ -199,6 +199,8 @@ time {
   align-items: center;
   gap: 14px;
   color: var(--text);
+  flex: 1 1 0; /* takes the space the nav and menu button leave, so the name can pick full or short */
+  min-width: 0;
 }
 
 .brand:hover {
@@ -218,12 +220,30 @@ time {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+  flex: 1 1 0;
+  min-width: 0;
+  container-type: inline-size;
 }
 
 .brand-name {
   font-family: var(--font-title);
   font-weight: 600;
   font-size: 17px;
+  white-space: nowrap;
+}
+
+/* full name by default; the abbreviation only when the full name does not fit the space left */
+.brand-name .name-short {
+  display: none;
+}
+
+@container (max-width: 204px) {
+  .brand-name .name-full {
+    display: none;
+  }
+  .brand-name .name-short {
+    display: inline;
+  }
 }
 
 .brand-line {
@@ -236,6 +256,7 @@ time {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex: none;
 }
 
 .nav a {

@@ -3,9 +3,9 @@ export const SITE = {
   fullName: 'MohammadHossein Jamshidi',
   tagline: 'I make Physics Move',
   intro:
-    "Simulation, rigging and tools, from game animation to cosmology research. I'm a PhD candidate in physics and have worked as a technical artist since 2012. This is where the two meet.",
+    'My work runs from physics research to game animation and rigging, with AI solutions built into both. I’m a PhD candidate in cosmology and have worked as a technical artist since 2012. Simulation problems are where the two meet.',
   description:
-    'MohammadHossein (MH) Jamshidi: physics PhD candidate (cosmology) and technical artist. Simulation, rigging and tools, writing and research.',
+    'Physics research, game animation and rigging, with AI solutions built into both. PhD candidate in cosmology and technical artist since 2012.',
   url: 'https://jamshidi3d.github.io',
 };
 

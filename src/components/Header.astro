@@ -1,5 +1,5 @@
 ---
-import { NAV, LINKS } from '../data/site';
+import { NAV, LINKS, SITE } from '../data/site';
 
 const path = Astro.url.pathname;
 const active = (href: string) => path === href || path.startsWith(href);
@@ -7,10 +7,13 @@ const active = (href: string) => path === href || path.startsWith(href);
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="MH Jamshidi, home">
+    <a class="brand" href="/" aria-label={`${SITE.fullName}, home`}>
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-text">
-        <span class="brand-name">MH Jamshidi</span>
+        <span class="brand-name">
+          <span class="name-full">{SITE.fullName}</span>
+          <span class="name-short">{SITE.name}</span>
+        </span>
         <span class="brand-line">physics · graphics · tools</span>
       </span>
     </a>
