@@ -1,0 +1,35 @@
+---
+import type { Game } from '../data/games';
+
+interface Props {
+  game: Game;
+}
+
+const { game } = Astro.props;
+const rows = [
+  ['Studio', game.studio],
+  ['Released', game.released],
+  ['Role', game.role],
+  ['Engine, Platform', game.platform],
+].filter((r): r is [string, string] => !!r[1]);
+---
+
+<article class="game card" id={game.slug} data-tags="games">
+  <div class="logo"><img src={game.logo} alt={`${game.title} logo`} loading="lazy" /></div>
+  <div class="card-body">
+    <h3>{game.title}</h3>
+    {game.desc && <p class="blurb">{game.desc}</p>}
+    <dl class="mini">
+      {rows.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+    <div class="go">
+      {
+        game.links.map((l, i) => (
+          <a class:list={['btn', { gold: i === 0 }]} href={l.href} {...(l.external ? { rel: 'noopener', target: '_blank' } : {})}>
+            {l.label}{l.external ? ' ↗' : ' →'}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</article>

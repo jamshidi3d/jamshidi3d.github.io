@@ -2,7 +2,7 @@
 """Regenerates the favicons, touch icon, tiles and the header logo mask in the accent colour.
 
 The source is the signature artwork (scripts/signature-source.png: one colour on transparent).
-Every output uses the flat accent #00E5FF; small sizes get slightly bolder strokes so the fine
+Every output uses the flat accent (gold #F2B441); small sizes get slightly bolder strokes so the fine
 detail survives. Needs: pip install pillow numpy
 """
 from pathlib import Path
@@ -13,7 +13,7 @@ from PIL import Image, ImageFilter
 ROOT = Path(__file__).resolve().parent.parent
 SRC = Image.open(ROOT / "scripts" / "signature-source.png").convert("RGBA")
 OUT = ROOT / "public" / "favicons"
-ACCENT = (0, 229, 255)
+ACCENT = (242, 180, 65)  # gold
 GROUND = (13, 17, 23)  # --bg, behind the opaque icons
 
 

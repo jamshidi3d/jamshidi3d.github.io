@@ -1,33 +1,43 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Listing from '../../components/Listing.astro';
+import GameCard from '../../components/GameCard.astro';
+import { GAMES } from '../../data/games';
 import TagFilter from '../../components/TagFilter.astro';
 import { getProjects, projectItem, getModels, modelItem } from '../../lib/items';
-import { THEMES } from '../../data/site';
+import { THEMES, ROLE_TAGS } from '../../data/site';
 
 const models = (await getModels()).map(modelItem);
 const items = (await getProjects()).map(projectItem);
-const main = items.filter((i) => !i.earlier);
-const earlier = items.filter((i) => i.earlier);
-const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme === t) })).filter(
+const groups = THEMES.map((t) => ({ theme: t, items: items.filter((i) => i.theme === t) })).filter(
   (g) => g.items.length,
 );
 ---
 
-<Base title="Work" canonical="/work/" description="Rigging, simulation and tools: projects by theme, from game animation to physics-based rigging.">
+<Base title="Work" canonical="/work/" description="Games, rigging, simulation and tools: projects by theme, from game animation to physics-based rigging.">
   <div class="wrap" id="work">
     <header class="page-head">
       <h1>Work</h1>
-      <p class="lede">Rigging, simulation and tools, from game animation to physics-based rigging.</p>
+      <p class="lede">Games, rigging, simulation and tools, from game animation to physics-based rigging.</p>
     </header>
 
-    <TagFilter scope="#work" />
+    <TagFilter scope="#work" tags={['games', ...ROLE_TAGS]} />
+
+    <section class="group" id="games" data-group>
+      <h2 class="label amber">
+        <span class="chip">Games</span>
+        <span class="count">{GAMES.length} titles</span>
+      </h2>
+      <div class="cards games">
+        {GAMES.map((game) => <GameCard game={game} />)}
+      </div>
+    </section>
 
     {
       groups.map((g) => (
         <section class="group" data-group>
           <h2 class="label amber">
-            {g.theme}
+            <span class="chip">{g.theme}</span>
             <span class="count">{g.items.length}</span>
           </h2>
           <Listing items={g.items} variant="row" />
@@ -36,21 +46,10 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
     }
 
     {
-      earlier.length > 0 && (
-        <section class="group" data-group>
-          <h2 class="label amber">
-            Earlier work
-            <span class="count">{earlier.length}</span>
-          </h2>
-          <Listing items={earlier} variant="row" />
-        </section>
-      )
-    }
-    {
       models.length > 0 && (
         <section class="group" data-group id="modeling">
           <h2 class="label amber">
-            Modeling
+            <span class="chip">Modeling</span>
             <span class="count">{models.length}</span>
           </h2>
           <div class="models">
@@ -63,7 +62,8 @@ const groups = THEMES.map((t) => ({ theme: t, items: main.filter((i) => i.theme 
 </Base>
 
 <style>
-  .models {
+  .models,
+  .games {
     margin-top: 24px;
   }
 </style>

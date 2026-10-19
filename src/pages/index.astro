@@ -14,6 +14,10 @@ const everything = [...(await allItems()), ...(await getModels()).map(modelItem)
 const filterPool = everything.sort(
   (a, b) => (a.home ?? 999) - (b.home ?? 999) || b.date.getTime() - a.date.getTime(),
 );
+// Gold-accent hero: "Physics" sits on a gold plate; two phrases in the intro become inline pills.
+const [tagBefore, tagAfter] = SITE.tagline.split('Physics');
+const pills = ['PhD candidate in cosmology', 'technical artist'];
+const introParts = SITE.intro.split(new RegExp(`(${pills.join('|')})`));
 const cards = featured.slice(0, 3);
 const rows = featured.slice(3);
 ---
@@ -21,9 +25,14 @@ const rows = featured.slice(3);
 <Base heroFont>
   <div class="wrap">
     <section class="hero" aria-labelledby="slogan">
-      <div>
-        <h1 id="slogan">{SITE.tagline}</h1>
-        <p class="intro">{SITE.intro}</p>
+      <div class="hl">
+        <h1 id="slogan">{tagBefore}<span class="mv">Physics</span>{tagAfter}</h1>
+      </div>
+      <Hero />
+      <div class="hr">
+        <p class="intro">
+          {introParts.map((t) => (pills.includes(t) ? <code>{t}</code> : t))}
+        </p>
         {
           (LINKS.cvIndustry || LINKS.cvAcademic) && (
             <p class="quiet">
@@ -32,7 +41,6 @@ const rows = featured.slice(3);
           )
         }
       </div>
-      <Hero />
     </section>
 
     <section class="home-list" id="featured" aria-labelledby="featured-h">

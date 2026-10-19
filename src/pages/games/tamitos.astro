@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base
+  title="Tamitos: early access gameplay"
+  canonical="/games/tamitos/"
+  description="Gameplay video of the early-access version of Tamitos: Tale of Understanding, by Qorpo."
+  image="/media/img/tamitos-poster.webp"
+>
+  <div class="wrap trailer">
+    <a class="back label" href="/work/#games">← Work</a>
+
+    <header class="t-title">
+      <div class="label amber">Games <span class="muted">· Qorpo · 2026</span></div>
+      <h1>Tamitos: early access gameplay</h1>
+      <p class="t-blurb">Gameplay from the early-access version of Tamitos: Tale of Understanding.</p>
+    </header>
+
+    <figure class="t-clip">
+      <video controls playsinline preload="metadata" poster="/media/img/tamitos-poster.webp" aria-label="Tamitos early access gameplay">
+        <source src="/media/video/tamitos-early-access.mp4" type="video/mp4" />
+        Your browser cannot play this video. <a href="/media/video/tamitos-early-access.mp4">Download it</a>.
+      </video>
+      <figcaption class="label">
+        Early access build · <a href="https://tamitos.com/en" rel="noopener" target="_blank">tamitos.com ↗</a>
+      </figcaption>
+    </figure>
+  </div>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    margin-top: 40px;
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .t-title {
+    padding: 32px 0 28px;
+  }
+  .t-title .muted {
+    color: var(--muted);
+  }
+  .t-title h1 {
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 14px 0 14px;
+  }
+  .t-blurb {
+    font-size: 20px;
+    margin: 0;
+    color: var(--text-3);
+    max-width: 720px;
+  }
+  .t-clip {
+    margin: 0;
+    max-width: 1100px;
+  }
+  .t-clip video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--black);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 7px 0 var(--shadow);
+  }
+  figcaption {
+    margin-top: 18px;
+  }
+</style>

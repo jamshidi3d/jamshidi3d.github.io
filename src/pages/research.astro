@@ -35,7 +35,7 @@ const cvs = [
     {
       sections.map((s) => (
         <section class="group">
-          <span class="label amber">{s.name}</span>
+          <h2 class="label amber"><span class="chip">{s.name}</span></h2>
           {s.list.length ? (
             groupByYear(s.list).map(([year, list]) => (
               <div class="year-group">
@@ -61,7 +61,7 @@ const cvs = [
     }
 
     <section class="group">
-      <span class="label amber">CV</span>
+      <h2 class="label amber"><span class="chip">CV</span></h2>
       {
         cvs.length ? (
           <p>{cvs.map((c) => <a href={c.href} style="margin-right:24px">{c.label} ↓</a>)}</p>

@@ -3,13 +3,14 @@ import { ROLE_TAGS } from '../data/site';
 
 interface Props {
   scope?: string; // CSS selector of the container whose [data-tags] items are filtered
+  tags?: readonly string[];
 }
-const { scope = 'main' } = Astro.props;
+const { scope = 'main', tags = ROLE_TAGS } = Astro.props;
 ---
 
 <div class="filters" role="group" aria-label="Filter by tag" data-filter-scope={scope} hidden>
   <button type="button" data-tag="" aria-pressed="true">all</button>
-  {ROLE_TAGS.map((t) => <button type="button" data-tag={t} aria-pressed="false">#{t}</button>)}
+  {tags.map((t) => <button type="button" data-tag={t} aria-pressed="false">#{t}</button>)}
 </div>
 
 <script>
