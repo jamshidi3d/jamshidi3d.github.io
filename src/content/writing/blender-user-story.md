@@ -1,7 +1,7 @@
 ---
 title: "Blender.org user story: Cosmology with Geometry Nodes"
 date: 2026-02-17
-kind: RESEARCH
+kind: WRITING
 byline: Blender.org
 blurb: "Blender's user story on how Geometry Nodes is used to compute, visualize and debug CMB analyses."
 roles: [physics, tech-art]

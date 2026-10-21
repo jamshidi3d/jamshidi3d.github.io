@@ -13,6 +13,11 @@ const kindLabel = (k: string) => k.charAt(0) + k.slice(1).toLowerCase();
 const dateText = (it: ListItem) => (it.dateLabel !== undefined ? it.dateLabel : fmtDate(it.date));
 const tagAttr = (it: ListItem) => it.tags.join(' ');
 const extra = (it: ListItem) => (it.external ? { rel: 'noopener', target: '_blank' } : {});
+// Titles with a colon break onto a new line after it.
+const titleParts = (t: string) => {
+  const i = t.indexOf(': ');
+  return i < 0 ? [t] : [t.slice(0, i + 1), t.slice(i + 2)];
+};
 const hasArrow = (it: ListItem) => !!(it.external || it.byline);
 
 // Unique ids per rendered list so a card's accessible name can be its title.
@@ -47,7 +52,7 @@ const uid = (g.__listingUid = (g.__listingUid ?? 0) + 1);
                 <span class="date">{dateText(it)}</span>
               </div>
               <h3 id={titleId}>
-                {it.title}
+                {titleParts(it.title).map((t, k) => (k ? <><br />{t}</> : t))}
                 {hasArrow(it) && <span class="ext" aria-hidden="true"> ↗</span>}
               </h3>
               <p class="blurb">{it.blurb}</p>
@@ -74,7 +79,7 @@ const uid = (g.__listingUid = (g.__listingUid ?? 0) + 1);
             )}
             <div class="body">
               <h3>
-                {it.title}
+                {titleParts(it.title).map((t, k) => (k ? <><br />{t}</> : t))}
                 {hasArrow(it) && <span class="ext" aria-hidden="true"> ↗</span>}
               </h3>
               {it.blurb && <p class="blurb">{it.blurb}</p>}
@@ -107,7 +112,7 @@ const uid = (g.__listingUid = (g.__listingUid ?? 0) + 1);
             </span>
             <div>
               <h3>
-                {it.title}
+                {titleParts(it.title).map((t, k) => (k ? <><br />{t}</> : t))}
                 {hasArrow(it) && <span class="ext" aria-hidden="true"> ↗</span>}
               </h3>
               {it.blurb && <p class="blurb">{it.blurb}</p>}

@@ -1,7 +1,7 @@
 ---
 title: Cosmology with Geometry Nodes
 date: 2026-03-26
-kind: RESEARCH
+kind: WRITING
 byline: BlenderNation
 blurb: "BlenderNation's post on Cosmology with Geometry Nodes."
 roles: [physics, tech-art]

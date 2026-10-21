@@ -24,6 +24,12 @@ export interface ListItem {
   slug?: string;
 }
 
+// Stand-in thumbnails for posts that have no image of their own.
+export const PLACEHOLDER = {
+  WRITING: '/media/img/placeholder-writing.svg',
+  RESEARCH: '/media/img/placeholder-research-paper.svg',
+} as const;
+
 export const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 
@@ -95,7 +101,7 @@ export function postItem(p: CollectionEntry<'writing'>): ListItem {
     external: !!d.external,
     byline: d.byline,
     hideInWriting: d.hideInWriting,
-    image: d.image,
+    image: d.image ?? PLACEHOLDER[d.kind],
     home: d.home,
     slug: p.id,
   };
@@ -111,6 +117,7 @@ export async function allItems(): Promise<ListItem[]> {
     tags: r.tags,
     href: r.href,
     external: !!r.href && /^https?:/.test(r.href),
+    image: PLACEHOLDER.RESEARCH,
     home: r.home,
   }));
   return [...projects.map(projectItem), ...posts.map(postItem), ...research];

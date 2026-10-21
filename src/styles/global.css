@@ -838,14 +838,41 @@ a.btn:focus-visible {
   flex-direction: column;
 }
 
+/* rows that follow a card grid get a separator on top, like the lines between rows */
+.cards + .rows {
+  margin-top: 32px;
+}
+
+/* the separators are pseudo-elements so the hover highlight can have rounded corners */
+.row::after,
+.index::after,
+.cards + .rows > .row:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+
+.row::after,
+.index::after {
+  bottom: 0;
+}
+
+.cards + .rows > .row:first-child::before {
+  top: 0;
+}
+
 .row {
   display: grid;
   grid-template-columns: 132px 1fr auto;
   gap: 24px;
   align-items: center;
   padding: 16px 0;
-  border-bottom: 1px solid var(--line);
   position: relative;
+  border-radius: 10px;
   margin-inline: -12px;
   padding-inline: 12px;
 }
@@ -889,7 +916,8 @@ a.btn:focus-visible {
   gap: 24px;
   padding: 16px 12px;
   margin-inline: -12px;
-  border-bottom: 1px solid var(--line);
+  position: relative;
+  border-radius: 10px;
   align-items: baseline;
 }
 

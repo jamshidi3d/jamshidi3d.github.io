@@ -1,7 +1,7 @@
 ---
 title: Using Blender In Real-World Cosmology Research
 date: 2026-02-19
-kind: RESEARCH
+kind: WRITING
 byline: 80.lv
 blurb: "80.lv feature in which MohammadHossein Jamshidi discusses his ideas and shares the files."
 roles: [physics, tech-art]

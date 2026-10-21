@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 648 308" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Writing placeholder: page and pencil">
+<rect width="648" height="308" fill="#0D1117"/>
+
+
+<g transform="rotate(-3 324.0 154.0)">
+<rect x="225" y="43" width="216" height="240" rx="8" fill="#1F3A63"/><rect x="216" y="34" width="216" height="240" rx="8" fill="#F4F7FA"/>
+<rect x="242" y="62" width="112" height="13" rx="3" fill="#1F3A63"/><rect x="242" y="84" width="60" height="5" rx="2.5" fill="#F2B441"/>
+<rect x="242" y="118" width="164" height="6" rx="3" fill="#C5D0DE"/>
+<rect x="242" y="138" width="156" height="6" rx="3" fill="#C5D0DE"/>
+<rect x="242" y="158" width="164" height="6" rx="3" fill="#C5D0DE"/>
+<rect x="242" y="178" width="164" height="6" rx="3" fill="#C5D0DE"/>
+<rect x="242" y="198" width="110" height="6" rx="3" fill="#C5D0DE"/>
+</g>
+<g transform="translate(474 72) rotate(132)"><rect x="0" y="-9" width="150" height="18" rx="2" fill="#F2B441"/><rect x="0" y="-9" width="150" height="5" fill="#FFD97A"/><rect x="-20" y="-9" width="20" height="18" rx="3" fill="#9AA6B8"/><rect x="-2" y="-9" width="4" height="18" fill="#F4F7FA" opacity=".8"/><path d="M150 -9 L186 0 L150 9 Z" fill="#E3C48A"/><path d="M174 -3.2 L186 0 L174 3.2 Z" fill="#1F3A63"/></g>
+</svg>
