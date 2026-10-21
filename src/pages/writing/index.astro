@@ -18,7 +18,7 @@ const years = groupByYear(items);
       years.map(([year, list]) => (
         <section class="year-group">
           <div class="year">{year}</div>
-          <Listing items={list} variant="index" />
+          <Listing items={list} variant="row" />
         </section>
       ))
     }
