@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
+import Interactive from '../components/Interactive.astro';
 import Listing from '../components/Listing.astro';
 import TagFilter from '../components/TagFilter.astro';
 import { allItems, getModels, modelItem } from '../lib/items';
@@ -28,7 +28,7 @@ const rows = featured.slice(3);
       <div class="hl">
         <h1 id="slogan">{tagBefore}<span class="mv">Physics</span>{tagAfter}</h1>
       </div>
-      <Hero />
+      <Interactive name="hero" poster="/media/img/khosrobot-hero-blur.webp" label="The Khosrobot character, a gold one-wheel robot. Drag it to push it around." fill bare />
       <div class="hr">
         <p class="intro">
           {introParts.map((t) => (pills.includes(t) ? <code>{t}</code> : t))}

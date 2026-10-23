@@ -8,12 +8,14 @@ interface Props {
   poster: string;
   label: string;
   ratio?: string; // CSS aspect-ratio, e.g. "16 / 10"
+  fill?: boolean; // take the height of the parent instead of an aspect ratio (the home hero)
+  bare?: boolean; // no frame: the stage melts into the page (the home hero)
 }
 
-const { name, poster, label, ratio = '16 / 10' } = Astro.props;
+const { name, poster, label, ratio = '16 / 10', fill = false, bare = false } = Astro.props;
 ---
 
-<div class="i3d" data-i3d={name} style={`aspect-ratio:${ratio}`} role="group" aria-label={label}>
+<div class:list={['i3d', { fill, bare }]} data-i3d={name} style={fill ? undefined : `aspect-ratio:${ratio}`} role="group" aria-label={label}>
   <div class="i3d-mount"></div>
   <img class="i3d-poster" src={poster} alt={label} width="1600" height="1000" />
   <div class="i3d-bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
@@ -32,6 +34,19 @@ const { name, poster, label, ratio = '16 / 10' } = Astro.props;
     border-radius: 12px;
     box-shadow: 0 7px 0 var(--shadow);
     min-height: 360px;
+  }
+  .i3d.fill {
+    height: 100%;
+    min-height: 0;
+  }
+  .i3d.bare {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+  .i3d.fill .i3d-poster {
+    object-fit: cover;
   }
   .i3d-mount,
   .i3d-poster {
@@ -110,6 +125,9 @@ const { name, poster, label, ratio = '16 / 10' } = Astro.props;
     .i3d {
       aspect-ratio: auto !important;
       height: min(78vh, 640px);
+    }
+    .i3d.fill {
+      height: min(60vh, 420px);
     }
   }
 </style>

@@ -993,7 +993,7 @@ a.btn:focus-visible {
 /* three columns: headline | round stage | intro. The hero ends about half-way down the first screen,
    so the featured card titles stay visible on a laptop. */
 .hero {
-  --D: clamp(270px, 24vw, 340px);
+  --D: clamp(340px, 36vw, 540px);
   display: grid;
   grid-template-columns: minmax(0, 1fr) var(--D) minmax(0, 1fr);
   gap: clamp(40px, 4.4vw, 72px);
