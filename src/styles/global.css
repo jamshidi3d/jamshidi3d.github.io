@@ -1156,10 +1156,11 @@ a.btn:focus-visible {
     grid-template-columns: 1fr;
     height: auto;
     padding-top: 32px;
-    gap: 24px;
+    gap: 8px; /* slogan, character, intro sit close: the character's stage has no spare margin of its own */
   }
   .hero h1 {
     text-align: left;
+    margin-bottom: 0;
   }
   .hero .intro {
     font-size: 18px;
