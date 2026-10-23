@@ -24,3 +24,7 @@ Thumbs.db
 *.mb
 *.unitypackage
 /private/
+
+# interactive bundles from the private repo (generated)
+/public/i3d/
+/_i3d/

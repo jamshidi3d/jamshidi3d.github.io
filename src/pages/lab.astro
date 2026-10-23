@@ -1,20 +1,39 @@
 ---
 import Base from '../layouts/Base.astro';
 
+const live = [
+  ['Khosrobot lab', 'The Khosrobot rig in the browser: geometry-based and physics-based rigging working together.', '/lab/khosrobot/'],
+];
 const planned = [
-  ['Khosrobot sandbox', 'The hero character with a larger stage and controls.'],
   ['Spring chain', 'Drag a mass and watch the wave travel.'],
   ['CMB sky, cap and mask', 'Slide a hemispherical cap over the Galactic mask.'],
   ['Double pendulum', 'Tiny changes, wildly different paths.'],
 ];
 ---
 
-<Base title="Lab" description="Small interactive web apps and simulations. In progress.">
+<Base title="Lab" description="Small interactive web apps and simulations. The Khosrobot rig is live; the rest are in progress.">
   <div class="wrap">
     <header class="page-head">
       <h1>Lab</h1>
-      <p class="lede">Small interactive web apps and simulations. The first pieces are in progress.</p>
+      <p class="lede">Small interactive web apps and simulations. The Khosrobot rig is live; the rest are in progress.</p>
     </header>
+
+    <section class="group">
+      <span class="label amber">Live</span>
+      <div class="rows">
+        {
+          live.map(([title, blurb, href]) => (
+            <a class="item row nothumb" href={href}>
+              <div class="body">
+                <h3>{title}</h3>
+                <p class="blurb">{blurb}</p>
+              </div>
+              <div class="meta"><span class="kind">Lab</span><span>live</span></div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
 
     <section class="group">
       <span class="label amber">In progress</span>

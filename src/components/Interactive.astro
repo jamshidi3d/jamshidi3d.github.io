@@ -1,0 +1,205 @@
+---
+// An interactive piece built in the private interactive3d repo. The poster is in the HTML and paints first; on idle and when the box is near the
+// viewport the bundle /i3d/<name>/index.js is imported and mounted (contract: `mount(el, { reducedMotion })` -> `{ destroy() }`).
+// The poster stays until the piece says it is fully loaded (`i3d:ready`); a loading bar follows its `i3d:progress` (0..1). If the bundle is missing (a build without the private
+// repo), the import fails or reduced motion is set, the poster stays; with reduced motion a button starts the piece.
+interface Props {
+  name: string;
+  poster: string;
+  label: string;
+  ratio?: string; // CSS aspect-ratio, e.g. "16 / 10"
+}
+
+const { name, poster, label, ratio = '16 / 10' } = Astro.props;
+---
+
+<div class="i3d" data-i3d={name} style={`aspect-ratio:${ratio}`} role="group" aria-label={label}>
+  <div class="i3d-mount"></div>
+  <img class="i3d-poster" src={poster} alt={label} width="1600" height="1000" />
+  <div class="i3d-bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+    <span class="i3d-bar-text mono">Loading <output>0%</output></span>
+    <span class="i3d-bar-track"><span class="i3d-bar-fill"></span></span>
+  </div>
+  <button class="i3d-start" type="button" hidden>Start the interactive version</button>
+</div>
+
+<style>
+  .i3d {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 7px 0 var(--shadow);
+    min-height: 360px;
+  }
+  .i3d-mount,
+  .i3d-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .i3d-poster {
+    object-fit: contain;
+    background: var(--bg);
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .i3d-poster.gone {
+    opacity: 0;
+  }
+  .i3d-bar {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(320px, 70%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .i3d-bar[hidden] {
+    display: none;
+  }
+  .i3d-bar.gone {
+    opacity: 0;
+  }
+  .i3d-bar-text {
+    font-size: 12px;
+    color: var(--text-3);
+    display: flex;
+    justify-content: space-between;
+  }
+  .i3d-bar-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .i3d-bar-fill {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--gold);
+    transform-origin: left center;
+    transform: scaleX(0); /* set from the script, no easing: the bar is always exactly as long as the number says */
+  }
+  .i3d-start {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--ink);
+    border: 2px solid var(--bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 0 var(--shadow);
+    padding: 8px 18px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .i3d-start[hidden] {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .i3d {
+      aspect-ratio: auto !important;
+      height: min(78vh, 640px);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-i3d]').forEach((box) => {
+    const name = box.dataset.i3d!;
+    const host = box.querySelector<HTMLElement>('.i3d-mount')!;
+    const poster = box.querySelector<HTMLElement>('.i3d-poster')!;
+    const bar = box.querySelector<HTMLElement>('.i3d-bar')!;
+    const fill = bar.querySelector<HTMLElement>('.i3d-bar-fill')!;
+    const percent = bar.querySelector<HTMLOutputElement>('output')!;
+    // The bar eases toward the real progress, at a speed that follows how far behind it is (a time constant of about 120 ms, and never slower than 0.4 of
+    // the bar per second), so it neither jumps nor lags. The number is read off the drawn bar, so the two always agree.
+    let target = 0;
+    let drawn = 0;
+    let last = 0;
+    let running = false;
+    const draw = () => {
+      const p = Math.round(drawn * 100);
+      fill.style.transform = `scaleX(${drawn})`;
+      percent.textContent = `${p}%`;
+      bar.setAttribute('aria-valuenow', String(p));
+    };
+    const step = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      const gap = target - drawn;
+      drawn = gap <= 0.0005 ? target : Math.min(target, drawn + Math.max(gap * (1 - Math.exp(-dt / 0.12)), 0.4 * dt));
+      draw();
+      if (drawn < target) requestAnimationFrame(step);
+      else running = false;
+    };
+    const setProgress = (f: number) => {
+      target = Math.min(Math.max(f, target, 0), 1); // never goes back
+      if (!running) {
+        running = true;
+        last = performance.now();
+        requestAnimationFrame(step);
+      }
+    };
+    const button = box.querySelector<HTMLButtonElement>('.i3d-start')!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let started = false;
+
+    const start = async () => {
+      if (started) return;
+      started = true;
+      button.hidden = true;
+      bar.hidden = false;
+      setProgress(0.02);
+      try {
+        const mod = await import(/* @vite-ignore */ `/i3d/${name}/index.js`);
+        // the poster goes only when the piece is fully loaded; until then the bar shows how far it is
+        host.addEventListener('i3d:progress', (e) => setProgress(Math.max(0.05, (e as CustomEvent<number>).detail)));
+        host.addEventListener(
+          'i3d:ready',
+          () => {
+            setProgress(1);
+            // the bar reaches its end first, then the poster and the bar fade
+            const finish = () => {
+              if (drawn < 1) return void requestAnimationFrame(finish);
+              poster.classList.add('gone');
+              bar.classList.add('gone');
+              setTimeout(() => (bar.hidden = true), 300);
+            };
+            finish();
+          },
+          { once: true },
+        );
+        mod.mount(host, { reducedMotion: reduced });
+      } catch {
+        started = false; // no bundle: the poster stays
+        bar.hidden = true;
+      }
+    };
+
+    if (reduced) {
+      button.hidden = false;
+      button.addEventListener('click', start);
+      return;
+    }
+    new IntersectionObserver(
+      (entries, io) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        const go = () => start();
+        'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 3000 }) : setTimeout(go, 500);
+      },
+      { rootMargin: '200px' },
+    ).observe(box);
+  });
+</script>

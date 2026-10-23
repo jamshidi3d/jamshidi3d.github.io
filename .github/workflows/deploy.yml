@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy site
 
 on:
   push:
@@ -12,19 +12,49 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      I3D_KEY: ${{ secrets.I3D_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v4
+
+      # The private repo with the interactive pieces. Skipped (not failed) when the secret is absent, e.g. in forks.
+      - name: Check out private interactive3d
+        if: env.I3D_KEY != ''
+        uses: actions/checkout@v4
+        with:
+          repository: jamshidi3d/interactive3d
+          ref: ${{ vars.I3D_REF || 'main' }}
+          ssh-key: ${{ secrets.I3D_DEPLOY_KEY }}
+          path: _i3d
+          persist-credentials: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+
+      - name: Build interactive bundles
+        if: env.I3D_KEY != ''
+        working-directory: _i3d
+        run: |
+          npm ci
+          npm run build
+
+      - name: Guard against tracked private files
+        run: |
+          if git ls-files | grep -E '^(public/i3d|_i3d)/' ; then echo "Private output is tracked" ; exit 1 ; fi
+
       - run: npm ci
+      - name: Copy bundles into site (skipped if none)
+        run: node scripts/sync-i3d.mjs _i3d/dist
+      # the prebuild sync finds no ../interactive3d in CI, only warns, and leaves public/i3d as copied above
       - run: npm run build
+      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

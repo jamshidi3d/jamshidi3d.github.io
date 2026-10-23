@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "sync:i3d": "node scripts/sync-i3d.mjs",
+    "predev": "npm run sync:i3d",
     "dev": "astro dev",
+    "prebuild": "npm run sync:i3d",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"

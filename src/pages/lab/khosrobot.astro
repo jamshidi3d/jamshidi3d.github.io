@@ -1,0 +1,223 @@
+---
+import Base from '../../layouts/Base.astro';
+import Interactive from '../../components/Interactive.astro';
+
+const steps = [
+  {
+    title: 'Geometry places the parts',
+    text: 'Mechanical parts are placed by equations, not by simulation: the wheel rolls on its surface and never enters it (Newton-Raphson), the elbow hinges and telescoping arms come from 3D geometry, and linear algebra drives the crown, the eyes and the hands.',
+  },
+  {
+    title: 'Physics moves the body',
+    text: 'The body, arms, elbows, hands and the hand doors are rigid bodies joined by constraints, so a drag pushes the rest of the character around and it settles again. This is the idea of Physirig, here as a light web version.',
+  },
+  {
+    title: 'The two run in order',
+    text: 'Each frame, the physics pass runs first (drag, joints, collisions). The geometry pass then reads its result and places everything else: the wheel, the arms’ reach, the head, the eyes and the doors.',
+  },
+];
+---
+
+<Base title="Khosrobot lab" image="/media/img/khosrobot-lab.webp" description="The Khosrobot rig in the browser: geometry-based rigging and physics-based rigging working together. Pick a part, drag it, rotate it, stretch the arms.">
+  <div class="wrap project">
+    <a class="back label" href="/lab/">← Lab</a>
+
+    <header class="p-title">
+      <div class="label amber">Lab <span class="muted">· live demo</span></div>
+      <h1>Khosrobot lab</h1>
+      <p class="p-blurb">The Khosrobot rig running in your browser. Pick a part and pull it, turn it, or stretch an arm.</p>
+    </header>
+
+    <figure class="live">
+      <Interactive name="lab" poster="/media/img/khosrobot-lab-blur.webp" label="The Khosrobot character on a grid, with controls on the left and help on the right" ratio="16 / 9" />
+    </figure>
+
+    <div class="p-cols">
+      <div class="p-main">
+        <section class="what">
+          <div class="label amber">What it is</div>
+          <p>
+            This rig is a mixture of two techniques, and both are used here: <strong>geometry-based rigging</strong> and <strong>physics-based rigging</strong>. Neither alone gives this behaviour. Geometry makes a mechanical character precise and fast; physics makes it react.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">01</span> The ideas</h2>
+          <div class="steps">
+            {
+              steps.map((s, i) => (
+                <div class="step">
+                  <div class="label amber">Idea {i + 1}</div>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">02</span> Geometry-based rigging</h2>
+          <p>
+            A precise and fast kind of rigging, fairly hard to implement, made for an AR project. It suits mechanical rigs best, since they are built from
+            pseudo-primitive shapes. Because such rigs are low-level and fast, they export easily to game engines and run well on mobile platforms, which is why
+            they also run in a web page. The full story is on the <a href="/work/geometry-rigging/">Geometry-based rigging</a> page.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">03</span> Physics-based rigging</h2>
+          <p>
+            Physirig adds collisions, physical constraints and physics-based posing to a rig. After building several geometry-based rigs, this was the natural next
+            step: the parts of the character can push and pull each other. The original runs on Nvidia PhysX inside Blender. This page uses a light web version on
+            Rapier, with simple shapes as colliders; it is not the full Physirig. See <a href="/work/physirig/">Physirig</a>.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">04</span> Things to try</h2>
+          <p>
+            The Help panel on the right lists the controls. Drag an arm and watch the body follow; press <strong>G</strong> to grab without holding a button; press <strong>R</strong> once for a turn around the view and twice for a trackball; select an arm and press <strong>S</strong> to lengthen it. The Controls
+            panel on the left opens and closes the doors and the eyelids.
+          </p>
+        </section>
+      </div>
+
+      <aside class="p-side" aria-label="Facts">
+        <div class="fact">
+          <div class="label">Tools</div>
+          <p class="mono">TypeScript · three.js · Rapier</p>
+        </div>
+        <div class="fact">
+          <div class="label">Shown as</div>
+          <p class="mono">live demo</p>
+          <p class="note">A light web version. The character, its model and textures are all rights reserved.</p>
+        </div>
+        <div class="fact">
+          <div class="label">Related</div>
+          <p>
+            <a href="/work/geometry-rigging/">Geometry-based rigging ↗</a><br />
+            <a href="/work/physirig/">Physirig ↗</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .project {
+    padding-top: 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .p-title {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .p-title .muted {
+    color: var(--muted);
+  }
+  .p-title h1 {
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 14px 0 14px;
+  }
+  .p-blurb {
+    font-size: 20px;
+    color: var(--text-3);
+    margin: 0;
+  }
+  .live {
+    margin: 0 0 56px;
+  }
+  .p-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 72px;
+  }
+  .what {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 44px;
+  }
+  .what p {
+    font-size: 19px;
+    margin: 10px 0 0;
+    color: var(--text);
+  }
+  .block {
+    margin-bottom: 40px;
+  }
+  .block h2 {
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .block p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .p-side .fact {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .p-side .fact p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .p-side .mono {
+    font-size: 13px;
+  }
+  .p-side .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .p-cols {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .p-side {
+      order: -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
