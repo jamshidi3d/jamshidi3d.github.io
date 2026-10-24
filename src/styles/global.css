@@ -990,27 +990,55 @@ a.btn:focus-visible {
 }
 
 /* ---------- home ---------- */
-/* three columns: headline | round stage | intro. The hero ends about half-way down the first screen,
-   so the featured card titles stay visible on a laptop. */
+/* two columns: the slogan and the intro on the left (a quarter narrower than half the width), the interactive character on the right, which takes the
+   space that frees. On a wide screen the top bar and the hero together take --hero-share of a 16:9 view: the height of that view is the screen's height,
+   or, on a screen narrower than 16:9, the height a 16:9 view of the screen's width would have. */
 .hero {
-  --D: clamp(340px, 36vw, 540px);
+  --view-h: min(100vh, 56.25vw);
+  --hero-share: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--D) minmax(0, 1fr);
-  gap: clamp(40px, 4.4vw, 72px);
-  align-items: center;
-  padding: 16px 0 0;
-  height: max(280px, calc(50vh - var(--header-h)));
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: clamp(32px, 4vw, 80px);
+  align-items: stretch;
+  padding: 0;
+  height: max(420px, calc(var(--view-h) * var(--hero-share) - var(--header-h)));
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* on a wide screen the slogan is set one phrase per line, as large as the column allows ("Physics" on its plate is about 4 times the font size wide) */
+@media (min-width: 901px) {
+  .hero-text {
+    container-type: inline-size;
+  }
+  .hero .hero-text h1 {
+    font-size: clamp(43px, 20.7cqw, 126px); /* nine tenths of the largest size that fits the column */
+    line-height: 1.04;
+  }
+  .hero h1 .ln {
+    display: block;
+  }
+  /* "I make" and "Move" sit a little to the right of the plate */
+  .hero h1 .ln:first-child,
+  .hero h1 .ln:last-child {
+    padding-left: 0.3em;
+  }
 }
 
 .hero h1 {
   font-family: var(--font-hero);
   font-weight: 700;
-  font-size: clamp(38px, min(6vw, 9vh), 80px);
+  font-size: clamp(40px, min(4.2vw, 9vh), 88px);
   line-height: 1.02;
   letter-spacing: -0.01em;
-  margin-bottom: clamp(12px, 2.5vh, 28px);
+  margin-bottom: clamp(16px, 3vh, 36px);
   text-wrap: balance;
-  text-align: center;
+  text-align: left;
 }
 
 /* "Physics" on a tilted gold plate */
@@ -1027,7 +1055,7 @@ a.btn:focus-visible {
 }
 
 .hero .intro {
-  font-size: clamp(16px, min(1.5vw, 2.6vh), 20px);
+  font-size: clamp(16px, min(1.25vw, 2.4vh), 20px);
   line-height: 1.55;
   color: #b9c4d4;
   max-width: 600px;
@@ -1157,6 +1185,18 @@ a.btn:focus-visible {
     height: auto;
     padding-top: 32px;
     gap: 8px; /* slogan, character, intro sit close: the character's stage has no spare margin of its own */
+  }
+  .hero-text {
+    display: contents; /* the slogan, the character, then the intro: the order is set below */
+  }
+  .hero .hl {
+    order: 0;
+  }
+  .hero .i3d {
+    order: 1;
+  }
+  .hero .hr {
+    order: 2;
   }
   .hero h1 {
     text-align: left;
