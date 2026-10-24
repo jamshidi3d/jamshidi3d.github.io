@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Interactive from '../../components/Interactive.astro';
 import { webApplicationLd } from '../../lib/seo';
 
-const description = 'A cosmic microwave background temperature map and its mask on a HEALPix sphere, from Nside 16 to 256, seen from outside, as an observer at the centre, and as a Mollweide map, built in the browser from a small Nside=16 mesh.';
+const description = 'A map of the cosmic microwave background temperature fluctuations and its mask on a HEALPix sphere, from Nside 16 to 256, seen from outside, as an observer at the centre, and as a Mollweide map, built in the browser from a small Nside=16 mesh.';
 
 const steps = [
   {
@@ -16,7 +16,7 @@ const steps = [
   },
   {
     title: 'The data go onto the faces',
-    text: 'The temperature and the mask are two small binary files per resolution, in the same ring order, so value i belongs to face i with no lookup. The shader colours each face and greys the pixels outside the mask. Pixel blend instead shades between the pixel corners, using the mean of the pixels that share each corner.',
+    text: 'The temperature fluctuations and the mask are two small binary files per resolution, in the same ring order, so value i belongs to face i with no lookup. The shader colours each face and greys the pixels outside the mask. Pixel blend instead shades between the pixel corners, using the mean of the pixels that share each corner.',
   },
   {
     title: 'The same mesh gives three views',
@@ -32,11 +32,11 @@ const steps = [
     <header class="p-title">
       <div class="label amber">Lab <span class="muted">· live demo</span></div>
       <h1>CMB Lab</h1>
-      <p class="p-blurb">A temperature map of the cosmic microwave background and its mask on a HEALPix sphere. View it from outside, as an observer at the centre, or flattened as a Mollweide map.</p>
+      <p class="p-blurb">A map of the temperature fluctuations of the cosmic microwave background and its mask on a HEALPix sphere. View it from outside, as an observer at the centre, or flattened as a Mollweide map.</p>
     </header>
 
     <figure class="live">
-      <Interactive name="cmb" poster="/media/img/cmb-lab-blur.webp" posterMobile="/media/img/cmb-lab-mobile-blur.webp" label="The cosmic microwave background temperature on a sphere, with the masked band greyed out, a Tools menu at the upper left and a colour legend at the foot" ratio="16 / 9" />
+      <Interactive name="cmb" poster="/media/img/cmb-lab-blur.webp" posterMobile="/media/img/cmb-lab-mobile-blur.webp" label="The cosmic microwave background temperature fluctuations on a sphere, with the masked band greyed out, a Tools menu at the upper left and a colour legend at the foot" ratio="16 / 9" />
     </figure>
 
     <div class="p-cols">
@@ -44,7 +44,7 @@ const steps = [
         <section class="what">
           <div class="label amber">What it is</div>
           <p>
-            The sky as the CMB experiments see it: equal-area pixels (HEALPix, from Nside 16 with 3,072 pixels to Nside 256 with 786,432), each coloured by its temperature. The grey band is the mask, the part of the sky that is left out of the analysis.
+            The sky as the CMB experiments see it: equal-area pixels (HEALPix, from Nside 16 with 3,072 pixels to Nside 256 with 786,432), each coloured by how far its temperature is from the mean of 2.725 K, in microkelvin. The grey band is the mask, the part of the sky that is left out of the analysis.
           </p>
         </section>
 
