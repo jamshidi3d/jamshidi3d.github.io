@@ -13,10 +13,11 @@ interface Props {
   heroFont?: boolean; // Home only: preload the hero headline font and the title font (card titles are on the first screen)
 }
 
-const { title, description = SITE.description, image = '/media/img/og-default.jpg', type = 'website', canonical: canonicalPath, heroFont = false } = Astro.props;
+const { title, description = SITE.description, image = '/media/img/og-card.jpg', type = 'website', canonical: canonicalPath, heroFont = false } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · physics, graphics, tools`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
 const ogImage = new URL(image, SITE.url).href;
+const isDefaultImage = image === '/media/img/og-card.jpg'; // its size is known; pages with their own picture leave the size out
 const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -52,7 +53,11 @@ const person = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    {isDefaultImage && <meta property="og:image:width" content="1200" />}
+    {isDefaultImage && <meta property="og:image:height" content="630" />}
+    {isDefaultImage && <meta property="og:image:alt" content={`${SITE.fullName}: physics, graphics, tools, with the Khosrobot character`} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     <script type="application/ld+json" set:html={JSON.stringify(person)} is:inline />
   </head>
   <body>
