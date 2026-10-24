@@ -18,7 +18,8 @@ export default defineConfig({
   redirects: {
     '/posts/cmb_in_geometry_nodes/': '/writing/cmb-in-geometry-nodes/',
     '/tabs/about/': '/about/',
-    '/tabs/portfolio/': '/portfolio/',
+    '/tabs/portfolio/': '/',
+    '/portfolio/': '/',
     '/tabs/categories/': '/writing/',
     '/tabs/tags/': '/writing/',
     '/categories/': '/writing/',

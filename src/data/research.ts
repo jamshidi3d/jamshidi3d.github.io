@@ -48,10 +48,10 @@ export const code: ResearchEntry[] = [
       'Python package and notebooks that fit the cosmological parameters to the Planck TT, TE and EE power spectra on the full sky and on 12 separate patches of it, to see whether different parts of the sky agree.',
   },
   {
-    title: 'cosmic_projection_and_aberation',
+    title: 'cosmic_projection_and_aberration',
     date: new Date('2026-09-16'),
     tags: ['physics', 'python'],
-    href: 'https://github.com/Jamshidi3d/cosmic_projection_and_aberation',
+    href: 'https://github.com/Jamshidi3d/cosmic_projection_and_aberration',
     blurb:
       'Python code to add the Doppler aberration to a HEALPix sky map and to project maps: it resamples a deformed sphere onto a standard HEALPix grid with area weights and cuts out flat gnomonic patches, with an optional GPU backend.',
   },

@@ -18,7 +18,7 @@ const m = (text: string) =>
 /** display math */
 const d = (tex: string) => katex.renderToString(tex, { displayMode: true, throwOnError: true });
 
-const description = 'The spherical harmonics Y(l, m) on a HEALPix sphere, with the real or imaginary part for any degree l up to 64 and any order m from -l to l, seen from outside and as a Mollweide map, computed in the browser by recursion.';
+const description = 'The spherical harmonics Y(l, m) on a HEALPix sphere, with the real or imaginary part for any degree l up to twice the Nside (512 on a desktop, 256 on a phone) and any order m from -l to l, seen from outside and as a Mollweide map, computed in the browser by recursion.';
 
 const steps = [
   {
@@ -26,12 +26,12 @@ const steps = [
     text: 'A small Nside=16 HEALPix mesh (3,072 quads, under 1 MB) is loaded, and a web worker splits every pixel into children until the sphere has Nside=256 (786,432 pixels), or 128 on phones and tablets. Each pixel keeps its RING index.',
   },
   {
-    title: 'Each pixel knows its centre',
-    text: 'The four corners of a pixel carry the same two numbers: $z = \\cos\\theta$ and the azimuth $\\varphi$ of the pixel centre. The harmonic is evaluated there, so a pixel is one colour.',
+    title: 'Each pixel is evaluated once, at its centre',
+    text: 'A first pass draws the harmonic into a texture with one texel per pixel, using the centre of the pixel: $z = \\cos\\theta$ and the azimuth $\\varphi$. The sphere then looks its pixel\'s value up, so a pixel is one colour and turning the sphere costs nothing extra.',
   },
   {
     title: 'The harmonic is built by recursion',
-    text: 'The graphics card starts from $Y\'^0_0 = 1$, multiplies in the $(m, m)$ term one factor at a time, takes the first step up in $\\ell$ and then climbs to the chosen $\\ell$ with a three-term recurrence. Nothing is tabulated, so changing $\\ell$ or $m$ is instant.',
+    text: 'The graphics card starts from $Y\'^0_0 = 1$, multiplies in the $(m, m)$ term one factor at a time, takes the first step up in $\\ell$ and then climbs to the chosen $\\ell$ with a three-term recurrence. The running value carries a separate exponent, because $Y\'^m_m$ is far below the smallest float for large $m$. Nothing is tabulated, so changing $\\ell$ or $m$ is instant.',
   },
   {
     title: 'Negative m comes from positive m',
@@ -47,7 +47,7 @@ const steps = [
     <header class="p-title">
       <div class="label amber">Lab <span class="muted">· live demo</span></div>
       <h1>Spherical Harmonics</h1>
-      <p class="p-blurb">The real or imaginary part of any spherical harmonic up to degree 64, painted on a HEALPix sphere. Pick l and m, and view it from outside or as a Mollweide map.</p>
+      <p class="p-blurb">The real or imaginary part of any spherical harmonic up to degree 512, painted on a HEALPix sphere. Pick l and m, and view it from outside or as a Mollweide map.</p>
     </header>
 
     <figure class="live">
