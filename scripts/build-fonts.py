@@ -34,6 +34,7 @@ FEATURES = ["kern", "liga", "tnum", "ccmp", "locl", "mark", "mkmk"]
 FONTS = [
     # out name, source file, instancer axes (or None), fallback font file, label
     ("oxanium-700", "@fontsource/oxanium/files/oxanium-latin-700-normal.woff2", None, "arialbd.ttf"),
+    ("oxanium-800", "@fontsource/oxanium/files/oxanium-latin-800-normal.woff2", None, "arialbd.ttf"),
     ("sofia-600", "@fontsource/sofia-sans-semi-condensed/files/sofia-sans-semi-condensed-latin-600-normal.woff2", None, "arialbd.ttf"),
     ("ubuntu-400", "@fontsource/ubuntu/files/ubuntu-latin-400-normal.woff2", None, "arial.ttf"),
     ("ubuntu-700", "@fontsource/ubuntu/files/ubuntu-latin-700-normal.woff2", None, "arialbd.ttf"),

@@ -10,11 +10,11 @@ export const SITE = {
 };
 
 export const NAV = [
-  { href: '/work/', label: 'Work', desc: 'Rigging, simulation and tools' },
-  { href: '/lab/', label: 'Lab', desc: 'Small interactive experiments' },
-  { href: '/research/', label: 'Research', desc: 'Publications, talks and code' },
-  { href: '/writing/', label: 'Writing', desc: 'Notes, tutorials and essays' },
-  { href: '/about/', label: 'About', desc: 'Story, links and credits' },
+  { href: '/work/', label: 'Work', desc: 'Games, simulations, tools etc.' },
+  { href: '/lab/', label: 'Lab', desc: 'Interactive experiments & toys' },
+  { href: '/research/', label: 'Research', desc: 'Publications, talks & code' },
+  { href: '/writing/', label: 'Writing', desc: 'Notes, tutorials & essays' },
+  { href: '/about/', label: 'About', desc: 'Story, links & credits' },
 ];
 
 // Links that are not known yet are left undefined and simply not rendered.

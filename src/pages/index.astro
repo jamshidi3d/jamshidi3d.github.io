@@ -4,7 +4,7 @@ import Interactive from '../components/Interactive.astro';
 import Listing from '../components/Listing.astro';
 import TagFilter from '../components/TagFilter.astro';
 import { allItems, getModels, modelItem } from '../lib/items';
-import { SITE, LINKS } from '../data/site';
+import { SITE, LINKS, NAV } from '../data/site';
 
 const featured = (await allItems())
   .filter((i) => i.home !== undefined)
@@ -57,6 +57,26 @@ const rows = featured.slice(3);
       <!-- With a tag filter active, every matching item is shown as a card. -->
       <div data-view="filtered" hidden>
         <Listing items={filterPool} variant="card" />
+      </div>
+    </section>
+
+    <!-- The page shows a selection: point to the places where the rest is. -->
+    <section class="more" aria-labelledby="more-h">
+      <div class="section-head">
+        <h2 class="label amber" id="more-h" style="font-weight:400">See more</h2>
+      </div>
+      <div class="more-grid">
+        {
+          NAV.map((n) => (
+            <a class="card more-card" href={n.href}>
+              <h3>
+                {n.label}
+                <span class="arrow" aria-hidden="true"> →</span>
+              </h3>
+              <p>{n.desc}</p>
+            </a>
+          ))
+        }
       </div>
     </section>
   </div>
