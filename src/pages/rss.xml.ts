@@ -6,7 +6,7 @@ import { SITE } from '../data/site';
 export async function GET(context: APIContext) {
   const posts = (await getPosts()).filter((p) => !p.data.hideInWriting);
   return rss({
-    title: SITE.name,
+    title: SITE.fullName,
     description: SITE.description,
     site: context.site ?? SITE.url,
     items: posts.map((p) => ({

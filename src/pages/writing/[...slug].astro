@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 import Base from '../../layouts/Base.astro';
 import YouTube from '../../components/YouTube.astro';
 import { getPosts, fmtDate } from '../../lib/items';
+import { blogPostingLd } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const posts = (await getPosts()).filter((p) => !p.data.external);
@@ -20,7 +21,7 @@ const toc = headings.filter((h) => h.depth === 2);
 const minutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 220));
 ---
 
-<Base title={d.title} description={d.dek ?? d.blurb} image={d.image} type="article">
+<Base title={d.title} description={d.dek ?? d.blurb} image={d.image} type="article" jsonLd={[blogPostingLd({ title: d.title, description: d.dek ?? d.blurb, path: `/writing/${post.id}/`, date: d.date, image: d.image, tags: d.tags })]}>
   <div class="wrap post-wrap">
     <aside class="rail" aria-label="On this page">
       <a class="back label" href="/writing/">← Writing</a>

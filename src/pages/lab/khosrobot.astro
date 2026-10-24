@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Interactive from '../../components/Interactive.astro';
+import { webApplicationLd } from '../../lib/seo';
+
+const description = 'The Khosrobot rig in the browser: geometry-based rigging and physics-based rigging working together. Pick a part, drag it, rotate it, stretch the arms.';
 
 const steps = [
   {
@@ -18,7 +21,7 @@ const steps = [
 ];
 ---
 
-<Base title="Khosrobot lab" image="/media/img/khosrobot-lab.webp" description="The Khosrobot rig in the browser: geometry-based rigging and physics-based rigging working together. Pick a part, drag it, rotate it, stretch the arms.">
+<Base title="Khosrobot lab" image="/media/img/khosrobot-lab.webp" description={description} jsonLd={[webApplicationLd({ name: 'Khosrobot lab', description, path: '/lab/khosrobot/', image: '/media/img/khosrobot-lab.webp' })]}>
   <div class="wrap project">
     <a class="back label" href="/lab/">← Lab</a>
 

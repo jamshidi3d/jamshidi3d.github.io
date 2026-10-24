@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Interactive from '../../components/Interactive.astro';
+import { webApplicationLd } from '../../lib/seo';
+
+const description = 'A cosmic microwave background temperature map and its mask on a HEALPix sphere, from Nside 16 to 256, seen from outside, as an observer at the centre, and as a Mollweide map, built in the browser from a small Nside=16 mesh.';
 
 const steps = [
   {
@@ -22,7 +25,7 @@ const steps = [
 ];
 ---
 
-<Base title="CMB Lab" image="/media/img/cmb-lab.webp" description="A cosmic microwave background temperature map and its mask on a HEALPix sphere, from Nside 16 to 256, seen from outside, as an observer at the centre, and as a Mollweide map, built in the browser from a small Nside=16 mesh.">
+<Base title="CMB Lab" image="/media/img/cmb-lab.webp" description={description} jsonLd={[webApplicationLd({ name: 'CMB Lab', description, path: '/lab/cmb-lab/', image: '/media/img/cmb-lab.webp' })]}>
   <div class="wrap project">
     <a class="back label" href="/lab/">← Lab</a>
 

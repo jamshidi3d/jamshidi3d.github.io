@@ -3,6 +3,7 @@ import '../styles/fonts.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { SITE, LINKS } from '../data/site';
+import { breadcrumbLd, personLd, websiteLd, type JsonLd } from '../lib/seo';
 
 interface Props {
   title?: string;
@@ -10,21 +11,19 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   canonical?: string;
+  jsonLd?: JsonLd[]; // extra structured data for the page (articles, applications ...), added to the graph
   heroFont?: boolean; // Home only: preload the hero headline font and the title font (card titles are on the first screen)
 }
 
-const { title, description = SITE.description, image = '/media/img/og-card.jpg', type = 'website', canonical: canonicalPath, heroFont = false } = Astro.props;
-const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · physics, graphics, tools`;
+const { title, description = SITE.description, image = '/media/img/og-card.jpg', type = 'website', canonical: canonicalPath, heroFont = false, jsonLd = [] } = Astro.props;
+// the home page carries the full name (what people search for) and what the work is; the other pages the short name
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.fullName} · technical artist and physics researcher`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
 const ogImage = new URL(image, SITE.url).href;
 const isDefaultImage = image === '/media/img/og-card.jpg'; // its size is known; pages with their own picture leave the size out
-const person = {
+const graph = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: SITE.fullName,
-  url: SITE.url,
-  jobTitle: 'Physics PhD candidate and technical artist',
-  sameAs: [LINKS.github, LINKS.linkedin, LINKS.scholar, LINKS.orcid].filter(Boolean),
+  '@graph': [personLd(), websiteLd(), breadcrumbLd(Astro.url.pathname, title), ...jsonLd].filter(Boolean),
 };
 ---
 
@@ -46,7 +45,7 @@ const person = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png?v=5" />
     <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png?v=5" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
-    <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.fullName} href="/rss.xml" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={fullTitle} />
@@ -58,7 +57,7 @@ const person = {
     {isDefaultImage && <meta property="og:image:alt" content={`${SITE.fullName}: physics, graphics, tools, with the Khosrobot character`} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
-    <script type="application/ld+json" set:html={JSON.stringify(person)} is:inline />
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -73,10 +72,11 @@ const person = {
           <p class="mono">Code MIT · writing, images and video CC BY-NC 4.0 unless marked otherwise</p>
           <p class="mono">Embedded videos and 3D models load from YouTube and Sketchfab only when you play them.</p>
         </div>
-        <p class="mono">
-          <a href={LINKS.github} rel="noopener">GitHub</a> ·
-          <a href="/rss.xml">RSS</a>
-        </p>
+        <nav class="foot-links" aria-label="Footer">
+          <a class="foot-btn gold" href="/contact/">Contact</a>
+          <a class="foot-btn" href={LINKS.github} rel="noopener">GitHub</a>
+          <a class="foot-btn" href="/rss.xml">RSS</a>
+        </nav>
       </div>
     </footer>
 

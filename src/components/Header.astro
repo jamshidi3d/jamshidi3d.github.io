@@ -20,7 +20,7 @@ const active = (href: string) => path === href || path.startsWith(href);
 
     <nav class="nav" aria-label="Main">
       {NAV.map((n) => <a href={n.href} aria-current={active(n.href) ? 'page' : undefined}>{n.label}</a>)}
-      <a class="contact" href={`mailto:${LINKS.email}`}>Contact</a>
+      <a class="contact" href="/contact/" aria-current={active('/contact/') ? 'page' : undefined}>Contact</a>
     </nav>
 
     <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu">
@@ -39,8 +39,7 @@ const active = (href: string) => path === href || path.startsWith(href);
       ))
     }
     <div class="menu-links">
-      <a href={`mailto:${LINKS.email}`}>Contact</a>
-      <a href={LINKS.github} rel="noopener">GitHub</a>
+      <a class="menu-contact" href="/contact/">Contact</a>
       {LINKS.cvIndustry && <a href={LINKS.cvIndustry}>CV</a>}
       {LINKS.scholar && <a href={LINKS.scholar} rel="noopener">Scholar</a>}
     </div>

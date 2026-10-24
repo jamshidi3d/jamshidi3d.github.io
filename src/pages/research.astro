@@ -4,6 +4,7 @@ import Listing from '../components/Listing.astro';
 import { groupByYear, type ListItem } from '../lib/items';
 import { publications, talks, code } from '../data/research';
 import { LINKS } from '../data/site';
+import { scholarlyArticleLd } from '../lib/seo';
 
 const toItem = (r: (typeof publications)[number]): ListItem => ({
   kind: 'RESEARCH',
@@ -25,7 +26,7 @@ const cvs = [
 ].filter((c) => c.href);
 ---
 
-<Base title="Research" description="Publications, talks, code and data from a physics PhD in cosmology.">
+<Base title="Research" description="Publications, talks, code and data from a physics PhD in cosmology." jsonLd={publications.map((p) => scholarlyArticleLd(p))}>
   <div class="wrap">
     <header class="page-head">
       <h1>Research</h1>

@@ -306,6 +306,10 @@ time {
   box-shadow: 0 5px 0 var(--shadow);
 }
 
+.nav .contact {
+  transition: transform 0.08s linear, box-shadow 0.08s linear;
+}
+
 .nav .contact:focus-visible {
   outline: 3px solid var(--text);
   outline-offset: 3px;
@@ -322,6 +326,13 @@ time {
   }
   .nav .contact:hover {
     border-color: var(--bg);
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 var(--shadow);
+  }
+  .nav .contact:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--shadow);
   }
 }
 
@@ -421,9 +432,30 @@ time {
   margin-top: 28px;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px 26px;
   font-family: var(--font-mono);
   font-size: 13px;
+}
+
+/* the same gold key-cap as the top bar's Contact button on a wide screen */
+.menu-links .menu-contact {
+  background: var(--gold);
+  color: var(--ink);
+  padding: 8px 18px;
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+  box-shadow: 0 5px 0 var(--shadow);
+  margin-bottom: 5px; /* room for the shadow */
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.menu-links .menu-contact:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--shadow);
 }
 
 @media (max-width: 900px) {
@@ -464,6 +496,42 @@ body.menu-open {
 
 .site-footer .mono {
   font-size: 12px;
+}
+
+.foot-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* the top bar's Contact key-cap, smaller and dark: Contact, GitHub and RSS */
+.site-footer .foot-btn {
+  background: var(--surface);
+  color: var(--text);
+  padding: 6px 16px;
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 0 var(--shadow);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Contact: gold text and a gold shadow */
+.site-footer .foot-btn.gold {
+  color: var(--gold);
+  box-shadow: 0 4px 0 var(--gold);
+}
+
+.site-footer .foot-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-footer .foot-btn:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 3px;
 }
 
 /* ---------- page head ---------- */
