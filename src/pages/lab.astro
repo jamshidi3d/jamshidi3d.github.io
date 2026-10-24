@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 
 const live = [
-  ['Khosrobot lab', 'The Khosrobot rig in the browser: geometry-based and physics-based rigging working together.', '/lab/khosrobot/'],
+  ['Khosrobot lab', 'The Khosrobot rig in the browser: geometry-based and physics-based rigging working together.', '/lab/khosrobot/', '/media/img/khosrobot-lab-thumb.webp'],
+  ['CMB Lab', 'A CMB temperature map and its mask on a HEALPix sphere, from Nside 16 to 256: from outside, as an observer, and as a Mollweide map.', '/lab/cmb-lab/', '/media/img/cmb-lab-thumb.webp'],
 ];
 const planned = [
   ['Spring chain', 'Drag a mass and watch the wave travel.'],
@@ -11,19 +12,22 @@ const planned = [
 ];
 ---
 
-<Base title="Lab" description="Small interactive web apps and simulations. The Khosrobot rig is live; the rest are in progress.">
+<Base title="Lab" description="Small interactive web apps and simulations. The Khosrobot rig and CMB Lab are live; the rest are in progress.">
   <div class="wrap">
     <header class="page-head">
       <h1>Lab</h1>
-      <p class="lede">Small interactive web apps and simulations. The Khosrobot rig is live; the rest are in progress.</p>
+      <p class="lede">Small interactive web apps and simulations. The Khosrobot rig and CMB Lab are live; the rest are in progress.</p>
     </header>
 
     <section class="group">
       <span class="label amber">Live</span>
       <div class="rows">
         {
-          live.map(([title, blurb, href]) => (
-            <a class="item row nothumb" href={href}>
+          live.map(([title, blurb, href, thumb]) => (
+            <a class="item row" href={href}>
+              <div class="thumb">
+                <img src={thumb} alt="" loading="lazy" width="132" height="76" />
+              </div>
               <div class="body">
                 <h3>{title}</h3>
                 <p class="blurb">{blurb}</p>

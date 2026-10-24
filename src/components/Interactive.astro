@@ -6,18 +6,22 @@
 interface Props {
   name: string;
   poster: string;
+  posterMobile?: string; // the poster for phones and tablets (900px and narrower), taken from the mobile view
   label: string;
   ratio?: string; // CSS aspect-ratio, e.g. "16 / 10"
   fill?: boolean; // take the height of the parent instead of an aspect ratio (the home hero)
   bare?: boolean; // no frame: the stage melts into the page (the home hero)
 }
 
-const { name, poster, label, ratio = '16 / 10', fill = false, bare = false } = Astro.props;
+const { name, poster, posterMobile, label, ratio = '16 / 10', fill = false, bare = false } = Astro.props;
 ---
 
 <div class:list={['i3d', { fill, bare }]} data-i3d={name} style={fill ? undefined : `aspect-ratio:${ratio}`} role="group" aria-label={label}>
   <div class="i3d-mount"></div>
-  <img class="i3d-poster" src={poster} alt={label} width="1600" height="1000" />
+  <picture>
+    {posterMobile && <source media="(max-width: 900px)" srcset={posterMobile} />}
+    <img class="i3d-poster" src={poster} alt={label} width="1600" height="1000" />
+  </picture>
   <div class="i3d-bar" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
     <span class="i3d-bar-text mono">Loading <output>0%</output></span>
     <span class="i3d-bar-track"><span class="i3d-bar-fill"></span></span>
@@ -54,6 +58,9 @@ const { name, poster, label, ratio = '16 / 10', fill = false, bare = false } = A
     inset: 0;
     width: 100%;
     height: 100%;
+  }
+  .i3d picture {
+    display: contents;
   }
   .i3d-poster {
     object-fit: contain;
@@ -122,6 +129,9 @@ const { name, poster, label, ratio = '16 / 10', fill = false, bare = false } = A
     display: none;
   }
   @media (max-width: 900px) {
+    .i3d:not(.fill) .i3d-poster {
+      object-fit: cover; /* the phone poster has the proportions of the phone stage; cover absorbs the small differences between phones */
+    }
     .i3d {
       aspect-ratio: auto !important;
       height: min(78vh, 640px);

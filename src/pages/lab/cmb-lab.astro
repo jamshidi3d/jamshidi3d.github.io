@@ -1,0 +1,290 @@
+---
+import Base from '../../layouts/Base.astro';
+import Interactive from '../../components/Interactive.astro';
+
+const steps = [
+  {
+    title: 'A small mesh is loaded',
+    text: 'The Nside=16 HEALPix sphere is 3,072 quads and under 1 MB. The Nside=128 sphere has 196,608 quads and is about 50 MB as a mesh file, and Nside=256 has four times as many: too much to send.',
+  },
+  {
+    title: 'It is upgraded in the browser',
+    text: 'Each coarse pixel is split into (Nside / 16)² children. Their corners come from the HEALPix formulas, so they sit exactly on the pixel edges of the chosen resolution, and each child is stored at its RING index. A web worker does this in well under a second.',
+  },
+  {
+    title: 'The data go onto the faces',
+    text: 'The temperature and the mask are two small binary files per resolution, in the same ring order, so value i belongs to face i with no lookup. The shader colours each face and greys the pixels outside the mask. Pixel blend instead shades between the pixel corners, using the mean of the pixels that share each corner.',
+  },
+  {
+    title: 'The same mesh gives three views',
+    text: 'From outside, the sphere. As the observer, the camera sits at the centre and looks around, the way the sky is seen. For the Mollweide map the mesh is cut along l = 180°, where the sphere has a seam, and the shader flattens it with the Mollweide projection.',
+  },
+];
+---
+
+<Base title="CMB Lab" image="/media/img/cmb-lab.webp" description="A cosmic microwave background temperature map and its mask on a HEALPix sphere, from Nside 16 to 256, seen from outside, as an observer at the centre, and as a Mollweide map, built in the browser from a small Nside=16 mesh.">
+  <div class="wrap project">
+    <a class="back label" href="/lab/">← Lab</a>
+
+    <header class="p-title">
+      <div class="label amber">Lab <span class="muted">· live demo</span></div>
+      <h1>CMB Lab</h1>
+      <p class="p-blurb">A temperature map of the cosmic microwave background and its mask on a HEALPix sphere. View it from outside, as an observer at the centre, or flattened as a Mollweide map.</p>
+    </header>
+
+    <figure class="live">
+      <Interactive name="cmb" poster="/media/img/cmb-lab-blur.webp" posterMobile="/media/img/cmb-lab-mobile-blur.webp" label="The cosmic microwave background temperature on a sphere, with the masked band greyed out, a Tools menu at the upper left and a colour legend at the foot" ratio="16 / 9" />
+    </figure>
+
+    <div class="p-cols">
+      <div class="p-main">
+        <section class="what">
+          <div class="label amber">What it is</div>
+          <p>
+            The sky as the CMB experiments see it: equal-area pixels (HEALPix, from Nside 16 with 3,072 pixels to Nside 256 with 786,432), each coloured by its temperature. The grey band is the mask, the part of the sky that is left out of the analysis.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">01</span> The cosmic microwave background</h2>
+
+          <h3 class="sub">What it is</h3>
+          <p>
+            The CMB is the oldest light we can see. About 380,000 years after the Big Bang the universe had cooled to roughly 3,000 K, cool enough for electrons and protons to join into neutral atoms. Until then light was scattered all the time by free electrons; from then on it travelled freely. Since that moment the expansion of the universe has stretched it by a factor of about 1,100, so it now arrives as microwaves from every direction, with a thermal spectrum at 2.725 K.
+          </p>
+
+          <h3 class="sub">A short history</h3>
+          <p>
+            In 1948 Ralph Alpher and Robert Herman, building on George Gamow's hot Big Bang picture, predicted a relic radiation of a few kelvin. It was found by accident in 1964–65, when Arno Penzias and Robert Wilson could not get rid of a uniform noise in a horn antenna at Bell Labs. A group at Princeton around Robert Dicke, who had been preparing to look for exactly this, explained it as the afterglow of the Big Bang. Penzias and Wilson shared the 1978 Nobel Prize in Physics. The COBE satellite then showed in 1990 that the spectrum is a blackbody to high precision, and in 1992 found the tiny temperature differences across the sky, of about 1 part in 100,000. John Mather and George Smoot received the 2006 Nobel Prize in Physics for these results.
+          </p>
+
+          <h3 class="sub">Why it matters</h3>
+          <p>
+            The CMB is a snapshot of the early universe. Its hot and cold spots, a few hundred microkelvin at most on the 2.725 K background, trace regions that were slightly denser or thinner than average: the seeds that gravity later grew into galaxies and clusters. Before the light was released, these variations drove sound waves in the hot plasma, and the size of the spots they left, about one degree on the sky, is a ruler that shows space is flat on large scales. The statistics of the spots give the amounts of ordinary matter, dark matter and dark energy, the age of the universe and how fast it expands, and they test inflation, the proposed burst of rapid expansion that would have made the seeds. The light is also slightly polarised, which carries a search for gravitational waves from inflation and, through gravitational lensing, a map of the matter the light crossed on its way. A few large-angle features, such as an asymmetry between the two hemispheres of the sky, are still debated.
+          </p>
+
+          <h3 class="sub">How it is observed</h3>
+          <p>
+            The atmosphere absorbs and emits microwaves, so the best measurements come from space, from balloons and from very dry, high sites. The signal also has to be separated from the radio emission of our own galaxy, which is why the maps are masked: the grey band here is the galactic plane, and the small holes are bright sources.
+          </p>
+          <ul class="surveys">
+            <li>
+              <div class="label amber">COBE · NASA · 1989–1993</div>
+              <p>The spectrum, and the first detection of the temperature differences, at a resolution of about 7°.</p>
+            </li>
+            <li>
+              <div class="label amber">BOOMERanG and MAXIMA · balloons · 1998–2000</div>
+              <p>The first sharp view of the main acoustic peak, which showed that the geometry of space is close to flat.</p>
+            </li>
+            <li>
+              <div class="label amber">WMAP · NASA · 2001–2010</div>
+              <p>Full-sky maps down to about 0.2°, which made cosmology a precision science.</p>
+            </li>
+            <li>
+              <div class="label amber">Planck · ESA · 2009–2013</div>
+              <p>Nine frequency bands and a resolution of a few arcminutes: the most precise full-sky temperature maps, with final results released in 2018.</p>
+            </li>
+            <li>
+              <div class="label amber">ACT, South Pole Telescope, BICEP/Keck, Simons Observatory · ground</div>
+              <p>Telescopes in Chile and at the South Pole that map parts of the sky at high resolution and measure its polarisation.</p>
+            </li>
+            <li>
+              <div class="label amber">LiteBIRD · JAXA and partners · planned</div>
+              <p>A space mission to search for the polarisation pattern of gravitational waves from inflation.</p>
+            </li>
+          </ul>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">02</span> How it is built</h2>
+          <div class="steps">
+            {
+              steps.map((s, i) => (
+                <div class="step">
+                  <div class="label amber">Step {i + 1}</div>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">03</span> Why ring order</h2>
+          <p>
+            HEALPix pixels can be numbered along rings of constant latitude (RING) or in a nested hierarchy (NESTED). Spherical-harmonic tools and most CMB data files use RING order, so the mesh keeps it: face <em>i</em> is pixel <em>i</em>, and the nested numbering is used only to find the children of a coarse pixel.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">04</span> The Mollweide cut</h2>
+          <p>
+            The seam at l = 180° follows pixel edges from the north pole down to the equatorial belt. In the one base face centred on that meridian it runs along the diagonal of the pixels instead, so those pixels are split in two triangles and each half goes to its own edge of the map. The Mollweide projection keeps areas equal: the flattened mesh has the same total area as the sphere.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">05</span> Things to try</h2>
+          <p>
+            Open Tools to change the view, the resolution and the options. Turn the mask off to see the whole map, switch on the galactic grid to find your way around in each view, and try Pixel blend for smooth shading between pixels. Pick Nside 16 for a coarse look. Longitude l increases to the left in the observer and Mollweide views, as on the sky. The same mesh is the base for the next Lab tools.
+          </p>
+        </section>
+      </div>
+
+      <aside class="p-side" aria-label="Facts">
+        <div class="fact">
+          <div class="label">Tools</div>
+          <p class="mono">TypeScript · three.js · HEALPix (own implementation)</p>
+        </div>
+        <div class="fact">
+          <div class="label">Shown as</div>
+          <p class="mono">live demo</p>
+        </div>
+        <div class="fact">
+          <div class="label">Related</div>
+          <p>
+            <a href="/writing/cmb-in-geometry-nodes/">CMB in Blender's geometry nodes ↗</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .project {
+    padding-top: 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .p-title {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .p-title .muted {
+    color: var(--muted);
+  }
+  .p-title h1 {
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 14px 0 14px;
+  }
+  .p-blurb {
+    font-size: 20px;
+    color: var(--text-3);
+    margin: 0;
+  }
+  .live {
+    margin: 0 0 56px;
+  }
+  .p-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 72px;
+  }
+  .what {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 44px;
+  }
+  .what p {
+    font-size: 19px;
+    margin: 10px 0 0;
+    color: var(--text);
+  }
+  .block {
+    margin-bottom: 40px;
+  }
+  .block h2 {
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .block p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .block h3.sub {
+    font-size: 18px;
+    margin: 26px 0 8px;
+  }
+  .block h2 + h3.sub {
+    margin-top: 0;
+  }
+  .surveys {
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+  .surveys li {
+    border-top: 1px solid var(--line);
+    padding: 14px 0;
+  }
+  .surveys li p {
+    font-size: 16px;
+    margin: 6px 0 0;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .p-side .fact {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .p-side .fact p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .p-side .mono {
+    font-size: 13px;
+  }
+  .p-side .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .p-cols {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .p-side {
+      order: -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
