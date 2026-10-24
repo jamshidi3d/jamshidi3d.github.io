@@ -1,0 +1,310 @@
+---
+import Base from '../../layouts/Base.astro';
+import Interactive from '../../components/Interactive.astro';
+import { webApplicationLd } from '../../lib/seo';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+/** `$...$` stretches of a string become inline math (rendered here, at build time); the rest is escaped as text */
+const m = (text: string) =>
+  text
+    .split('$')
+    .map((part, i) =>
+      i % 2
+        ? katex.renderToString(part, { throwOnError: true })
+        : part.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+    )
+    .join('');
+/** display math */
+const d = (tex: string) => katex.renderToString(tex, { displayMode: true, throwOnError: true });
+
+const description = 'The spherical harmonics Y(l, m) on a HEALPix sphere, with the real or imaginary part for any degree l up to 64 and any order m from -l to l, seen from outside and as a Mollweide map, computed in the browser by recursion.';
+
+const steps = [
+  {
+    title: 'The sphere is built',
+    text: 'A small Nside=16 HEALPix mesh (3,072 quads, under 1 MB) is loaded, and a web worker splits every pixel into children until the sphere has Nside=256 (786,432 pixels), or 128 on phones and tablets. Each pixel keeps its RING index.',
+  },
+  {
+    title: 'Each pixel knows its centre',
+    text: 'The four corners of a pixel carry the same two numbers: $z = \\cos\\theta$ and the azimuth $\\varphi$ of the pixel centre. The harmonic is evaluated there, so a pixel is one colour.',
+  },
+  {
+    title: 'The harmonic is built by recursion',
+    text: 'The graphics card starts from $Y\'^0_0 = 1$, multiplies in the $(m, m)$ term one factor at a time, takes the first step up in $\\ell$ and then climbs to the chosen $\\ell$ with a three-term recurrence. Nothing is tabulated, so changing $\\ell$ or $m$ is instant.',
+  },
+  {
+    title: 'Negative m comes from positive m',
+    text: 'For $m < 0$ the same computation is done for $|m|$, and the result follows from the symmetry $Y^{-m}_\\ell = (-1)^m \\, \\overline{Y^m_\\ell}$.',
+  },
+];
+---
+
+<Base title="Spherical Harmonics" image="/media/img/spherical-harmonics.webp" description={description} jsonLd={[webApplicationLd({ name: 'Spherical Harmonics', description, path: '/lab/spherical-harmonics/', image: '/media/img/spherical-harmonics.webp' })]}>
+  <div class="wrap project">
+    <a class="back label" href="/lab/">← Lab</a>
+
+    <header class="p-title">
+      <div class="label amber">Lab <span class="muted">· live demo</span></div>
+      <h1>Spherical Harmonics</h1>
+      <p class="p-blurb">The real or imaginary part of any spherical harmonic up to degree 64, painted on a HEALPix sphere. Pick l and m, and view it from outside or as a Mollweide map.</p>
+    </header>
+
+    <figure class="live">
+      <Interactive name="harmonics" poster="/media/img/spherical-harmonics-blur.webp" posterMobile="/media/img/spherical-harmonics-mobile-blur.webp" label="A spherical harmonic on a sphere, in jet colours from blue (negative) to red (positive), with a Tools menu at the upper left and a menu for l and m at the foot" ratio="16 / 9" />
+    </figure>
+
+    <div class="p-cols">
+      <div class="p-main">
+        <section class="what">
+          <div class="label amber">What it is</div>
+          <p set:html={m('Spherical harmonics are the natural waves on a sphere. The degree $\\ell$ counts the nodal lines across the sphere (the more of them, the finer the pattern) and the order $m$, from $-\\ell$ to $\\ell$, says how many of those lines are meridians. In the jet colours, blue is negative, red is positive and green-yellow is about zero. The colour range is set by the largest value of the chosen harmonic, so its pattern is always easy to read.')} />
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">01</span> Why they matter</h2>
+          <p set:html={m('Any smooth function on a sphere can be written as a sum of spherical harmonics, as a function on a line is a sum of sines and cosines. The CMB temperature map is expanded this way, and the strength at each degree $\\ell$, its angular power spectrum, is the main thing cosmology reads from it.')} />
+          <p> The same functions give the shapes of atomic orbitals, the vibration modes of a planet, the gravity and magnetic fields of the Earth, and the lighting of a scene in computer graphics.
+          </p>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">02</span> How it is built</h2>
+          <div class="steps">
+            {
+              steps.map((s, i) => (
+                <div class="step">
+                  <div class="label amber">Step {i + 1}</div>
+                  <h3>{s.title}</h3>
+                  <p set:html={m(s.text)} />
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">03</span> The recursion</h2>
+          <p set:html={m('Write the harmonic with its azimuthal factor and its normalisation split off, $Y^m_\\ell = \\dfrac{e^{im\\varphi}}{\\sqrt{4\\pi}} \\, {Y\'}^m_\\ell$. The prime harmonic ${Y\'}^m_\\ell$ depends only on $z = \\cos\\theta$ and is real. For $m \\ge 0$ it is built along the path in the figure, in three steps.')} />
+
+          <figure class="path">
+            <img src="/media/img/spherical-harmonics-recursion.webp" width="1000" height="908" loading="lazy" alt="A triangle of circles, with the degree l going up and the order m going across. The path starts at l = 0, m = 0, climbs the diagonal to l = m, m = m, and then goes straight up the column m to the target degree l." />
+            <figcaption set:html={m('The path to the target. The diagonal builds ${Y\'}^m_m$ one factor at a time, then one step gives ${Y\'}^m_{m+1}$ and the three-term recurrence climbs the column $m$ up to $\\ell$.')} />
+          </figure>
+
+          <ol class="rec">
+            <li>
+              <p set:html={m('Start from ${Y\'}^0_0 = 1$ and walk up the diagonal, multiplying in one factor for each $k = 1 \\dots m$:')} />
+              <div set:html={d(String.raw`{Y'}^k_k = {Y'}^{k-1}_{k-1} \cdot \left(-\sqrt{1 - z^2}\right) \sqrt{\frac{2k + 1}{2k}} \qquad \Bigl(\text{so } {Y'}^m_m = \prod_{k=1}^{m} (-1)\sqrt{1 - z^2}\,\sqrt{\tfrac{2k+1}{2k}}\Bigr)`)} />
+              <p>One factor at a time keeps the running value in range, where a power of the sine and a product of square roots would underflow.</p>
+            </li>
+            <li>
+              <p>The first step up the column:</p>
+              <div set:html={d(String.raw`{Y'}^m_{m+1} = z \sqrt{2m + 3} \; {Y'}^m_m`)} />
+            </li>
+            <li>
+              <p set:html={m('Then, up to the chosen $\\ell$:')} />
+              <div set:html={d(String.raw`{Y'}^m_{\ell+1} = \sqrt{\frac{(2\ell + 3)(2\ell + 1)}{(\ell + m + 1)(\ell - m + 1)}} \left[ z \, {Y'}^m_\ell - \sqrt{\frac{(\ell + m)(\ell - m)}{(2\ell - 1)(2\ell + 1)}} \; {Y'}^m_{\ell-1} \right]`)} />
+            </li>
+          </ol>
+          <p set:html={m('The real part is then $\\operatorname{Re} Y^m_\\ell = {Y\'}^m_\\ell \\cos(m\\varphi)/\\sqrt{4\\pi}$ and the imaginary part $\\operatorname{Im} Y^m_\\ell = {Y\'}^m_\\ell \\sin(m\\varphi)/\\sqrt{4\\pi}$. For $m < 0$ the same is done for $|m|$, and the symmetry gives the result:')} />
+          <div set:html={d(String.raw`Y^{-m}_\ell = (-1)^m \, \overline{Y^m_\ell}`)} />
+          <p set:html={m('The code is checked against the closed forms for $\\ell \\le 3$ and against orthonormality: summed over the pixels, the harmonics are orthogonal to each other and each has unit norm.')} />
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">04</span> Things to try</h2>
+          <p set:html={m('Set $m = \\pm\\ell$ to get the sectoral harmonics, which hug the equator, and $m = 0$ to get the zonal ones, which are bands of latitude. Switch to the imaginary part to see the same pattern turned by a quarter of a wave around the pole. Try a negative $m$: the pattern keeps its shape and only its sign and phase change. Turn on the grid guide in Tools to read the latitude and longitude. In the Mollweide view the whole sphere is flat and the nodal lines are easy to count. Longitude increases to the left, as on the sky.')} />
+        </section>
+      </div>
+
+      <aside class="p-side" aria-label="Facts">
+        <div class="fact">
+          <div class="label">Tools</div>
+          <p class="mono">TypeScript · three.js · GLSL · HEALPix (own implementation)</p>
+        </div>
+        <div class="fact">
+          <div class="label">Shown as</div>
+          <p class="mono">live demo</p>
+        </div>
+        <div class="fact">
+          <div class="label">Related</div>
+          <p>
+            <a href="/lab/cmb-lab/">CMB Lab ↗</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .project {
+    padding-top: 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .p-title {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .p-title .muted {
+    color: var(--muted);
+  }
+  .p-title h1 {
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 14px 0 14px;
+  }
+  .p-blurb {
+    font-size: 20px;
+    color: var(--text-3);
+    margin: 0;
+  }
+  .live {
+    margin: 0 0 56px;
+  }
+  .p-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 72px;
+  }
+  .what {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 44px;
+  }
+  .what p {
+    font-size: 19px;
+    margin: 10px 0 0;
+    color: var(--text);
+  }
+  .block {
+    margin-bottom: 40px;
+  }
+  .block h2 {
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .block p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .block h3.sub {
+    font-size: 18px;
+    margin: 26px 0 8px;
+  }
+  .block h2 + h3.sub {
+    margin-top: 0;
+  }
+  .path {
+    margin: 22px 0;
+  }
+  .path img {
+    display: block;
+    width: min(100%, 460px);
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .path figcaption {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .rec li > p {
+    margin: 0 0 6px;
+  }
+  .rec li > div {
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  .rec {
+    margin: 0 0 18px;
+    padding-left: 1.3em;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .rec li {
+    margin-bottom: 10px;
+  }
+  .surveys {
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+  }
+  .surveys li {
+    border-top: 1px solid var(--line);
+    padding: 14px 0;
+  }
+  .surveys li p {
+    font-size: 16px;
+    margin: 6px 0 0;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .p-side .fact {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .p-side .fact p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .p-side .mono {
+    font-size: 13px;
+  }
+  .p-side .note {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .p-cols {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .p-side {
+      order: -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
