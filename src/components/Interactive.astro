@@ -27,6 +27,16 @@ const { name, poster, posterMobile, label, ratio = '16 / 10', fill = false, bare
     <span class="i3d-bar-track"><span class="i3d-bar-fill"></span></span>
   </div>
   <button class="i3d-start" type="button" hidden>Start the interactive version</button>
+  {
+    !fill && (
+      <button class="i3d-max" type="button" aria-pressed="false" aria-label="Maximize" title="Maximize (Esc to close)">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path class="to-max" d="M10 2h4v4M6 14H2v-4M14 2l-4.5 4.5M2 14l4.5-4.5" />
+          <path class="to-min" d="M14 6h-4V2M2 10h4v4M10 6l4-4M6 10l-4 4" />
+        </svg>
+      </button>
+    )
+  }
 </div>
 
 <style>
@@ -128,6 +138,47 @@ const { name, poster, posterMobile, label, ratio = '16 / 10', fill = false, bare
   .i3d-start[hidden] {
     display: none;
   }
+  .i3d-max {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 50;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0.85;
+  }
+  .i3d-max:hover,
+  .i3d-max:focus-visible {
+    opacity: 1;
+    border-color: var(--gold);
+  }
+  .i3d-max .to-min,
+  .i3d.max .i3d-max .to-max {
+    display: none;
+  }
+  .i3d.max .i3d-max .to-min {
+    display: inline;
+  }
+  /* maximized: the box covers the viewport (the demo follows its size) */
+  .i3d.max {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100dvh !important;
+    aspect-ratio: auto !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
   @media (max-width: 900px) {
     .i3d:not(.fill) .i3d-poster {
       object-fit: cover; /* the phone poster has the proportions of the phone stage; cover absorbs the small differences between phones */
@@ -145,6 +196,20 @@ const { name, poster, posterMobile, label, ratio = '16 / 10', fill = false, bare
 <script>
   document.querySelectorAll<HTMLElement>('[data-i3d]').forEach((box) => {
     const name = box.dataset.i3d!;
+    const maxBtn = box.querySelector<HTMLButtonElement>('.i3d-max');
+    if (maxBtn) {
+      const setMax = (on: boolean) => {
+        box.classList.toggle('max', on);
+        document.documentElement.style.overflow = on ? 'hidden' : '';
+        maxBtn.setAttribute('aria-pressed', String(on));
+        maxBtn.setAttribute('aria-label', on ? 'Exit maximized view' : 'Maximize');
+        maxBtn.title = on ? 'Exit maximized view (Esc)' : 'Maximize (Esc to close)';
+      };
+      maxBtn.addEventListener('click', () => setMax(!box.classList.contains('max')));
+      addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && box.classList.contains('max')) setMax(false);
+      });
+    }
     const host = box.querySelector<HTMLElement>('.i3d-mount')!;
     const poster = box.querySelector<HTMLElement>('.i3d-poster')!;
     const bar = box.querySelector<HTMLElement>('.i3d-bar')!;

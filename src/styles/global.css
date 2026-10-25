@@ -1064,13 +1064,14 @@ a.btn:focus-visible {
 .hero {
   --view-h: min(100vh, 56.25vw);
   --hero-share: 1;
+  --peek: clamp(190px, 18vh, 280px); /* the tip of the first cards (section heading + top of the thumbnails) stays above the fold */
   display: grid;
   --gap: clamp(32px, 4vw, 80px); /* the space that used to separate the columns: now part of the interactive area, so the character comes nearer the text */
   grid-template-columns: calc((100% - var(--gap)) * 0.375) minmax(0, 1fr); /* the text column keeps its width */
   gap: 0;
   align-items: stretch;
   padding: 0;
-  height: max(420px, calc(var(--view-h) * var(--hero-share) - var(--header-h)));
+  height: max(420px, calc(var(--view-h) * var(--hero-share) - var(--header-h) - var(--peek)));
 }
 
 .hero-text {
