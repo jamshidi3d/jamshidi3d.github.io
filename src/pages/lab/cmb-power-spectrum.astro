@@ -1,0 +1,257 @@
+---
+import Base from '../../layouts/Base.astro';
+import Interactive from '../../components/Interactive.astro';
+import { webApplicationLd } from '../../lib/seo';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+/** `$...$` stretches of a string become inline math (rendered here, at build time); the rest is escaped as text */
+const m = (text: string) =>
+  text
+    .split('$')
+    .map((part, i) =>
+      i % 2
+        ? katex.renderToString(part, { throwOnError: true })
+        : part.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+    )
+    .join('');
+
+const description = 'The CMB angular power spectrum (TT, EE and TE) of a flat ΛCDM universe, redrawn in the browser as you change the baryon and dark-matter densities, the Hubble constant, the optical depth, the spectral index and the amplitude. The spectra come from a polynomial fitted to CAMB runs.';
+
+const steps = [
+  {
+    title: 'A grid of real calculations',
+    text: 'CAMB, a Boltzmann code, was run offline for 5,625 models: 5 values each of $\\omega_b = \\Omega_b h^2$, $\\omega_c = \\Omega_c h^2$, $H_0$ and $\\tau$, and 3 each of $n_s$ and $A_s$. Only the fitted result is shipped (270 KB), not the code or the runs.',
+  },
+  {
+    title: 'The peaks are lined up first',
+    text: 'Changing $H_0$, $\\omega_b$ or $\\omega_c$ moves the acoustic peaks to other $\\ell$, because it changes the angular size $\\theta_*$ of the sound horizon. Fitting curves whose peaks sit in different places would smear them, so every curve is stored against $x = \\ell\\,\\theta_*$ (for $\\ell > 20$) and $\\theta_*$ is fitted as well.',
+  },
+  {
+    title: 'The right quantity is fitted',
+    text: 'TT and EE are fitted as $\\ln D_\\ell$, and TE as the correlation $r = TE/\\sqrt{TT \\cdot EE}$, which stays between $-1$ and $1$ and does not cross zero as sharply as TE itself. $A_s$ is divided out exactly and put back, since the unlensed spectra scale with it; the fit only has to carry what lensing adds. $\\tau$ and $A_s$ enter through their logarithms, because the low-$\\ell$ EE bump goes as $\\tau^2$.',
+  },
+  {
+    title: 'A polynomial replaces the solver',
+    text: 'The curves are reduced to 24 principal components per spectrum. The coefficient of each component, and $\\theta_*$, is a degree-4 polynomial in the six parameters (196 Chebyshev terms), fitted by least squares to the 5,625 models. The browser evaluates the polynomials and rebuilds the curve: a few milliseconds, so the sliders move the plot continuously.',
+  },
+];
+
+const accuracy = [
+  ['TT', '0.04%', '0.02%', '0.04%'],
+  ['EE', '10%*', '0.25%', '0.07%'],
+  ['TE', '1.8%', '0.13%', '0.04%'],
+];
+---
+
+<Base title="CMB Power Spectrum" image="/media/img/cmb-power-spectrum.webp" description={description} jsonLd={[webApplicationLd({ name: 'CMB Power Spectrum', description, path: '/lab/cmb-power-spectrum/', image: '/media/img/cmb-power-spectrum.webp' })]}>
+  <div class="wrap project">
+    <a class="back label" href="/lab/">← Lab</a>
+
+    <header class="p-title">
+      <div class="label amber">Lab <span class="muted">· live demo</span></div>
+      <h1>CMB Power Spectrum</h1>
+      <p class="p-blurb">Move the six parameters of a flat ΛCDM universe and watch the temperature (TT), polarisation (EE) and cross (TE) spectra of the CMB respond.</p>
+    </header>
+
+    <figure class="live">
+      <Interactive name="cmbspectrum" poster="/media/img/cmb-power-spectrum-blur.webp" posterMobile="/media/img/cmb-power-spectrum-mobile-blur.webp" label="A plot of the CMB TT power spectrum with its acoustic peaks, next to sliders for six cosmological parameters and buttons for TT, EE and TE" ratio="16 / 9" />
+    </figure>
+
+    <div class="p-cols">
+      <div class="p-main">
+        <section class="what">
+          <div class="label amber">What it is</div>
+          <p set:html={m('The power spectrum says how strong the fluctuations of the CMB are at each angular scale: $D_\\ell = \\ell(\\ell+1)\\,C_\\ell/2\\pi$ against the multipole $\\ell$, where larger $\\ell$ means smaller angles on the sky. The dashed curve is the Planck 2018 best-fit model and the solid one is yours. TT is the temperature, EE the E-mode polarisation and TE their correlation. The horizontal axis is logarithmic up to $\\ell = 30$ and linear after it.')} />
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">01</span> What each slider does</h2>
+          <p set:html={m('The sliders for the matter densities are $\\Omega_b$ and $\\Omega_c$, as fractions of the critical density. What the CMB responds to is the physical density $\\omega = \\Omega h^2$, so the range of each slider follows $H_0$. More baryons raise the odd peaks over the even ones. More dark matter lowers the peaks, because the photon-baryon fluid is driven less. Raising $H_0$ at fixed $\\Omega$ raises the physical densities and shortens the distance to the last-scattering surface, which slides the whole pattern in $\\ell$. A larger optical depth $\\tau$ dims the small scales by $e^{-2\\tau}$ and raises the large-scale EE bump. A larger $n_s$ tilts power towards small scales, and $A_s$ sets the overall height.')} />
+          <p set:html={m('The universe is flat, so the dark-energy density follows from the others: $\\Omega_\\Lambda = 1 - \\Omega_b - \\Omega_c - \\Omega_\\nu - \\Omega_r$, with the neutrinos and the radiation taken out as CAMB does. It is shown under the sliders (0.685 for the Planck model).')} />
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">02</span> How it works without a solver</h2>
+          <p>A Boltzmann code takes seconds per model, too slow for a slider. So the spectra are calculated ahead of time on a grid of models and the page interpolates between them.</p>
+          <div class="steps">
+            {
+              steps.map((s, i) => (
+                <div class="step">
+                  <div class="label amber">Step {i + 1}</div>
+                  <h3>{s.title}</h3>
+                  <p set:html={m(s.text)} />
+                </div>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">03</span> How accurate it is</h2>
+          <p set:html={m('I compared the emulator with 200 new CAMB runs at random parameters inside the box, over $\\ell = 2$ to $2500$. The table gives the 95th-percentile error, as a fraction of the value (for TE, of $\\sqrt{TT \\cdot EE}$). Interpolating between the grid nodes, which I tried first, was about four times less accurate than the polynomial (0.16% against 0.02–0.07% at $\\ell > 200$) and its data four times larger.')} />
+          <table class="acc">
+            <thead><tr><th>Spectrum</th><th>ℓ 2–30</th><th>ℓ 30–200</th><th>ℓ 2000–2500</th></tr></thead>
+            <tbody>
+              {accuracy.map((r) => <tr>{r.map((c, i) => (i ? <td>{c}</td> : <th scope="row">{c}</th>))}</tr>)}
+            </tbody>
+          </table>
+          <p set:html={m('Between $\\ell = 200$ and $2000$ the 95th-percentile error is under 0.1% for all three. *The weak spot is EE at $\\ell \\lesssim 30$, around $\\ell \\approx 9$–10, where EE falls to about $10^{-3}\\,\\mu\\mathrm{K}^2$, against about $0.05\\,\\mu\\mathrm{K}^2$ in its reionization bump, so the error cannot be seen on the plot (the 10% is a relative error of that tiny value). At every $\\ell$, cosmic variance, the limit of what the sky can tell us, is far larger than these errors. Beyond the fitted box the sliders stop. The box is $\\omega_b = \\Omega_b h^2 = 0.020$–$0.025$, $\\omega_c = \\Omega_c h^2 = 0.10$–$0.14$, $H_0 = 60$–$80$, $\\tau = 0.02$–$0.12$, $n_s = 0.92$–$1.00$ and $A_s = 1.5$–$3.0 \\times 10^{-9}$; at $H_0 = 67.4$ that is $\\Omega_b = 0.044$–$0.055$ and $\\Omega_c = 0.22$–$0.31$. The model is flat, with a neutrino mass sum of 0.06 eV and no tensor modes.')} />
+        </section>
+
+        <section class="block">
+          <h2 class="label"><span class="amber">04</span> Credits</h2>
+          <p set:html={m('The spectra were computed with CAMB (Lewis, Challinor & Lasenby 2000, ApJ 538, 473). The reference model uses the Planck 2018 best-fit values (Planck Collaboration 2020, A&A 641, A6, TT,TE,EE+lowE+lensing).')} />
+        </section>
+      </div>
+
+      <aside class="p-side" aria-label="Facts">
+        <div class="fact">
+          <div class="label">Tools</div>
+          <p class="mono">TypeScript · Canvas 2D · CAMB (offline) · PCA · polynomial regression</p>
+        </div>
+        <div class="fact">
+          <div class="label">Shown as</div>
+          <p class="mono">live demo</p>
+        </div>
+        <div class="fact">
+          <div class="label">Related</div>
+          <p>
+            <a href="/lab/cmb-lab/">CMB Map ↗</a><br />
+            <a href="/lab/spherical-harmonics/">Spherical Harmonics ↗</a>
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .project {
+    padding-top: 40px;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .p-title {
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+  .p-title .muted {
+    color: var(--muted);
+  }
+  .p-title h1 {
+    font-weight: 600;
+    font-size: clamp(36px, 5vw, 56px);
+    margin: 14px 0 14px;
+  }
+  .p-blurb {
+    font-size: 20px;
+    color: var(--text-3);
+    margin: 0;
+  }
+  .live {
+    margin: 0 0 56px;
+  }
+  .p-cols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 72px;
+  }
+  .what {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 44px;
+  }
+  .what p {
+    font-size: 19px;
+    margin: 10px 0 0;
+    color: var(--text);
+  }
+  .block {
+    margin-bottom: 40px;
+  }
+  .block h2 {
+    font-weight: 400;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 18px;
+  }
+  .block p {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text-2);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+  }
+  .step p {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .acc {
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+  .acc th,
+  .acc td {
+    border-bottom: 1px solid var(--line);
+    padding: 8px 18px 8px 0;
+    text-align: left;
+    font-weight: 400;
+    color: var(--text-2);
+  }
+  .acc thead th {
+    color: var(--muted);
+  }
+  .p-side .fact {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  .p-side .fact p {
+    margin: 6px 0 0;
+    font-size: 15px;
+    color: var(--text-2);
+  }
+  .p-side .mono {
+    font-size: 13px;
+  }
+  @media (max-width: 900px) {
+    .p-cols {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .p-side {
+      order: -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 24px;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
