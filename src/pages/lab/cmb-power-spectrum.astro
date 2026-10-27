@@ -37,6 +37,45 @@ const steps = [
   },
 ];
 
+const params = [
+  {
+    name: String.raw`Baryon density $\Omega_b$ ($\omega_b = \Omega_b h^2$)`,
+    intro: String.raw`How much ordinary matter there is: the protons and electrons that make up stars, gas and us, about 5% of the universe's energy.`,
+    physics: String.raw`Before recombination the photons and baryons are one fluid, a plasma that falls into the dark-matter potential wells and is pushed back out by photon pressure, ringing like a sound wave. Baryons add weight to that fluid: it sags deeper into the wells than it springs back out, so the compressions are favoured over the rarefactions. Heavier fluid also carries sound more slowly, so the wave travels a shorter distance before recombination. And more baryons mean more free electrons, which keep photons more tightly coupled and let less of the small-scale structure leak out by photon diffusion (Silk damping).`,
+    effect: String.raw`Compression (odd) peaks are enhanced over rarefaction (even) peaks by an amount that grows with $R$, so the 2nd peak drops relative to the 1st and 3rd. A smaller $r_s$ moves the peaks to higher $\ell$, $\ell_n \approx n\pi D_A/r_s$, as a small shift. The damping wavenumber $k_D$ grows with $\omega_b$, so the envelope $e^{-2(\ell/\ell_D)^2}$ moves out and the damping tail rises slightly. The same odd/even modulation is in EE, in the opposite phase to TT. Try: raise $\Omega_b$ and watch the 2nd peak fall.`,
+  },
+  {
+    name: String.raw`Cold dark matter density $\Omega_c$ ($\omega_c = \Omega_c h^2$)`,
+    intro: String.raw`How much non-baryonic matter there is, which feels gravity but never interacts with light, about a quarter of the universe.`,
+    physics: String.raw`Dark matter is the scaffolding the plasma moves on. Its main role in the CMB is the timing of matter-radiation equality: the more dark matter, the earlier gravity takes over from radiation. While radiation still matters, the potential wells that the fluid is falling into are decaying, and this decay pumps the oscillation like pushing a swing at the right moment, boosting the peaks. The sooner equality happens, the less pumping the modes get; the same residual radiation also gives a leftover early ISW signal near the first peak.`,
+    effect: String.raw`A larger $\omega_c$ moves $z_{\rm eq}$ earlier: less driving, less early ISW, so the peaks come down, the 1st most. The low-$\ell$ Sachs-Wolfe plateau, $\Theta \simeq \Phi/3$ with $\Phi = \tfrac35\zeta$ in matter domination, does not depend on $\omega_c$ at fixed $A_s$, so the peaks sink against it. A faster early expansion also shrinks $r_s$ and a larger $\omega_m$ changes $D_A$, so the peaks shift in $\ell$ a little. At fixed $H_0$ a larger $\Omega_c$ lowers $\Omega_\Lambda$. Try: raise $\Omega_c$ and compare the 1st peak with the plateau.`,
+  },
+  {
+    name: String.raw`Hubble constant $H_0$`,
+    intro: String.raw`The expansion rate today, in km/s/Mpc. It sets the size of the universe and the scale for distances.`,
+    physics: String.raw`The CMB does not know about $H_0$ directly: it knows the physical densities, and the angle on the sky at which we see the fixed physical ruler of the sound horizon. With the density sliders held fixed, a larger $H_0$ means larger physical densities (the effects above) and a shorter Hubble distance $c/H_0$, so the last-scattering surface is closer to us. The ruler stays about the same, and a closer ruler looks larger. The result is the same acoustic pattern, redrawn on a sky where each feature spans a larger angle, so the peaks sit at higher $\ell$.`,
+    effect: String.raw`The acoustic angle is $\theta_* = r_s/D_A$ (shown under the sliders), and every peak is at $\ell_n \approx n\pi/\theta_*$ with a phase shift (about $\ell_A \approx \pi/\theta_* \approx 300$ for the Planck model, the 1st peak near 220). A larger $H_0$ gives a shorter $D_A$ (and a smaller $r_s$ through $\omega_m$), and the pattern shifts to higher $\ell$. On the plot this is the largest change of position of any slider. Try: move $H_0$ and compare $100\,\theta_*$ with the peak positions.`,
+  },
+  {
+    name: String.raw`Optical depth $\tau$`,
+    intro: String.raw`How opaque the universe was to CMB photons after the first stars ionized the gas again: the chance that a photon scattered on its way to us.`,
+    physics: String.raw`The first stars and galaxies reionized the gas. Free electrons appeared again and scattered a fraction of the CMB photons on their way to us. Those photons are knocked out of the direction they came from, and their small-scale anisotropy is smeared out, so everything inside the horizon scale at that time is dimmed, and all peaks are lower by the same factor. But the same scattering of the large-scale temperature quadrupole polarises the light, so a new polarisation signal appears at the largest angles, where recombination produces essentially none.`,
+    effect: String.raw`For $\ell \gtrsim 20$ the amplitude is scaled by $C_\ell \to e^{-2\tau}C_\ell$ in TT and EE, and TE by $e^{-2\tau}$ too, with no change of shape. At low $\ell$ the E-mode amplitude is linear in $\tau$, so the reionization bump of EE grows as $C^{EE}_\ell \propto \tau^2$, and the low-$\ell$ TE grows as $\propto \tau$. Only the combination $A_s e^{-2\tau}$ is fixed by the high-$\ell$ spectra; the low-$\ell$ EE bump breaks the degeneracy. Try: raise $\tau$ in EE and watch the bump rise while the peaks fall.`,
+  },
+  {
+    name: String.raw`Spectral index $n_s$`,
+    intro: String.raw`How the strength of the primordial fluctuations changes with scale: $n_s = 1$ would be the same on all scales.`,
+    physics: String.raw`Inflation stretched quantum fluctuations to cosmic size, and because the expansion rate slowly changed during it, the fluctuations that left the horizon earlier (large scales) are not quite the same strength as those that left later (small scales). $n_s$ is the measure of this slow tilt: Planck sees slightly more power on large scales ($n_s < 1$). In the CMB, scale is angle: the large scales are the low multipoles, the small ones the high multipoles.`,
+    effect: String.raw`A tilt about $\ell \approx 700$ that does not move any peak: to first order $D_\ell \to D_\ell\,(\ell/700)^{\Delta n_s}$, for instance $D_\ell \propto \ell^{\,n_s - 1}$ on the Sachs-Wolfe plateau. A larger $n_s$ lowers the plateau and raises the peaks beyond the pivot and the damping tail, equally in TT, EE and TE. Try: raise $n_s$ and compare the plateau with the 3rd peak.`,
+  },
+  {
+    name: String.raw`Primordial amplitude $A_s$`,
+    intro: String.raw`The overall strength of the initial fluctuations laid down by inflation, at one reference scale.`,
+    physics: String.raw`It is the starting amplitude from which all the physics above grows. It does not change the dynamics, only the scale of the result: a louder start gives a louder sky at every angle. The photons then carry that amplitude through the plasma, so the shape of the spectrum is set by the other parameters and the height by $A_s$. Gravitational lensing, which redistributes power between scales, also depends on it, because the lensing deflections are themselves made by the same fluctuations.`,
+    effect: String.raw`The primary $C_\ell \to (A_s'/A_s)\,C_\ell$ at every $\ell$, an offset of $\ln D_\ell$ with no change of shape or position. The lensed spectra scale a little faster than linearly, mostly in the peak smoothing and in the damping tail, which is why the emulator treats $A_s$ as a fitted variable rather than a factor. At $\ell \gtrsim 20$ it is degenerate with $\tau$ through $A_s e^{-2\tau}$. Try: raise $A_s$ and $\tau$ together and see TT hold at high $\ell$ while EE moves at low $\ell$.`,
+  },
+];
+
 const accuracy = [
   ['TT', '0.04%', '0.02%', '0.04%'],
   ['EE', '10%*', '0.25%', '0.07%'],
@@ -67,8 +106,22 @@ const accuracy = [
 
         <section class="block">
           <h2 class="label"><span class="amber">01</span> What each slider does</h2>
-          <p set:html={m('The sliders for the matter densities are $\\Omega_b$ and $\\Omega_c$, as fractions of the critical density. What the CMB responds to is the physical density $\\omega = \\Omega h^2$, so the range of each slider follows $H_0$. More baryons raise the odd peaks over the even ones. More dark matter lowers the peaks, because the photon-baryon fluid is driven less. Raising $H_0$ at fixed $\\Omega$ raises the physical densities and shortens the distance to the last-scattering surface, which slides the whole pattern in $\\ell$. A larger optical depth $\\tau$ dims the small scales by $e^{-2\\tau}$ and raises the large-scale EE bump. A larger $n_s$ tilts power towards small scales, and $A_s$ sets the overall height.')} />
-          <p set:html={m('The universe is flat, so the dark-energy density follows from the others: $\\Omega_\\Lambda = 1 - \\Omega_b - \\Omega_c - \\Omega_\\nu - \\Omega_r$, with the neutrinos and the radiation taken out as CAMB does. It is shown under the sliders (0.685 for the Planck model).')} />
+          <p set:html={m(String.raw`The model is flat ΛCDM with primary anisotropies and CMB lensing (CAMB); there is no SZ, no foregrounds, no tensor modes. The sliders for the matter densities are $\Omega_b$ and $\Omega_c$, as fractions of the critical density. The CMB responds to the physical densities $\omega = \Omega h^2$, so the range of each slider follows $H_0$. Below, for each parameter: what it is, the physics it enters through, and its contribution to the spectrum.`)} />
+          <div class="params">
+            {
+              params.map((q) => (
+                <div class="param">
+                  <h3 set:html={m(q.name)} />
+                  <p class="intro" set:html={m(q.intro)} />
+                  <div class="label amber">Physics</div>
+                  <p set:html={m(q.physics)} />
+                  <div class="label amber">What to expect</div>
+                  <p set:html={m(q.effect)} />
+                </div>
+              ))
+            }
+          </div>
+          <p set:html={m(String.raw`Flatness fixes the dark-energy density, $\Omega_\Lambda = 1 - \Omega_b - \Omega_c - \Omega_\nu - \Omega_r$, with the neutrinos and the radiation taken out as CAMB does. It is shown under the sliders (0.685 for the Planck model). It has no slider, but it enters twice: through $D_A(z_*)$, hence the peak positions, and through the late ISW effect, $\int (\Phi' + \Psi')\,d\eta$ as the potentials decay at $z \lesssim 1$, which adds power to TT at $\ell \lesssim 30$.`)} />
         </section>
 
         <section class="block">
@@ -208,6 +261,35 @@ const accuracy = [
     font-size: 14px;
     color: var(--muted);
     margin: 0;
+  }
+  .params {
+    display: grid;
+    gap: 16px;
+    margin: 18px 0 24px;
+  }
+  .param {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .param h3 {
+    font-size: 18px;
+    margin: 0 0 10px;
+  }
+  .param p.intro {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+  }
+  .param .label {
+    margin-top: 12px;
+  }
+  .param p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 4px 0 0;
+    color: var(--text-2);
   }
   .acc {
     border-collapse: collapse;
