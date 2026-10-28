@@ -9,6 +9,7 @@ visibility: video
 image: /media/img/squash_stretch.webp
 video: /media/video/squash_stretch.mp4
 earlier: true
+game: parvaneh
 links:
   - label: Parvaneh on Steam
     href: https://store.steampowered.com/app/353990/Parvaneh_Legacy_of_the_Lights_Guardians/

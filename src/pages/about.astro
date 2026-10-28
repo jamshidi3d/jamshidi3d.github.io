@@ -15,6 +15,8 @@ const links = [
   LINKS.scholar && { label: 'Scholar', href: LINKS.scholar, text: 'Google Scholar' },
   LINKS.orcid && { label: 'ORCID', href: LINKS.orcid, text: 'ORCID' },
   LINKS.inspire && { label: 'INSPIRE', href: LINKS.inspire, text: 'INSPIRE' },
+  LINKS.cvIndustry && { label: 'CV, game industry', href: LINKS.cvIndustry, text: 'PDF' },
+  LINKS.cvAcademic && { label: 'CV, academic', href: LINKS.cvAcademic, text: 'PDF' },
 ].filter(Boolean) as { label: string; href: string; text: string }[];
 
 const credits = [
@@ -36,6 +38,11 @@ const credits = [
     <header class="page-head">
       <h1>About</h1>
     </header>
+
+    <div class="cv-row">
+      <a class="cv-btn" href={LINKS.cvIndustry}>CV, Game industry</a>
+      <a class="cv-btn" href={LINKS.cvAcademic}>CV, Academic</a>
+    </div>
 
     <div class="prose">
       <p>
@@ -88,3 +95,40 @@ const credits = [
     </div>
   </div>
 </Base>
+
+<style>
+  .cv-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 0 0 40px;
+  }
+  /* key-cap buttons, same as the Contact button in the top bar */
+  .cv-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 15px;
+    padding: 8px 18px;
+    border: 2px solid var(--bg);
+    border-radius: 8px;
+    box-shadow: 0 5px 0 var(--shadow);
+    text-decoration: none;
+    transition: transform 0.08s linear, box-shadow 0.08s linear;
+  }
+  .cv-btn:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 3px;
+  }
+  @media (hover: hover) {
+    .cv-btn:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 var(--shadow);
+    }
+    .cv-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--shadow);
+    }
+  }
+</style>

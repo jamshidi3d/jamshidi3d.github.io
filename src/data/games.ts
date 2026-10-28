@@ -26,7 +26,7 @@ export const GAMES: Game[] = [
     logo: '/media/games/tamitos.webp',
     studio: 'Qorpo',
     released: '2026',
-    role: 'Principal technical animator',
+    role: 'Senior technical animator',
     platform: 'Unreal, Windows',
     desc:
       'A 3D adventure where two sisters, Ela and Lumi, learn to understand autistic friends who see the world differently.',
@@ -41,11 +41,14 @@ export const GAMES: Game[] = [
     logo: '/media/games/aneemate.webp',
     studio: 'Qorpo',
     released: '2025',
-    role: 'Principal technical animator',
+    role: 'Senior technical animator',
     platform: 'Unreal, Windows',
     desc:
       'A fantasy creature-bonding extraction shooter: a creature chooses you and shares an Aura that shapes your power.',
-    links: [{ label: 'Epic Games', href: 'https://store.epicgames.com/p/aneemate-896b7e', external: true }],
+    links: [
+      { label: 'Epic Games', href: 'https://store.epicgames.com/p/aneemate-896b7e', external: true },
+      { label: 'Procedural animation', href: '/work/tps-procedural-animation/' },
+    ],
   },
   {
     slug: 'citizen-conflict',
@@ -53,11 +56,14 @@ export const GAMES: Game[] = [
     logo: '/media/games/citizen-conflict.webp',
     studio: 'Qorpo',
     released: '2024',
-    role: 'Principal technical animator',
+    role: 'Senior technical animator',
     platform: 'Unreal, Windows',
     desc:
       'A free-to-play hero shooter in a futuristic dystopia, where three rival factions fight for control.',
-    links: [{ label: 'Epic Games', href: 'https://store.epicgames.com/p/citizen-conflict-95e40e', external: true }],
+    links: [
+      { label: 'Epic Games', href: 'https://store.epicgames.com/p/citizen-conflict-95e40e', external: true },
+      { label: 'Animation system', href: '/work/tps-animation-system/' },
+    ],
   },
   {
     slug: 'hardambil',
@@ -69,7 +75,10 @@ export const GAMES: Game[] = [
     platform: 'Unity, Android',
     desc:
       'A real-time online strategy game for Android, played against other people.',
-    links: [{ label: 'Trailer', href: 'https://www.youtube.com/watch?v=h3LDTvjCU4s', external: true }],
+    links: [
+      { label: 'Trailer', href: 'https://www.youtube.com/watch?v=h3LDTvjCU4s', external: true },
+      { label: 'Maya to Blender exporter', href: '/work/maya-to-blender/' },
+    ],
   },
   {
     slug: 'parvaneh',
@@ -87,6 +96,7 @@ export const GAMES: Game[] = [
         href: 'https://store.steampowered.com/app/353990/Parvaneh_Legacy_of_the_Lights_Guardians/',
         external: true,
       },
+      { label: 'Squash-stretchy bones', href: '/work/squash-stretch-bones/' },
     ],
   },
   {

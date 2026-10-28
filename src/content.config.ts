@@ -42,6 +42,7 @@ const projects = defineCollection({
     steps: z.array(step).max(4).optional(),
     links: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
     related: z.array(z.string()).default([]),
+    game: z.string().optional(), // slug of the game this was made for (see data/games.ts)
     // listing
     home: z.number().optional(), // rank on the Home page (1 = first)
     earlier: z.boolean().default(false), // short "Earlier work" entry, no full page

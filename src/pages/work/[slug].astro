@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Listing from '../../components/Listing.astro';
 import YouTube from '../../components/YouTube.astro';
 import { getProjects, projectItem } from '../../lib/items';
+import { GAMES } from '../../data/games';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -19,6 +20,7 @@ const shownAs = {
   'open-source': 'open source',
 }[d.visibility];
 
+const game = GAMES.find((g) => g.slug === d.game);
 const blocks = [
   { n: '01', name: 'Problem', text: d.problem },
   { n: '02', name: 'Constraint', text: d.constraint },
@@ -118,6 +120,14 @@ const more = d.related
             <div class="fact">
               <div class="label">Role</div>
               <p>{d.role}</p>
+            </div>
+          )
+        }
+        {
+          game && (
+            <div class="fact">
+              <div class="label">Game</div>
+              <p><a href={`/work/#${game.slug}`}>{game.title} →</a></p>
             </div>
           )
         }

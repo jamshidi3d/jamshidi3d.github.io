@@ -31,6 +31,8 @@ export const LINKS: {
 } = {
   email: 'jamshidi3d@gmail.com',
   github: 'https://github.com/Jamshidi3d',
+  cvIndustry: '/cv/Jamshidi_Resume_Game-Industry_Technical-Animator.pdf',
+  cvAcademic: '/cv/Jamshidi_Resume_Academic_Physics-Cosmology.pdf',
 };
 
 export const ROLE_TAGS = ['tools', 'physics', 'animation', 'tech-art', 'modeling'] as const;
