@@ -4,7 +4,7 @@ import Interactive from '../components/Interactive.astro';
 import Listing from '../components/Listing.astro';
 import TagFilter from '../components/TagFilter.astro';
 import { allItems, getModels, modelItem } from '../lib/items';
-import { SITE, LINKS, NAV } from '../data/site';
+import { SITE, NAV } from '../data/site';
 
 const featured = (await allItems())
   .filter((i) => i.home !== undefined)
@@ -33,13 +33,6 @@ const rows = featured.slice(3);
           <p class="intro">
             {introParts.map((t) => (pills.includes(t) ? <code>{t}</code> : t))}
           </p>
-          {
-            (LINKS.cvIndustry || LINKS.cvAcademic) && (
-              <p class="quiet">
-                <a href={LINKS.cvIndustry ?? LINKS.cvAcademic}>CV</a>
-              </p>
-            )
-          }
         </div>
       </div>
       <Interactive name="hero" poster="/media/img/khosrobot-hero-blur.webp" label="The Khosrobot character, a gold one-wheel robot. Drag it to push it around." fill bare />
