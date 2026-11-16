@@ -1089,14 +1089,18 @@ a.btn:focus-visible {
   .hero .hero-text h1 {
     font-size: clamp(43px, 20.7cqw, 126px); /* nine tenths of the largest size that fits the column */
     line-height: 1.04;
+    margin-left: -0.08em; /* the plate's own margin: its left edge lines up with the intro paragraph below */
   }
   .hero h1 .ln {
     display: block;
   }
-  /* "I make" and "Move" sit a little to the right of the plate */
-  .hero h1 .ln:first-child,
-  .hero h1 .ln:last-child {
+  /* "I make" sits a little to the right of the plate */
+  .hero h1 .ln:first-child {
     padding-left: 0.3em;
+  }
+  /* "Move" starts right under the "P" of "Physics": the plate's margin + border + padding (see .mv) */
+  .hero h1 .ln-end {
+    padding-left: calc(0.08em + 2px + 0.14em);
   }
 }
 
