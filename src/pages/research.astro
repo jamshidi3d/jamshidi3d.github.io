@@ -4,7 +4,7 @@ import Listing from '../components/Listing.astro';
 import { groupByYear, type ListItem } from '../lib/items';
 import { publications, talks, code } from '../data/research';
 import { LINKS } from '../data/site';
-import { scholarlyArticleLd } from '../lib/seo';
+import { scholarlyArticleLd, softwareSourceCodeLd } from '../lib/seo';
 
 const toItem = (r: (typeof publications)[number]): ListItem => ({
   kind: 'RESEARCH',
@@ -23,7 +23,7 @@ const sections = [
 const cvs = [{ label: 'CV, academic', href: LINKS.cvAcademic }].filter((c) => c.href);
 ---
 
-<Base title="Research" description="Publications, talks, code and data from a physics PhD in cosmology." jsonLd={publications.map((p) => scholarlyArticleLd(p))}>
+<Base title="Research" description="Publications, talks and open-source code from a physics PhD in cosmology: CMB anomalies, GPU correlation functions, HEALPix tools and Blender visualisation." jsonLd={[...publications.map((p) => scholarlyArticleLd(p)), ...code.map((c) => softwareSourceCodeLd({ title: c.title, description: c.blurb, href: c.href, date: c.date, tags: c.tags }))]}>
   <div class="wrap">
     <header class="page-head">
       <h1>Research</h1>

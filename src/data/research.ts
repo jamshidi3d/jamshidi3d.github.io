@@ -40,6 +40,14 @@ export const talks: ResearchEntry[] = [
 ];
 export const code: ResearchEntry[] = [
   {
+    title: 'gpucorr',
+    date: new Date('2026-11-16'),
+    tags: ['physics', 'python'],
+    href: 'https://github.com/jamshidi3d/gpucorr',
+    blurb:
+      "A CUDA backend for count-count correlation functions: it reproduces TreeCorr's exact 2-point and 3-point pair and triangle counts on the GPU, and adds a Legendre-multipole method for galaxy and matter catalogues.",
+  },
+  {
     title: 'patch_cosmic_parameters',
     date: new Date('2026-07-24'),
     tags: ['physics', 'python'],

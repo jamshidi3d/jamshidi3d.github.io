@@ -12,10 +12,14 @@ interface Props {
   type?: 'website' | 'article';
   canonical?: string;
   jsonLd?: JsonLd[]; // extra structured data for the page (articles, applications ...), added to the graph
+  noindex?: boolean; // keep the page out of search results (404)
   heroFont?: boolean; // Home only: preload the hero headline font and the title font (card titles are on the first screen)
 }
 
-const { title, description = SITE.description, image = '/media/img/og-card.jpg', type = 'website', canonical: canonicalPath, heroFont = false, jsonLd = [] } = Astro.props;
+const { title, description = SITE.description, image = '/media/img/og-card.jpg', type = 'website', canonical: canonicalPath, heroFont = false, noindex = false, jsonLd = [] } = Astro.props;
+// search results cut descriptions at about 160 characters: shorten at a word boundary, on the page's own text
+const clip = (t: string, n = 160) => (t.length <= n ? t : t.slice(0, n - 1).replace(/[\s,;:.]+\S*$/, '') + '…');
+const metaDescription = clip(description);
 // the home page carries the full name (what people search for) and what the work is; the other pages the short name
 const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.fullName} · technical artist and physics researcher`;
 const canonical = new URL(canonicalPath ?? Astro.url.pathname, SITE.url).href;
@@ -34,12 +38,13 @@ const graph = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0d1117" />
-    <meta name="robots" content="noai, noimageai" />
+    <meta name="robots" content={noindex ? 'noindex, noai, noimageai' : 'noai, noimageai'} />
+    <meta name="author" content={SITE.fullName} />
     {heroFont && <link rel="preload" href="/fonts/oxanium-800.woff2" as="font" type="font/woff2" crossorigin />}
     {heroFont && <link rel="preload" href="/fonts/sofia-600.woff2" as="font" type="font/woff2" crossorigin />}
     <link rel="preload" href="/fonts/ubuntu-400.woff2" as="font" type="font/woff2" crossorigin />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicons/favicon.ico?v=5" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png?v=5" />
@@ -49,13 +54,16 @@ const graph = {
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     {isDefaultImage && <meta property="og:image:width" content="1200" />}
     {isDefaultImage && <meta property="og:image:height" content="630" />}
     {isDefaultImage && <meta property="og:image:alt" content={`${SITE.fullName}: physics, animation, tools, with the Khosrobot character`} />}
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImage} />
     <script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />
   </head>

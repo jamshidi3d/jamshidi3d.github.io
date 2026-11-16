@@ -79,3 +79,13 @@ export const scholarlyArticleLd = (o: { title: string; authors?: string[]; date:
   ...(o.href ? { url: o.href, sameAs: o.href } : {}),
   ...(o.abstract ? { abstract: o.abstract } : {}),
 });
+
+export const softwareSourceCodeLd = (o: { title: string; description?: string; href?: string; date: Date; tags?: string[] }): JsonLd => ({
+  '@type': 'SoftwareSourceCode',
+  name: o.title,
+  ...(o.description ? { description: o.description } : {}),
+  ...(o.href ? { codeRepository: o.href, url: o.href } : {}),
+  dateModified: o.date.toISOString().slice(0, 10),
+  author: { '@id': PERSON_ID },
+  ...(o.tags?.length ? { keywords: o.tags.join(', ') } : {}),
+});
