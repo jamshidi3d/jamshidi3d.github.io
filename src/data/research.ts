@@ -64,14 +64,6 @@ export const code: ResearchEntry[] = [
       'Python code to add the Doppler aberration to a HEALPix sky map and to project maps: it resamples a deformed sphere onto a standard HEALPix grid with area weights and cuts out flat gnomonic patches, with an optional GPU backend.',
   },
   {
-    title: 'rtl-tex-editor',
-    date: new Date('2026-09-04'),
-    tags: ['tools'],
-    href: 'https://github.com/Jamshidi3d/rtl-tex-editor',
-    blurb:
-      'A local TeX and Markdown editor for right-to-left languages such as Persian: lines mix directions correctly, LaTeX commands and math stay left-to-right, and there is a live PDF preview with two-way SyncTeX.',
-  },
-  {
     title: 'CosmicBlenderNodes',
     date: new Date('2023-12-12'),
     tags: ['physics', 'blender'],
